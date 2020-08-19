@@ -4,7 +4,7 @@
 
 In this repository I have located a copy of the work I've done in Programming this year.
 As the semester goes by, we will be making some code optimizations to the current one.
-
+The main goal of this subject is to learn how to develop any system with good practices.
 
 ## ***Task:*** **Diagrams**
 

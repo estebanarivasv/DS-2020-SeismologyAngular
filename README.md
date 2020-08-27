@@ -47,13 +47,3 @@ Here there are the system classes depicted.
 
 - Ifs filtering in resources
 - json to object, mapping       https://realpython.com/python-json/
-=======
-# Seismology
-
-"Programacion I" Repository
-
-In 2020, I made a project for a subject called Programación I at university. 
-
-We worked with the framework Flask and learned about how to work with
-APIs, web pages and mobile apps.
->>>>>>> 35866332e8186c6e645ab58917d53db9f9364b0b

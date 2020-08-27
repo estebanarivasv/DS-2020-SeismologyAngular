@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Systems Design - Diseño de Sistemas (2020 - 2nd Semester)
 
 ## Summary

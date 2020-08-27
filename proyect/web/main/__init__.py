@@ -1,6 +1,5 @@
 import os
 from flask import Flask
-from flask_breadcrumbs import Breadcrumbs
 from dotenv import load_dotenv
 from flask_wtf import CSRFProtect
 

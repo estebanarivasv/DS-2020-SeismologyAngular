@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, current_app, redirect, url_for
-from main.forms.users import Users as UsersForm
+from main.forms.users\
+    import Users as UsersForm
 import requests, json
 
 admin = Blueprint('admin', __name__, url_prefix='/administrator')

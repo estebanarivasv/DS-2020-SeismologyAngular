@@ -6,3 +6,6 @@ flask_restful
 flask_sqlalchemy
 flask_jwt_extended
 flask_mail
+flask_marshmallow
+marshmallow-sqlalchemy
+sqlalchemy-filters

@@ -5,52 +5,52 @@ from main import db
 from main.models import SensorModel
 from main.models.User import User as UserModel
 from main.authentication import admin_login_required
+from main.map import SensorSchema
 
+sensor_schema = SensorSchema()
+sensors_schema = SensorSchema(many=True)
 
 class Sensor(Resource):
 
-    #@admin_login_required
+    # @admin_login_required
     def get(self, id_num):
         sensor = db.session.query(SensorModel).get_or_404(id_num)
-        return sensor.to_json()
+        return sensor_schema.dump(sensor)
 
-    #@admin_login_required
+    # @admin_login_required
     def delete(self, id_num):
         sensor = db.session.query(SensorModel).get_or_404(id_num)
         db.session.delete(sensor)
         try:
             db.session.commit()
+            return '', 204
         except Exception:
             db.session.rollback()
             return '', 409
-        return '', 204
 
-    #@admin_login_required
+    # @admin_login_required
     def put(self, id_num):
         sensor = db.session.query(SensorModel).get(id_num)
-        filters = request.get_json().items()
-        for key, value in filters:
+        sensor_json = request.get_json().items()
+        for key, value in sensor_json:
             if key == 'user_id':
-                i = db.session.query(UserModel).get_or_404(value)
+                db.session.query(UserModel).get_or_404(value)
                 setattr(sensor, key, value)
             else:
                 setattr(sensor, key, value)
-
         db.session.add(sensor)
         try:
             db.session.commit()
-        except Exception:
+        except Exception as e:
             db.session.rollback()
-            return '', 409
-            # Verifies if the user_id exists in User table. If false, returns exception.
-        return sensor.to_json(), 201
+            return e, 409
+        return sensor_schema.dump(sensor), 201
 
 
 class Sensors(Resource):
 
-    #@admin_login_required
+    # @admin_login_required
     def get(self):
-
         page_num = 1
         elem_per_page = 25
         raise_error = True
@@ -105,11 +105,19 @@ class Sensors(Resource):
                     sensors = sensors.join(SensorModel.user).order_by(UserModel.email.asc())
 
         sensors = sensors.paginate(page_num, elem_per_page, raise_error, max_elem_per_page)
-        return jsonify({'sensors': [sensor.to_json() for sensor in sensors.items]})
+        s_list = []
+        for sensor in sensors.items:
+            s_list.append(sensor_schema.dump(sensor))
+        return jsonify({'sensors': s_list})
 
-    #@admin_login_required
+    # @admin_login_required
     def post(self):
-        sensor = SensorModel.from_json(request.get_json())
-        db.session.add(sensor)
-        db.session.commit()
-        return sensor.to_json(), 201
+        json = request.get_json()
+        user_exists = db.session.query(UserModel).filter(UserModel.id_num == json["user_id"]).scalar() is not None
+        if not user_exists:
+            return "User not found", 404
+        else:
+            sensor = sensor_schema.load(request.get_json(), session=db.session)
+            db.session.add(sensor)
+            db.session.commit()
+            return sensor_schema.dump(sensor), 201

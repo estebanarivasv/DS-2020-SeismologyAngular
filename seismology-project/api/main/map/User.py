@@ -1,4 +1,3 @@
-from main import ma
 from marshmallow import validate
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
 from main.models import UserModel

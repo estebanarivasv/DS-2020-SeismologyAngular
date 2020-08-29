@@ -75,18 +75,3 @@ class Users(Resource):
                 return user_schema.dump(user), 201
         except validate.ValidationError as e:
             return e, 409
-
-"""
-
-def from_json(user_json):
-    new_email = user_json.get('email')
-    new_password = user_json.get('password')
-    new_admin = user_json.get('admin')
-    return User(
-        email=new_email,
-        plain_password=new_password,
-        admin=new_admin
-    )
-
-
-"""

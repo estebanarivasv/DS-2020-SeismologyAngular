@@ -10,6 +10,7 @@ from main.map import SensorSchema
 sensor_schema = SensorSchema()
 sensors_schema = SensorSchema(many=True)
 
+
 class Sensor(Resource):
 
     # @admin_login_required

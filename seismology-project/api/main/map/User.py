@@ -8,6 +8,7 @@ class User(SQLAlchemySchema):
         model = UserModel
         include_relationships = True
         load_instance = True
+        ordered = True
 
     id_num = auto_field(dump_only=True)  # Read from db only
     email = auto_field(required=True, validate=validate.Email())

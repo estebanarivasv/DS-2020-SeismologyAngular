@@ -27,25 +27,3 @@ class User(db.Model):
     # User object representation
     def __repr__(self):
         return '<User: %r >' % self.email
-
-    # Only authorized users can access this json
-    def to_json(self):
-        user_json = {
-            "id_num": self.id_num,
-            "email": self.email,
-            "admin": self.admin
-        }
-        return user_json
-
-    # JSON to user object conversion
-    @staticmethod
-    def from_json(user_json):
-        new_email = user_json.get('email')
-        new_password = user_json.get('password')
-        new_admin = user_json.get('admin')
-        return User(
-            email=new_email,
-            plain_password=new_password,
-            admin=new_admin
-        )
-        # With plain_password we call the setter that encrypts the plain text password

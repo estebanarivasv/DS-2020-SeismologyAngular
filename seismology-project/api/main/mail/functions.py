@@ -1,4 +1,4 @@
-from main import out_server_sender as mail_sender
+from main.extensions.extensions import out_server_sender as mail_sender
 from flask import current_app, render_template
 from flask_mail import Message
 from smtplib import SMTPException

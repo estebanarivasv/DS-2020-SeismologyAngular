@@ -1,4 +1,4 @@
-from main import db
+from main.extensions.extensions import db
 
 
 class Sensor(db.Model):

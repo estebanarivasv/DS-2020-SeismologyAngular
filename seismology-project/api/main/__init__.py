@@ -2,26 +2,20 @@ import os
 from flask import Flask
 from dotenv import load_dotenv
 from flask_restful import Api
-from flask_sqlalchemy import SQLAlchemy
-from flask_jwt_extended import JWTManager
-from flask_mail import Mail
+
+# Importing blueprints and resources
+from main.resources import PaginationResource
+from main.resources import UserResource, UsersResource
+from main.resources import UnverifiedSeismResource, UnverifiedSeismsResource
+from main.resources import VerifiedSeismResource, VerifiedSeismsResource
+from main.resources import SensorResource, SensorsResource
+from main.authentication import auth_blueprint
+from main.mail import stopped_sensors_blueprint
+
+from main.extensions.extensions import db, jwt, out_server_sender
 
 # Flask API RESTFUL principal initialization
 api = Api()
-
-# Database principal initialization
-db = SQLAlchemy()
-
-# Authentication handler principal initialization
-jwt = JWTManager()
-
-# Outgoing server sender principal initialization
-out_server_sender = Mail()
-
-# Importing blueprints and resources
-import main.resources as resources
-from main.authentication import auth_blueprint
-from main.mail import stopped_sensors_blueprint
 
 
 # Function that activates primary keys recognition in the SQLite DB
@@ -75,14 +69,14 @@ def create_app():
         event.listen(db.engine, 'connect', activate_primary_keys)
 
     # Defining urls for each resource
-    api.add_resource(resources.SensorResource, '/sensor/<id_num>')
-    api.add_resource(resources.SensorsResource, '/sensors')
-    api.add_resource(resources.UnverifiedSeismResource, '/unverified-seism/<id_num>')
-    api.add_resource(resources.UnverifiedSeismsResource, '/unverified-seisms')
-    api.add_resource(resources.VerifiedSeismResource, '/verified-seism/<id_num>')
-    api.add_resource(resources.VerifiedSeismsResource, '/verified-seisms')
-    api.add_resource(resources.UserResource, '/user/<id_num>')
-    api.add_resource(resources.UsersResource, '/users')
+    api.add_resource(SensorResource, '/sensor/<id_num>')
+    api.add_resource(SensorsResource, '/sensors')
+    api.add_resource(UnverifiedSeismResource, '/unverified-seism/<id_num>')
+    api.add_resource(UnverifiedSeismsResource, '/unverified-seisms')
+    api.add_resource(VerifiedSeismResource, '/verified-seism/<id_num>')
+    api.add_resource(VerifiedSeismsResource, '/verified-seisms')
+    api.add_resource(UserResource, '/user/<id_num>')
+    api.add_resource(UsersResource, '/users')
 
     # Defining blueprints for each blueprint
     app.register_blueprint(auth_blueprint)

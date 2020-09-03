@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_claims
 from random import randint, uniform
 from datetime import datetime
 
-from main import db
+from main.extensions.extensions import db
 from main.models import SeismModel
 from main.models.Sensor import Sensor as SensorModel
 from main.authentication import admin_login_required

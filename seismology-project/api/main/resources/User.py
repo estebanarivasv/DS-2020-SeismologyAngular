@@ -2,7 +2,7 @@ from flask_restful import Resource
 from flask import request
 from marshmallow import validate
 
-from main import db
+from main.extensions.extensions import db
 from main.models import UserModel
 from main.authentication import admin_login_required
 from main.map import UserSchema

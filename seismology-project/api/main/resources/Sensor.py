@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from flask import request, jsonify
 
-from main import db
+from main.extensions.extensions import db
 from main.models import SensorModel
 from main.models.User import User as UserModel
 from main.authentication import admin_login_required
@@ -13,12 +13,12 @@ sensors_schema = SensorSchema(many=True)
 
 class Sensor(Resource):
 
-    # @admin_login_required
+    @admin_login_required
     def get(self, id_num):
         sensor = db.session.query(SensorModel).get_or_404(id_num)
         return sensor_schema.dump(sensor)
 
-    # @admin_login_required
+    @admin_login_required
     def delete(self, id_num):
         sensor = db.session.query(SensorModel).get_or_404(id_num)
         db.session.delete(sensor)
@@ -29,7 +29,7 @@ class Sensor(Resource):
             db.session.rollback()
             return '', 409
 
-    # @admin_login_required
+    @admin_login_required
     def put(self, id_num):
         sensor = db.session.query(SensorModel).get(id_num)
         sensor_json = request.get_json().items()
@@ -50,7 +50,7 @@ class Sensor(Resource):
 
 class Sensors(Resource):
 
-    # @admin_login_required
+    @admin_login_required
     def get(self):
         page_num = 1
         elem_per_page = 25
@@ -111,7 +111,7 @@ class Sensors(Resource):
             s_list.append(sensor_schema.dump(sensor))
         return jsonify({'sensors': s_list})
 
-    # @admin_login_required
+    @admin_login_required
     def post(self):
         json = request.get_json()
         user_exists = db.session.query(UserModel).filter(UserModel.id_num == json["user_id"]).scalar() is not None

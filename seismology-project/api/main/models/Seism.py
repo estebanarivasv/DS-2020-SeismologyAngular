@@ -1,4 +1,4 @@
-from main import db
+from main.extensions.extensions import db
 from main.models.Sensor import Sensor
 import datetime as dt
 

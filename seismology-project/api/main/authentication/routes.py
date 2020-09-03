@@ -1,5 +1,5 @@
 from main.models import UserModel
-from main import db
+from main.extensions.extensions import db
 
 from flask import request, Blueprint
 from flask_jwt_extended import create_access_token

@@ -1,4 +1,4 @@
-from main import jwt
+from main.extensions.extensions import jwt
 from functools import wraps
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_claims
 

@@ -9,6 +9,7 @@ from main.models import SeismModel
 from main.models.Sensor import Sensor as SensorModel
 from main.authentication import admin_login_required
 from main.map import SeismSchema
+from main.resources.Pagination import PaginationResource
 
 seism_schema = SeismSchema()
 seisms_schema = SeismSchema(many=True)
@@ -44,7 +45,16 @@ class VerifiedSeisms(Resource):
     # Define filters, sorting, pagination
 
     def get(self):
+        query = db.session.query(SeismModel).filter(SeismModel.verified == True)
+        page_number = 1
+        elem_per_page = 25
+        pag = PaginationResource(query, page_number, elem_per_page)
+        for key, value in request.get_json().items():
+            query = pag.apply(key, value)
+        query, pagination = pag.pagination()
+        return seisms_schema.dump(query.all())
 
+        """
         page_num = 1
         elem_per_page = 25
         raise_error = True
@@ -87,7 +97,7 @@ class VerifiedSeisms(Resource):
         # Paginates the filtered result and returns a Paginate object
         verified_seisms = verified_seisms.paginate(page_num, elem_per_page, raise_error, max_elem_per_page)
         return jsonify({'verified_seisms': [seism_schema.dump(verified_seism) for verified_seism in
-                                            verified_seisms.items]})
+                                            verified_seisms.items]})"""
 
     @admin_login_required
     def post(self):

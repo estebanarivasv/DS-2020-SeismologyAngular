@@ -50,7 +50,7 @@ class Users(Resource):
     def get(self):
         query = db.session.query(UserModel)
         page_number = 1
-        elem_per_page = 3
+        elem_per_page = 10
         pag = PaginationResource(query, page_number, elem_per_page)
         for key, value in request.get_json().items():
             query = pag.apply(key, value)

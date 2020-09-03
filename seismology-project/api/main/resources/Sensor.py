@@ -6,6 +6,7 @@ from main.models import SensorModel
 from main.models.User import User as UserModel
 from main.authentication import admin_login_required
 from main.map import SensorSchema
+from main.resources.Pagination import PaginationResource
 
 sensor_schema = SensorSchema()
 sensors_schema = SensorSchema(many=True)
@@ -52,12 +53,16 @@ class Sensors(Resource):
 
     @admin_login_required
     def get(self):
-        page_num = 1
+        query = db.session.query(SensorModel)
+        page_number = 1
         elem_per_page = 25
-        raise_error = True
-        max_elem_per_page = 50
+        pag = PaginationResource(query, page_number, elem_per_page)
+        for key, value in request.get_json().items():
+            query = pag.apply(key, value)
+        query, pagination = pag.pagination()
+        return sensors_schema.dump(query.all())
 
-        filters = request.get_json().items()
+        """filters = request.get_json().items()
         sensors = db.session.query(SensorModel)
 
         for key, value in filters:
@@ -109,7 +114,7 @@ class Sensors(Resource):
         s_list = []
         for sensor in sensors.items:
             s_list.append(sensor_schema.dump(sensor))
-        return jsonify({'sensors': s_list})
+        return jsonify({'sensors': s_list})"""
 
     @admin_login_required
     def post(self):

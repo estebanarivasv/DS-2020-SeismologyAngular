@@ -1,5 +1,4 @@
-from main.extensions.extensions import db
-
+from main.extensions import db
 
 class Sensor(db.Model):
     id_num = db.Column(db.Integer, primary_key=True)
@@ -13,4 +12,4 @@ class Sensor(db.Model):
     seisms = db.relationship("Seism", back_populates="sensor", passive_deletes="all", single_parent=True)
 
     def __repr__(self):
-        return '<Sensor %r >' % self.name
+        return f'<Sensor {self.id_num} {self.name} >'

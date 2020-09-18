@@ -16,4 +16,4 @@ class Seism(db.Model):
                              single_parent=True)
 
     def __repr__(self):
-        return '<Seism %r %r %r>' % (self.magnitude, self.latitude, self.longitude)
+        return f'<Seism {self.id_num} {self.datetime}'

@@ -1,4 +1,4 @@
-from main.extensions.extensions import db
+from main.extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -26,4 +26,4 @@ class User(db.Model):
 
     # User object representation
     def __repr__(self):
-        return '<User: %r >' % self.email
+        return f'<User: {self.id_num} {self.email} >'

@@ -1,7 +1,6 @@
 from sqlalchemy_filters import apply_filters, apply_sort, apply_pagination
 
-
-class PaginationResource:
+class Pagination:
 
     def __init__(self, query, page_num, elem_per_page):
         self.__query = query
@@ -30,10 +29,12 @@ class PaginationResource:
         return apply_pagination(self.__query, page_number=self.__page_num, page_size=self.__elem_per_page)
 
     def apply(self, key, value):
-        pag_dict = {"filter": self.__filter,
-                    "sort_by": self.__sort_by,
-                    "page": self.__page,
-                    "elem_per_page": self.__elem_page}
+        pag_dict = {
+            "filter": self.__filter,
+            "sort_by": self.__sort_by,
+            "page": self.__page,
+            "elem_per_page": self.__elem_page
+            }
         if key in pag_dict.keys():
             return pag_dict[key](value)
         else:

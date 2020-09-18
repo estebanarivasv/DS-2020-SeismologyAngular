@@ -2,6 +2,7 @@ import os
 from flask import Flask
 from dotenv import load_dotenv
 from flask_restful import Api
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
 # Importing blueprints and resources
 from main.resources import PaginationResource
@@ -12,11 +13,21 @@ from main.resources import SensorResource, SensorsResource
 from main.authentication import auth_blueprint
 from main.mail import stopped_sensors_blueprint
 
-from main.extensions.extensions import db, jwt, out_server_sender
+from main.extensions.extensions import db, jwt, out_server_sender, scheduler
 
 # Flask API RESTFUL principal initialization
 api = Api()
 
+db_path = str(os.getenv('SQLALCHEMY_DB_PATH'))
+db_name = str(os.getenv('SQLALCHEMY_DB_NAME'))
+
+db_url = "sqlite:////" + db_path + db_name
+
+class Config(object):
+    SCHEDULER_JOBSTORES = {
+        'default': SQLAlchemyJobStore(url=db_url)
+        }
+    SCHEDULER_API_ENABLED = True
 
 # Function that activates primary keys recognition in the SQLite DB
 def activate_primary_keys(connection, connection_record):
@@ -28,11 +39,12 @@ def create_app():
     # Flask app initialization
     app = Flask(__name__)
 
+    app.config.from_object(Config())
+
     # Loading environment variables
     load_dotenv()
 
-    db_path = str(os.getenv('SQLALCHEMY_DB_PATH'))
-    db_name = str(os.getenv('SQLALCHEMY_DB_NAME'))
+    
 
     # Creating database
     if not os.path.exists(db_path + db_name):
@@ -40,10 +52,17 @@ def create_app():
 
     # Database configuration
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = bool(os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS'))
-    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////" + db_path + db_name
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 
     # Database initialization in Flask app
     db.init_app(app)
+
+    scheduler.init_app(app)
+    scheduler.start()
+
+    @app.before_first_request
+    def load_tasks():
+        from main.services import tasks
 
     # Defining secret key for encryption and time of expiration of each access token that will be generated
     app.config['JWT_SECRET_KEY'] = str(os.getenv('JWT_SECRET_KEY'))

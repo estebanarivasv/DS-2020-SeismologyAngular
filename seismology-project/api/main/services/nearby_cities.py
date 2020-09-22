@@ -1,8 +1,0 @@
-# LOGICA DE NEGOCIO
-
-# FUNCION QUE DEVUELVA DE QUÉ CIUDAD ESTA CERCA EL SISMO
-# BACKUP TODAS LAS NOCHES DE LA DB
-
-
-# http://api.geonames.org/findNearbyJSON?lat=52&lng=30&username=demo
-#

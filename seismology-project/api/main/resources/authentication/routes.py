@@ -1,8 +1,8 @@
-from main.models import UserModel
-from main.extensions.extensions import db
-
 from flask import request, Blueprint
 from flask_jwt_extended import create_access_token
+
+from main.models import UserModel
+from main.extensions import db
 
 
 # The auth blueprint 

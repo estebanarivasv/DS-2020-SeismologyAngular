@@ -1,4 +1,4 @@
-from main.extensions.extensions import scheduler
+from main.extensions import scheduler
 import requests
 
 
@@ -6,4 +6,4 @@ import requests
 def consume_service():
     query = requests.get(url="https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2014-01-01"
                              "&endtime=2014-01-02", headers={'content-type': 'application/json'})
-    print(query.text)
+    # print(query.text)

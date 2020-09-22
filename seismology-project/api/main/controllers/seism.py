@@ -1,160 +1,99 @@
 from flask_restful import Resource
-from flask import request, jsonify
+from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_claims
-from random import randint, uniform
-from datetime import datetime
 
-from main.extensions import db
-from main.models import SeismModel
-from main.models import SensorModel
-from main.authentication import admin_login_required
-from main.resources.mapping import SeismSchema
-from main.controllers import PagController
+from main.resources import admin_login_required, SeismSchema, UserValidator
+from main.repositories import SeismRepository
+
+"""
+    In order to make CRUD methods, we instance the SeismRepository class.
+"""
 
 seism_schema = SeismSchema()
 seisms_schema = SeismSchema(many=True)
+
+validator = UserValidator()
 
 
 class VerifiedSeism(Resource):
 
     def get(self, id_num):
-        verified_seism = db.session.query(SeismModel).get_or_404(id_num)
-        return seism_schema.dump(verified_seism)
+        seism_repo = SeismRepository(verified=True)
+        seism_repo.set_id(id_num)
+        return seism_schema.dump(seism_repo.get_or_404())
 
     @admin_login_required
     def put(self, id_num):
-        verified_seism = db.session.query(SeismModel).get_or_404(id_num)
-        data = request.get_json().items()
-        for key, value in data:
-            if key == 'datetime':
-                setattr(verified_seism, key, datetime.strptime(value, "%Y-%m-%d %H:%M:%S"))
-            else:
-                setattr(verified_seism, key, value)
+        seism_repo = SeismRepository(verified=True)
+        seism_repo.set_id(id_num)
 
-        db.session.add(verified_seism)
-        try:
-            db.session.commit()
-        except Exception:
-            db.session.rollback()
-            return '', 409
-        return seism_schema.dump(verified_seism), 201
+        seism = seism_repo.get_or_404()
+
+        # We replace the seism model data for the json data
+        json = request.get_json().items()
+        seism_repo.set_input_json(json=json)
+        seism_repo.set_instance(instance=seism)
+
+        return seism_repo.modify()
 
 
 class VerifiedSeisms(Resource):
 
-    # Define filters, sorting, pagination
-
     def get(self):
-        query = db.session.query(SeismModel).filter(SeismModel.verified == True)
-        page_number = 1
-        elem_per_page = 25
-        pag = PagController(query, page_number, elem_per_page)
-        for key, value in request.get_json().items():
-            query = pag.apply(key, value)
-        query, _pagination = pag.pagination()
-        return seisms_schema.dump(query.all())
+        seism_repo = SeismRepository(verified=True)
 
-    @admin_login_required
-    def post(self):
-        seism = SeismModel(
-            datetime=datetime(
-                randint(2000, 2020),
-                randint(1, 12),
-                randint(1, 28),
-                randint(00, 23),
-                randint(0, 59),
-                randint(0, 59)
-            ),
-            depth=randint(5, 250),
-            magnitude=round(uniform(2.0, 5.5), 1),
-            latitude=uniform(-90, 90),
-            longitude=uniform(-180, 180),
-            verified=True,
-            sensor_id=2
-        )
-        db.session.add(seism)
-        db.session.commit()
-        return seism_schema.dump(seism), 201
+        json = request.get_json().items()
+        seism_repo.set_input_json(json=json)
+
+        return seism_repo.get_all()
 
 
 class UnverifiedSeism(Resource):
 
     @jwt_required
     def get(self, id_num):
-        unverified_seism = db.session.query(SeismModel).get_or_404(id_num)
-        return seism_schema.dump(unverified_seism)
+        seism_repo = SeismRepository(verified=False)
+        seism_repo.set_id(id_num)
+
+        return seism_schema.dump(seism_repo.get_or_404())
 
     @jwt_required
     def delete(self, id_num):
-        unverified_seism = db.session.query(SeismModel).get_or_404(id_num)
-        db.session.delete(unverified_seism)
-        try:
-            db.session.commit()
-        except Exception:
-            db.session.rollback()
-            return '', 409
-        return '', 204
+        seism_repo = SeismRepository(verified=False)
+        seism_repo.set_id(id_num)
+
+        unverified_seism = seism_repo.get_or_404()
+
+        seism_repo.set_instance(unverified_seism)
+
+        return seism_repo.delete()
 
     @jwt_required
     def put(self, id_num):
-        unverified_seism = db.session.query(SeismModel).get_or_404(id_num)
-        data = request.get_json().items()
-        for key, value in data:
-            if key == 'datetime':
-                setattr(unverified_seism, key, datetime.strptime(value, "%Y-%m-%d %H:%M:%S"))
-            else:
-                setattr(unverified_seism, key, value)
-        db.session.add(unverified_seism)
-        try:
-            db.session.commit()
-        except Exception:
-            db.session.rollback()
-            return '', 409
-        return seism_schema.dump(unverified_seism), 201
+
+        seism_repo = SeismRepository(verified=False)
+        seism_repo.set_id(id_num)
+
+        seism = seism_repo.get_or_404()
+
+        json = request.get_json().items()
+        seism_repo.set_input_json(json=json)
+        seism_repo.set_instance(instance=seism)
+
+        return seism_repo.modify()
 
 
 class UnverifiedSeisms(Resource):
 
     @jwt_required
     def get(self):
-        page_number = 1
-        elem_per_page = 10
+
+        seism_repo = SeismRepository(verified=False)
 
         # We obtain the user's identity and the JWT claims. We filter the seisms for assigned for the logged user
-        user_id = int(get_jwt_identity())
-        claims = get_jwt_claims()
 
-        # Filters in unverified_seisms
-        query = db.session.query(SeismModel).filter(SeismModel.verified == False)
+        seism_repo.set_user_id(user_id=int(get_jwt_identity()))
+        admin = validator.is_admin(get_jwt_claims())
+        seism_repo.set_admin_value(value=admin)
 
-        if not claims['admin']:
-            # Filters the left associated seisms with the seismologist
-            query = query.filter(SensorModel.user_id == user_id)
-
-        pag = PaginationResource(query, page_number, elem_per_page)
-        for key, value in request.get_json().items():
-            query = pag.apply(key, value)
-        query, pagination = pag.pagination()
-        return seisms_schema.dump(query.all())
-
-    @admin_login_required
-    def post(self):
-        seism = SeismModel(
-            datetime=datetime(
-                randint(2000, 2020),
-                randint(1, 12),
-                randint(1, 28),
-                randint(00, 23),
-                randint(0, 59),
-                randint(0, 59)
-            ),
-            depth=randint(5, 250),
-            magnitude=round(uniform(2.0, 5.5), 1),
-            latitude=uniform(-90, 90),
-            longitude=uniform(-180, 180),
-            verified=False,
-            sensor_id=2
-        )
-        db.session.add(seism)
-        db.session.commit()
-        return seism_schema.dump(seism), 201
+        return seism_repo.get_all()

@@ -1,6 +1,6 @@
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field, fields
 from main.models import SeismModel
-from main.map import SensorSchema
+from main.resources import SensorSchema
 
 
 class Seism(SQLAlchemySchema):

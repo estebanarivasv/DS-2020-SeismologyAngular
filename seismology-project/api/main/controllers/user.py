@@ -1,80 +1,71 @@
 from flask_restful import Resource
 from flask import request
-from marshmallow import validate
 
-from main.extensions.extensions import db
-from main.models import UserModel
-from main.authentication import admin_login_required
-from main.map import UserSchema
-from main.resources.Pagination import PaginationResource
+from main.resources import admin_login_required
+from main.resources import UserSchema
+from main.resources import UserValidator
+
+from main.repositories import UserRepository
 
 user_schema = UserSchema()
-users_schema = UserSchema(many=True)
+
+validator = UserValidator()
+
+"""
+    In order to make CRUD methods, we instance the USerRepository class.
+"""
 
 
 class User(Resource):
 
     @admin_login_required
     def get(self, id_num):
-        user = db.session.query(UserModel).get_or_404(id_num)
-        return user_schema.dump(user)
+        user_repo = UserRepository()
+        user_repo.set_id(id_num)
+
+        return user_schema.dump(user_repo.get_or_404())
 
     @admin_login_required
     def delete(self, id_num):
-        user = db.session.query(UserModel).get_or_404(id_num)
-        db.session.delete(user)
-        try:
-            db.session.commit()
-            return 'User deleted', 204
-        except Exception as e:
-            db.session.rollback()
-            return e, 409
+        user_repo = UserRepository()
+
+        user_repo.set_id(id_num)
+        user = user_repo.get_or_404()
+
+        user_repo.set_instance(instance=user)
+        return user_repo.delete()
 
     @admin_login_required
     def put(self, id_num):
-        user = db.session.query(UserModel).get_or_404(id_num)
-        user_json = request.get_json().items()
-        for key, values in user_json:
-            setattr(user, key, values)
-        try:
-            db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            return e, 409
-        return user_schema.dump(user), 201
+        user_repo = UserRepository()
+
+        user_repo.set_id(id_num)
+        user = user_repo.get_or_404()
+        user_repo.set_instance(user)
+
+        json = request.get_json().items()
+        user_repo.set_input_json(json=json)
+
+        return user_repo.modify()
 
 
 class Users(Resource):
 
     @admin_login_required
     def get(self):
-        query = db.session.query(UserModel)
-        page_number = 1
-        elem_per_page = 10
-        pag = PaginationResource(query, page_number, elem_per_page)
-        for key, value in request.get_json().items():
-            query = pag.apply(key, value)
-        query, pagination = pag.pagination()
-        return users_schema.dump(query.all())
+        user_repo = UserRepository()
+
+        json = request.get_json().items()
+        user_repo.set_input_json(json=json)
+
+        return user_repo.get_all()
 
     @admin_login_required
     def post(self):
-        try:
-            user_json = request.get_json()
-            # NO es la funcionalidad del controller verificar si existe el mail
-            # Desarrollar clase que verifique el email en una carpeta services/validators
-            email_exists = db.session.query(UserModel).filter(UserModel.email == user_json["email"]).scalar() is not None
-            if email_exists:
-                return 'The entered email address has already been registered', 409
-            else:
-                # Tampoco es la funcionalidad del modelo
-                user = UserModel(
-                    email=user_json.get("email"),
-                    plain_password=user_json.get("password"),
-                    admin=user_json.get("admin")
-                )
-                db.session.add(user)
-                db.session.commit()
-                return user_schema.dump(user), 201
-        except validate.ValidationError as e:
-            return e, 409
+        user_repo = UserRepository()
+
+        json = request.get_json()
+        validator.email_exists(json["email"])
+
+        user_repo.set_addition_json(json=json)
+        return user_repo.add()

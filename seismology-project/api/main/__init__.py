@@ -4,33 +4,36 @@ from dotenv import load_dotenv
 from flask_restful import Api
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
-# Importing blueprints and resources
-from main.resources import PaginationResource
-from main.resources import UserResource, UsersResource
-from main.resources import UnverifiedSeismResource, UnverifiedSeismsResource
-from main.resources import VerifiedSeismResource, VerifiedSeismsResource
-from main.resources import SensorResource, SensorsResource
-from main.authentication import auth_blueprint
-from main.mail import stopped_sensors_blueprint
+# Importing blueprints
+from main.controllers import UserController, UsersController
+from main.controllers import USeismController, USeismsController
+from main.controllers import VSeismController, VSeismsController
+from main.controllers import SensorController, SensorsController
+from main.resources import auth_blueprint
+from main.services.mail_sending import stopped_sensors_blueprint
 
-from main.extensions.extensions import db, jwt, out_server_sender, scheduler
+from main.extensions import db, jwt, out_server_sender, scheduler
 
 # Flask API RESTFUL principal initialization
 api = Api()
 
-db_path = str(os.getenv('SQLALCHEMY_DB_PATH'))
-db_name = str(os.getenv('SQLALCHEMY_DB_NAME'))
+# Loading environment variables
+load_dotenv()
 
-db_url = "sqlite:////" + db_path + db_name
+DB_PATH = str(os.getenv("SQLALCHEMY_DB_PATH"))
+DB_NAME = str(os.getenv("SQLALCHEMY_DB_NAME"))
+DB_URL = "sqlite:////" + DB_PATH + DB_NAME
+
 
 class Config(object):
     SCHEDULER_JOBSTORES = {
-        'default': SQLAlchemyJobStore(url=db_url)
-        }
+        'default': SQLAlchemyJobStore(url=DB_URL)
+    }
     SCHEDULER_API_ENABLED = True
 
+
 # Function that activates primary keys recognition in the SQLite DB
-def activate_primary_keys(connection, connection_record):
+def activate_primary_keys(connection, _connection_record):
     connection.execute('pragma foreign_keys=ON')
 
 
@@ -41,18 +44,13 @@ def create_app():
 
     app.config.from_object(Config())
 
-    # Loading environment variables
-    load_dotenv()
-
-    
-
     # Creating database
-    if not os.path.exists(db_path + db_name):
-        os.mknod(db_path + db_name)
+    if not os.path.exists(DB_PATH + DB_NAME):
+        os.mknod(DB_PATH + DB_NAME)
 
     # Database configuration
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = bool(os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS'))
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_url
+    app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 
     # Database initialization in Flask app
     db.init_app(app)
@@ -88,14 +86,14 @@ def create_app():
         event.listen(db.engine, 'connect', activate_primary_keys)
 
     # Defining urls for each resource
-    api.add_resource(SensorResource, '/sensor/<id_num>')
-    api.add_resource(SensorsResource, '/sensors')
-    api.add_resource(UnverifiedSeismResource, '/unverified-seism/<id_num>')
-    api.add_resource(UnverifiedSeismsResource, '/unverified-seisms')
-    api.add_resource(VerifiedSeismResource, '/verified-seism/<id_num>')
-    api.add_resource(VerifiedSeismsResource, '/verified-seisms')
-    api.add_resource(UserResource, '/user/<id_num>')
-    api.add_resource(UsersResource, '/users')
+    api.add_resource(SensorController, '/sensor/<id_num>')
+    api.add_resource(SensorsController, '/sensors')
+    api.add_resource(USeismController, '/unverified-seism/<id_num>')
+    api.add_resource(USeismsController, '/unverified-seisms')
+    api.add_resource(VSeismController, '/verified-seism/<id_num>')
+    api.add_resource(VSeismsController, '/verified-seisms')
+    api.add_resource(UserController, '/user/<id_num>')
+    api.add_resource(UsersController, '/users')
 
     # Defining blueprints for each blueprint
     app.register_blueprint(auth_blueprint)

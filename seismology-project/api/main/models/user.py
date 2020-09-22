@@ -12,7 +12,7 @@ class User(db.Model):
     # Password security management
     @property
     def plain_password(self):
-        raise AttributeError("The password can not be obtained. It is strictly prohibited.")
+        raise AttributeError("The password can not be obtained. It is prohibited.")
         # We won't obtain the password accessing with a get method
 
     @plain_password.setter

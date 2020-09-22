@@ -1,6 +1,6 @@
 from main.models import SensorModel, UserModel
-from main.extensions.extensions import db
-from main.mail.functions import send_mail
+from main.extensions import db
+from main.services.mail_sending.functions import send_mail
 
 from flask import Blueprint
 

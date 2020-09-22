@@ -1,6 +1,4 @@
-from main.extensions.extensions import db
-from main.models.Sensor import Sensor
-import datetime as dt
+from main.extensions import db
 
 
 class Seism(db.Model):

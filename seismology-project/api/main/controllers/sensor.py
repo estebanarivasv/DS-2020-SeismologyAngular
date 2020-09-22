@@ -1,76 +1,73 @@
+from flask import request
 from flask_restful import Resource
-from flask import request, jsonify
 
-from main.extensions import db
-from main.models import SensorModel
-from main.models.user import User as UserModel
-from main.authentication import admin_login_required
-from main.mapping import SensorSchema
-from main.resources.Pagination import PaginationResource
+from main.repositories import SensorRepository, UserRepository
+from main.resources import admin_login_required
+from main.resources import SensorSchema
+from main.resources.validators import UserValidator
 
 sensor_schema = SensorSchema()
-sensors_schema = SensorSchema(many=True)
+
+validator = UserValidator()
+
+"""
+    In order to make CRUD methods, we instance the SensorRepository class.
+"""
 
 
 class Sensor(Resource):
 
     @admin_login_required
     def get(self, id_num):
-        sensor = db.session.query(SensorModel).get_or_404(id_num)
-        return sensor_schema.dump(sensor)
+        sensor_repo = SensorRepository()
+        sensor_repo.set_id(id_num)
+
+        return sensor_schema.dump(sensor_repo.get_or_404())
 
     @admin_login_required
     def delete(self, id_num):
-        sensor = db.session.query(SensorModel).get_or_404(id_num)
-        db.session.delete(sensor)
-        try:
-            db.session.commit()
-            return '', 204
-        except Exception:
-            db.session.rollback()
-            return '', 409
+        sensor_repo = SensorRepository()
+        sensor_repo.set_id(id_num)
+        sensor = sensor_repo.get_or_404()
+
+        sensor_repo.set_instance(sensor)
+        return sensor_repo.delete()
 
     @admin_login_required
     def put(self, id_num):
-        sensor = db.session.query(SensorModel).get(id_num)
-        sensor_json = request.get_json().items()
-        for key, value in sensor_json:
-            if key == 'user_id':
-                db.session.query(UserModel).get_or_404(value)
-                setattr(sensor, key, value)
-            else:
-                setattr(sensor, key, value)
-        db.session.add(sensor)
-        try:
-            db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            return e, 409
-        return sensor_schema.dump(sensor), 201
+        sensor_repo = SensorRepository()
+
+        sensor_repo.set_id(id_num)
+        sensor = sensor_repo.get_or_404()
+
+        json = request.get_json().items()
+        sensor_repo.set_input_json(json=json)
+        sensor_repo.set_instance(instance=sensor)
+
+        return sensor_repo.modify()
 
 
 class Sensors(Resource):
 
     @admin_login_required
     def get(self):
-        query = db.session.query(SensorModel)
-        page_number = 1
-        elem_per_page = 25
-        pag = PaginationResource(query, page_number, elem_per_page)
-        for key, value in request.get_json().items():
-            query = pag.apply(key, value)
-        query, _pagination = pag.pagination()
-        return sensors_schema.dump(query.all())
+        sensor_repo = SensorRepository()
+
+        json = request.get_json().items()
+        sensor_repo.set_input_json(json=json)
+
+        return sensor_repo.get_all()
 
 
     @admin_login_required
     def post(self):
+        sensor_repo = SensorRepository()
+
         json = request.get_json()
-        user_exists = db.session.query(UserModel).filter(UserModel.id_num == json["user_id"]).scalar() is not None
-        if not user_exists:
-            return "User not found", 404
+        user_exists = validator.user_exists(json["user_id"])
+
+        if user_exists:
+            sensor_repo.set_addition_json(json=json)
+            return sensor_repo.add()
         else:
-            sensor = sensor_schema.load(request.get_json(), session=db.session)
-            db.session.add(sensor)
-            db.session.commit()
-            return sensor_schema.dump(sensor), 201
+            return "User not found", 404

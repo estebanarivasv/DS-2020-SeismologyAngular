@@ -2,7 +2,7 @@ from flask_restful import Resource
 from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_claims
 
-from main.resources import admin_login_required, SeismSchema, UserValidator
+from main.resources import admin_login_required, SeismSchema, get_admin_status
 from main.repositories import SeismRepository
 
 """
@@ -11,8 +11,6 @@ from main.repositories import SeismRepository
 
 seism_schema = SeismSchema()
 seisms_schema = SeismSchema(many=True)
-
-validator = UserValidator()
 
 
 class VerifiedSeism(Resource):
@@ -93,7 +91,7 @@ class UnverifiedSeisms(Resource):
         # We obtain the user's identity and the JWT claims. We filter the seisms for assigned for the logged user
 
         seism_repo.set_user_id(user_id=int(get_jwt_identity()))
-        admin = validator.is_admin(get_jwt_claims())
+        admin = get_admin_status(get_jwt_claims())
         seism_repo.set_admin_value(value=admin)
 
         return seism_repo.get_all()

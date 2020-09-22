@@ -1,14 +1,12 @@
 from flask import request
 from flask_restful import Resource
 
-from main.repositories import SensorRepository, UserRepository
+from main.repositories import SensorRepository
 from main.resources import admin_login_required
 from main.resources import SensorSchema
-from main.resources.validators import UserValidator
+from main.resources import get_user_existance
 
 sensor_schema = SensorSchema()
-
-validator = UserValidator()
 
 """
     In order to make CRUD methods, we instance the SensorRepository class.
@@ -64,7 +62,7 @@ class Sensors(Resource):
         sensor_repo = SensorRepository()
 
         json = request.get_json()
-        user_exists = validator.user_exists(json["user_id"])
+        user_exists = get_user_existance(json["user_id"])
 
         if user_exists:
             sensor_repo.set_addition_json(json=json)

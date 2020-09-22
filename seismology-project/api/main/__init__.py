@@ -9,8 +9,8 @@ from main.controllers import UserController, UsersController
 from main.controllers import USeismController, USeismsController
 from main.controllers import VSeismController, VSeismsController
 from main.controllers import SensorController, SensorsController
-from main.resources import auth_blueprint
-from main.services.mail_sending import stopped_sensors_blueprint
+from main.resources import auth_controller
+from main.services import mail_controller, seism_achiever_job
 
 from main.extensions import db, jwt, out_server_sender, scheduler
 
@@ -96,8 +96,8 @@ def create_app():
     api.add_resource(UsersController, '/users')
 
     # Defining blueprints for each blueprint
-    app.register_blueprint(auth_blueprint)
-    app.register_blueprint(stopped_sensors_blueprint)
+    app.register_blueprint(auth_controller)
+    app.register_blueprint(mail_controller)
 
     # Final app initialization
     api.init_app(app)

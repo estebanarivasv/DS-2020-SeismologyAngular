@@ -10,3 +10,6 @@ marshmallow-sqlalchemy
 sqlalchemy-filters
 Flask-APScheduler
 requests
+pandas
+fsspec
+

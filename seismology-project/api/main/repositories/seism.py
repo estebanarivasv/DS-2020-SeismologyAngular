@@ -5,13 +5,10 @@ from main.extensions import db
 from main.models import SeismModel, SensorModel
 from main.repositories import DBRepository
 
-from main.resources import SeismSchema, UserValidator, PagController
+from main.resources import SeismSchema, PagController, get_seism_existance
 
 seism_schema = SeismSchema()
 seisms_schema = SeismSchema(many=True)
-
-validator = UserValidator
-
 
 class Seism(DBRepository):
 
@@ -86,7 +83,12 @@ class Seism(DBRepository):
 
     def add(self):
         if self.__addition_json != "":
-            self.__model_instance = seism_schema.load(self.__addition_json, session=db.session)
+            instance = seism_schema.load(self.__addition_json, session=db.session)
+            seism_exists = get_seism_existance(datetime=instance.datetime)
+            if seism_exists:
+                return 'Seism already exists', 409
+            else:
+                self.__model_instance = instance
 
         if self.__model_instance is not None:
             db.session.add(self.__model_instance)

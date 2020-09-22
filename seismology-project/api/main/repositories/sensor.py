@@ -13,6 +13,7 @@ class Sensor(DBRepository):
     __model_instance = None
     __input_json = ""
     __addition_json = ""
+    __db_session = None
 
     def set_id(self, id_num):
         self.__id_num = id_num
@@ -26,9 +27,20 @@ class Sensor(DBRepository):
     def set_addition_json(self, json):
         self.__addition_json = json
 
+    def set_db_session(self, session):
+        self.__db_session = session
+
     def get_query(self):
         sensor = db.session.query(SensorModel)
         return sensor
+
+    def get_sensor_id_list(self):
+        if self.__db_session is not None:
+            id_list = []
+            sensors = self.__db_session.query(SensorModel).all()
+            for sensor in sensors:
+                id_list.append(sensor.id_num)
+            return id_list
 
     def get_or_404(self):
         sensor = db.session.query(SensorModel).get_or_404(self.__id_num)

@@ -3,13 +3,11 @@ from flask import request
 
 from main.resources import admin_login_required
 from main.resources import UserSchema
-from main.resources import UserValidator
+from main.resources import get_email_existance
 
 from main.repositories import UserRepository
 
 user_schema = UserSchema()
-
-validator = UserValidator()
 
 """
     In order to make CRUD methods, we instance the USerRepository class.
@@ -65,7 +63,7 @@ class Users(Resource):
         user_repo = UserRepository()
 
         json = request.get_json()
-        validator.email_exists(json["email"])
+        get_email_existance(json["email"])
 
         user_repo.set_addition_json(json=json)
         return user_repo.add()

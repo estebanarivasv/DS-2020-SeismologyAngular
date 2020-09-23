@@ -1,6 +1,7 @@
 import pandas as pd
 import random
 import json
+import datetime as dt
 
 from main.repositories import SeismRepository, SensorRepository
 from main.extensions import scheduler, db
@@ -32,30 +33,30 @@ def get_seisms():
                      "horizontalError", "depthError", "magNst", "status", "locationSource", "magSource"],
             inplace=True)
 
-
-        # CAMBIAR LOS TIPOS DE VALORES
         raw_data.rename(columns={"time": "datetime", "mag": "magnitude"}, inplace=True)
-        raw_data['datetime'] = pd.to_datetime(raw_data['datetime'], format= '%d/%m/%Y')
-        raw_data['depth'] = raw_data['depth'].astype('int32')
-        print(raw_data.dtypes)
 
-        print("\n\nData obtained.")
+        raw_data['datetime'] = pd.to_datetime(raw_data['datetime'])
+        raw_data['datetime'] = raw_data['datetime'].dt.strftime('%Y-%m-%d %H:%M:%S')
+        raw_data['depth'] = raw_data['depth'].astype('int32')
+
+        print("\n\nSeisms data obtained.")
 
         seisms_data = raw_data.to_dict(orient="index")
 
         sensor_repo.set_db_session(session=db.session)
         ids_list = sensor_repo.get_sensor_id_list()
-        print("\n\nSENSOR ID LIST:", ids_list)
 
         for seism in seisms_data:
             sensor_id = int(random.choice(ids_list))
-
+            seisms_data[seism]["latitude"] = str(seisms_data[seism]["latitude"])
+            seisms_data[seism]["longitude"] = str(seisms_data[seism]["longitude"])
             seisms_data[seism]["sensor_id"] = sensor_id
+            seisms_data[seism]["verified"] = False
 
             seism_repo.set_addition_json(json.dumps(seisms_data[seism]))
             seism_repo.add()
 
-        print("Seisms addition done")
+        print("\n\nSeisms addition done.")
 
     """
     SI YASTÁ, NO LO AGREGAMOS
@@ -89,7 +90,6 @@ def consume_service():
 """
 [services] Devolución de sismos mas cercanos a las coordenadas ingresadas por json.
 """
-
 
 # http://api.geonames.org/findNearbyJSON?lat=52&lng=30&username=demo
 #

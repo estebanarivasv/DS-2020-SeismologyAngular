@@ -1,6 +1,6 @@
 from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field, fields
 from main.models import SensorModel
-from main.resources import UserSchema
+from main.mapping import UserSchema
 
 
 class Sensor(SQLAlchemySchema):

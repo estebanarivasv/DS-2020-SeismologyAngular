@@ -2,7 +2,8 @@ from main.extensions import db
 from main.models import SensorModel
 from main.repositories import DBRepository
 from main.repositories.user import User as UserRepository
-from main.resources import SensorSchema, PagController
+from main.resources import PagController
+from main.mapping import SensorSchema
 
 sensor_schema = SensorSchema()
 sensors_schema = SensorSchema(many=True)

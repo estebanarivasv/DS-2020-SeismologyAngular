@@ -2,7 +2,7 @@ from flask_restful import Resource
 from flask import request
 
 from main.resources import admin_login_required
-from main.resources import UserSchema
+from main.mapping import UserSchema
 from main.resources import get_email_existance
 
 from main.repositories import UserRepository

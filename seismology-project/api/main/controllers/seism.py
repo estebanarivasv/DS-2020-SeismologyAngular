@@ -2,8 +2,9 @@ from flask_restful import Resource
 from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_claims
 
-from main.resources import admin_login_required, SeismSchema, get_admin_status
+from main.resources import admin_login_required, get_admin_status
 from main.repositories import SeismRepository
+from main.mapping import SeismSchema
 
 """
     In order to make CRUD methods, we instance the SeismRepository class.

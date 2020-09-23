@@ -4,7 +4,8 @@ from main.extensions import db
 
 from main.models import UserModel
 from main.repositories import DBRepository
-from main.resources import UserSchema, PagController
+from main.resources import PagController
+from main.mapping import UserSchema
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)

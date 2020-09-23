@@ -5,7 +5,8 @@ from main.extensions import db
 from main.models import SeismModel, SensorModel
 from main.repositories import DBRepository
 
-from main.resources import SeismSchema, PagController, get_seism_existance
+from main.resources import PagController, get_seism_existance
+from main.mapping import SeismSchema
 
 seism_schema = SeismSchema()
 seisms_schema = SeismSchema(many=True)

@@ -3,7 +3,7 @@ from flask_restful import Resource
 
 from main.repositories import SensorRepository
 from main.resources import admin_login_required
-from main.resources import SensorSchema
+from main.mapping import SensorSchema
 from main.resources import get_user_existance
 
 sensor_schema = SensorSchema()

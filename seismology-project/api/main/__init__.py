@@ -10,7 +10,7 @@ from main.controllers import USeismController, USeismsController
 from main.controllers import VSeismController, VSeismsController
 from main.controllers import SensorController, SensorsController
 from main.resources import auth_controller
-from main.services import mail_controller, seism_achiever_job
+from main.services import mail_controller, tasks
 
 from main.extensions import db, jwt, out_server_sender, scheduler
 

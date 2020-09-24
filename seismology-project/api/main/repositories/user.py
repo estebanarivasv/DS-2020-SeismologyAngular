@@ -16,6 +16,7 @@ class User(DBRepository):
     __model_instance = None
     __input_json = ""
     __addition_json = ""
+    __db_session = None
 
     def set_id(self, id_num):
         self.__id_num = id_num
@@ -28,6 +29,9 @@ class User(DBRepository):
 
     def set_addition_json(self, json):
         self.__addition_json = json
+
+    def set_db_session(self, session):
+        self.__db_session = session
 
     def get_query(self):
         user = db.session.query(UserModel)
@@ -54,6 +58,14 @@ class User(DBRepository):
         users, _pagination = pag.pagination()
 
         return users_schema.dump(users.all())
+
+    def get_users_id_list(self):
+        if self.__db_session is not None:
+            users = db.session.query(UserModel).all()
+            u_ids_list = []
+            for user in users:
+                u_ids_list.append(user.id_num)
+            return u_ids_list
 
     def add(self):
         if self.__addition_json != "":

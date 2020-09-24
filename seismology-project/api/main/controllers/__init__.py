@@ -8,6 +8,7 @@ from .seism import UnverifiedSeism as USeismController
 from .seism import UnverifiedSeisms as USeismsController
 from .seism import VerifiedSeism as VSeismController
 from .seism import VerifiedSeisms as VSeismsController
+from .seism import GeneralSeisms as GSeismsController
 
 from .sensor import Sensor as SensorController
 from .sensor import Sensors as SensorsController

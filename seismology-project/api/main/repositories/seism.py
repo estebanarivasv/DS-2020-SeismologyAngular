@@ -8,8 +8,9 @@ from main.repositories import DBRepository
 from main.resources import PagController, get_seism_existance
 from main.mapping import SeismSchema
 
-seism_schema = SeismSchema()
-seisms_schema = SeismSchema(many=True)
+seism_schema = SeismSchema(session=db.session)
+seisms_schema = SeismSchema(many=True, session=db.session)
+
 
 class Seism(DBRepository):
 
@@ -84,7 +85,8 @@ class Seism(DBRepository):
 
     def add(self):
         if self.__addition_json != "":
-            instance = seism_schema.load(self.__addition_json, session=db.session)
+            instance = seism_schema.loads(self.__addition_json)
+            seism_schema.verified = self.__verified
             seism_exists = get_seism_existance(datetime=instance.datetime)
             if seism_exists:
                 return 'Seism already exists', 409

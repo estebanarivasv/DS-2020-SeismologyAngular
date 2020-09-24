@@ -1,10 +1,12 @@
 from flask_restful import Resource
-from flask import request
+from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_claims
+import json
 
 from main.resources import admin_login_required, get_admin_status
 from main.repositories import SeismRepository
 from main.mapping import SeismSchema
+from main.resources import get_near_seisms
 
 """
     In order to make CRUD methods, we instance the SeismRepository class.
@@ -13,6 +15,22 @@ from main.mapping import SeismSchema
 seism_schema = SeismSchema()
 seisms_schema = SeismSchema(many=True)
 
+
+class GeneralSeisms(Resource):
+    @admin_login_required
+    def get(self):
+        seism_repo = SeismRepository()
+        data = request.get_json()
+
+        ids_list = get_near_seisms(data)
+
+        seisms = []
+        for id_num in ids_list:
+            seism_repo.set_id(id_num)
+            s_dict = seism_schema.dumps(seism_repo.get())
+            seisms.append(json.loads(s_dict))
+
+        return jsonify(seisms)
 
 class VerifiedSeism(Resource):
 
@@ -69,7 +87,6 @@ class UnverifiedSeism(Resource):
 
     @jwt_required
     def put(self, id_num):
-
         seism_repo = SeismRepository(verified=False)
         seism_repo.set_id(id_num)
 
@@ -86,7 +103,6 @@ class UnverifiedSeisms(Resource):
 
     @jwt_required
     def get(self):
-
         seism_repo = SeismRepository(verified=False)
 
         # We obtain the user's identity and the JWT claims. We filter the seisms for assigned for the logged user

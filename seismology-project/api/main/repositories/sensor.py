@@ -1,3 +1,8 @@
+import secrets
+import random
+import string
+import json
+
 from main.extensions import db
 from main.models import SensorModel
 from main.repositories import DBRepository
@@ -67,18 +72,32 @@ class Sensor(DBRepository):
         return sensors_schema.dump(sensors.all())
 
     def add(self):
+
         if self.__addition_json != "":
             self.__model_instance = sensor_schema.load(self.__addition_json, session=db.session)
 
-        if self.__model_instance is not None:
-            db.session.add(self.__model_instance)
-            try:
-                db.session.commit()
-                return sensor_schema.dump(self.__model_instance), 201
-            except Exception as error:
-                db.session.rollback()
-                print("\nSensor addition error: ", error)
-                return "Error in HTTP Method", 409
+        else:
+            user_repo = UserRepository()
+            user_repo.set_db_session(db.session)
+
+            sensor = SensorModel(
+                name=''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(3)),
+                ip=".".join(map(str, (random.randint(0, 255) for _ in range(4)))),
+                port=''.join(map(str, (random.randint(0, 9) for _ in range(4)))),
+                status=bool(random.getrandbits(1)),
+                active=bool(random.getrandbits(1)),
+                user_id=int(random.choice(user_repo.get_users_id_list())),
+            )
+            self.__model_instance = sensor
+
+        db.session.add(self.__model_instance)
+        try:
+            db.session.commit()
+            return sensor_schema.dump(self.__model_instance), 201
+        except Exception as error:
+            db.session.rollback()
+            print("\nSensor addition error: ", error)
+            return "Error in HTTP Method", 409
 
     def modify(self):
         if self.__model_instance is not None:

@@ -7,10 +7,11 @@ from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 # Importing blueprints
 from main.controllers import UserController, UsersController
 from main.controllers import USeismController, USeismsController
-from main.controllers import VSeismController, VSeismsController
+from main.controllers import VSeismController, VSeismsController, GSeismsController
 from main.controllers import SensorController, SensorsController
 from main.resources import auth_controller
-from main.services import mail_controller, tasks
+from main.services import mail_controller
+from main.services.jobs import tasks
 
 from main.extensions import db, jwt, out_server_sender, scheduler
 
@@ -60,7 +61,7 @@ def create_app():
 
     @app.before_first_request
     def load_tasks():
-        from main.services import tasks
+        pass
 
     # Defining secret key for encryption and time of expiration of each access token that will be generated
     app.config['JWT_SECRET_KEY'] = str(os.getenv('JWT_SECRET_KEY'))
@@ -91,6 +92,7 @@ def create_app():
     api.add_resource(USeismController, '/unverified-seism/<id_num>')
     api.add_resource(USeismsController, '/unverified-seisms')
     api.add_resource(VSeismController, '/verified-seism/<id_num>')
+    api.add_resource(GSeismsController, '/seisms/coordinates')
     api.add_resource(VSeismsController, '/verified-seisms')
     api.add_resource(UserController, '/user/<id_num>')
     api.add_resource(UsersController, '/users')

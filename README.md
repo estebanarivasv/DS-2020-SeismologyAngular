@@ -1,15 +1,28 @@
 # Systems Design - Diseño de Sistemas (2020 - 2nd Semester)
 
-## Summary
+## Index
+
+1. [Requirements](#requirements)
+2. [Summary](#requirements)
+3. [Libraries](#requirements)
+4. [Project scope](#requirements)
+
+## ***[Requirements](#requirements)***
+- Run /api/install.sh
+- Define env variables
+- Run /api/boot.sh
+
+## ***[Summary](#requirements)***
 
 In this repository I have located a copy of the work I've done in Programming this year.
-As the semester goes by, we will be making some code optimizations to the current one.
+We've only made changes to the api. As the semester goes by, we will be making some code 
+optimizations to the current repository.
 
 The main goal of this subject is to learn how to develop any system with good practices.
 
 We will be learning how to learn typescript in order to work with Angular.
 
-## ***Libraries I've used:***
+## ***[Libraries](#requirements)***
 
 Here there is the main libraries that I've used in my project:
 
@@ -22,7 +35,7 @@ Here there is the main libraries that I've used in my project:
 - [pandas](https://pandas.pydata.org/) (Seisms API and db workarounds)
 - [Flask-APScheduler](https://github.com/viniciuschiele/flask-apscheduler) (Jobs for the flask api)
 
-## ***Diagrams:***
+## ***[Project scope](#requirements)***
 
 #### *User-case diagram*
 Here in this scheme, I described the general behaviour of the system. 

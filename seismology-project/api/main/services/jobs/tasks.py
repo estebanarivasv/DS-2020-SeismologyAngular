@@ -9,17 +9,6 @@ from .functions import get_seisms_from_api, get_ids_to_delete
 seism_repo = SeismRepository(verified=False)
 sensor_repo = SensorRepository()
 
-"""
-[services] Obtencion de datos de sismos cada 5 min. Llamar de manera automatica a la creación de objetos.
-
-    URL - https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson
-    
-    - Default parameters
-        starttime	String  NOW - 30 days
-        endtime	    String  present time	
-        
-"""
-
 
 @scheduler.task("interval", id="seisms_achiever", seconds=300)
 def load_seisms_task():
@@ -45,17 +34,6 @@ def load_seisms_task():
 
         print("\n\nSeisms addition done.")
 
-
-"""
-    [services] Persistencia de los datos de los sismos (borrar los otros sismos) cada 1 hr. segun las siguientes 
-    coordenadas:
-    A=(10.075782, -87.475526)
-    B=(13.448997, -65.886802)
-    C=(-56.393429, -87.629530)
-    D=(-57.409798, -55.477882)
-"""
-
-
 @scheduler.task("interval", id="data_persistance", seconds=3600)
 def keep_specific_data():
     with scheduler.app.app_context():
@@ -65,12 +43,3 @@ def keep_specific_data():
             instance = seism_repo.get()
             seism_repo.set_instance(instance=instance)
             seism_repo.delete()
-
-
-
-"""
-[services] Devolución de sismos mas cercanos a las coordenadas ingresadas por json.
-"""
-
-# http://api.geonames.org/findNearbyJSON?lat=52&lng=30&username=demo
-#

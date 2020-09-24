@@ -1,18 +1,44 @@
 # Systems Design - Diseño de Sistemas (2020 - 2nd Semester)
 
-## Summary
+## Index
+
+1. [Requirements](#requirements)
+2. [Summary](#summary)
+3. [Libraries](#libraries)
+4. [Project scope](#project-scope)
+
+## ***[Requirements](#requirements)***
+- Run /api/install.sh
+- Define env variables
+- Run /api/boot.sh
+
+## ***[Summary](#summary)***
 
 In this repository I have located a copy of the work I've done in Programming this year.
-As the semester goes by, we will be making some code optimizations to the current one.
+We've only made changes to the api. As the semester goes by, we will be making some code 
+optimizations to the current repository.
 
 The main goal of this subject is to learn how to develop any system with good practices.
 
 We will be learning how to learn typescript in order to work with Angular.
 
-## ***Task:*** **Diagrams**
+## ***[Libraries](#libraries)***
+
+Here there is the main libraries that I've used in my project:
+
+- [flask](https://flask.palletsprojects.com/en/1.1.x/) (Framework web)
+- [flask_restful](https://flask-restful.readthedocs.io/en/latest/) (REST Api)
+- [flask_sqlalchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/) (Integration with SQLAlchemy)
+- [flask_jwt_extended](https://flask-jwt-extended.readthedocs.io/en/stable/) (Users authentication)
+- [flask_mail](https://pythonhosted.org/Flask-Mail/) (Email delivery of sensors status)
+- [marshmallow-sqlalchemy](https://marshmallow-sqlalchemy.readthedocs.io/en/latest/) (Serialization and deserialization of SQLAlchemy db.Models)
+- [pandas](https://pandas.pydata.org/) (Seisms API and db workarounds)
+- [Flask-APScheduler](https://github.com/viniciuschiele/flask-apscheduler) (Jobs for the flask api)
+
+## ***[Project scope](#project-scope)***
 
 #### *User-case diagram*
-Here in this scheme, my classmate Yoel Fernandez and I described the general behaviour of the system. 
+Here in this scheme, I described the general behaviour of the system. 
 Basically we've desplayed the system and three different user types: the administrators, the seismologists and the analists or all the rest of the organization.
 
 Every one of them has specific tasks:
@@ -42,8 +68,3 @@ Here there are the system classes depicted.
 
 ![UML Classes diagram](https://i.ibb.co/PrvMvqY/uml.png)
 
-
-## ***Left undone tasks:*** **Diagrams**
-
-- Ifs filtering in resources
-- json to object, mapping       https://realpython.com/python-json/

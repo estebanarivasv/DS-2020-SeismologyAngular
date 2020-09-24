@@ -11,6 +11,7 @@
 - Run /api/install.sh
 - Define env variables
 - Run /api/boot.sh
+- To make the requests, I used Insomnia. There is a file attached called "insomnia_requests.json" ready to import.
 
 ## ***[Summary](#summary)***
 

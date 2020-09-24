@@ -3,16 +3,16 @@
 ## Index
 
 1. [Requirements](#requirements)
-2. [Summary](#requirements)
-3. [Libraries](#requirements)
-4. [Project scope](#requirements)
+2. [Summary](#summary)
+3. [Libraries](#libraries)
+4. [Project scope](#project-scope)
 
 ## ***[Requirements](#requirements)***
 - Run /api/install.sh
 - Define env variables
 - Run /api/boot.sh
 
-## ***[Summary](#requirements)***
+## ***[Summary](#summary)***
 
 In this repository I have located a copy of the work I've done in Programming this year.
 We've only made changes to the api. As the semester goes by, we will be making some code 
@@ -22,7 +22,7 @@ The main goal of this subject is to learn how to develop any system with good pr
 
 We will be learning how to learn typescript in order to work with Angular.
 
-## ***[Libraries](#requirements)***
+## ***[Libraries](#libraries)***
 
 Here there is the main libraries that I've used in my project:
 
@@ -35,7 +35,7 @@ Here there is the main libraries that I've used in my project:
 - [pandas](https://pandas.pydata.org/) (Seisms API and db workarounds)
 - [Flask-APScheduler](https://github.com/viniciuschiele/flask-apscheduler) (Jobs for the flask api)
 
-## ***[Project scope](#requirements)***
+## ***[Project scope](#project-scope)***
 
 #### *User-case diagram*
 Here in this scheme, I described the general behaviour of the system. 

@@ -12,4 +12,4 @@ Flask-APScheduler
 requests
 pandas
 fsspec
-
+flask_cors

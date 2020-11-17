@@ -7,10 +7,11 @@ export class UserInterface {
 
 export class UserModel implements UserInterface {
     constructor(
-        public id_num?: number,
         public email: string,
-        public password?: string,
-        public admin: boolean
+        public admin: boolean,
+        public id_num?: number,
+        public password?: string
     ) {
 
     }
+}

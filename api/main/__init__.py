@@ -82,8 +82,8 @@ def create_app():
     # Flask mail handler initialization in Flask app
     out_server_sender.init_app(app)
 
-    app.config['CORS_HEADERS'] = 'Content-Type'
-    CORS(app, support_credentials=True, resources={r"*": {"origins": "*"}})
+    # Flask CORS configuration to allow access 
+    CORS(app, resources={r"/*": {"origins": "*", "expose_headers":  ['X-Total-Count']}})
 
     # When the database is "connected in Flask app, the primary keys will activate"
     with app.app_context():

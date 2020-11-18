@@ -14,14 +14,14 @@ sensor_schema = SensorSchema()
 
 class Sensor(Resource):
 
-    @admin_login_required
+    # @admin_login_required
     def get(self, id_num):
         sensor_repo = SensorRepository()
         sensor_repo.set_id(id_num)
 
         return sensor_schema.dump(sensor_repo.get_or_404())
 
-    @admin_login_required
+    # @admin_login_required
     def delete(self, id_num):
         sensor_repo = SensorRepository()
         sensor_repo.set_id(id_num)
@@ -30,7 +30,7 @@ class Sensor(Resource):
         sensor_repo.set_instance(sensor)
         return sensor_repo.delete()
 
-    @admin_login_required
+    # @admin_login_required
     def put(self, id_num):
         sensor_repo = SensorRepository()
 
@@ -46,17 +46,17 @@ class Sensor(Resource):
 
 class Sensors(Resource):
 
-    @admin_login_required
+    # @admin_login_required
     def get(self):
         sensor_repo = SensorRepository()
 
-        json = request.get_json().items()
-        sensor_repo.set_input_json(json=json)
+        #json = request.get_json().items()
+        #sensor_repo.set_input_json(json=json)
 
         return sensor_repo.get_all()
 
 
-    @admin_login_required
+    # @admin_login_required
     def post(self):
         sensor_repo = SensorRepository()
 

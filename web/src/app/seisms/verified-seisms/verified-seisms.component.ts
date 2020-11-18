@@ -15,7 +15,7 @@ export class VerifiedSeismsComponent implements OnInit {
   constructor(private seismsService: SeismsService) { }
 
   ngOnInit(): void {
-    this.getAll()
+    this.getAll();
   }
 
   getAll(): void {

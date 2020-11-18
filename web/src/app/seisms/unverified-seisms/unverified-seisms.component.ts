@@ -18,7 +18,7 @@ export class UnverifiedSeismsComponent implements OnInit {
   }
 
   getAll(): void {
-    this.seismsService.getAllVerified().subscribe(data => this.seisms = data);
+    this.seismsService.getAllUnverified().subscribe(data => this.seisms = data);
   }
 
 }

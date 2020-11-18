@@ -6,8 +6,8 @@ export interface SeismsInterface {
     datetime: Moment;
     depth: number;
     magnitude: number;
-    latitude: number;
-    longitude: number;
+    latitude: string;
+    longitude: string;
     verified: boolean;
     sensor_id?: number;
     sensor: SensorsModel;
@@ -17,8 +17,8 @@ export class SeismsModel implements SeismsInterface {
     constructor(
         public depth: number,
         public magnitude: number,
-        public latitude: number,
-        public longitude: number,
+        public latitude: string,
+        public longitude: string,
         public verified: boolean,
         public sensor: SensorsModel,
         public datetime: Moment,

@@ -1,0 +1,84 @@
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-sm-12 col-md-8">
+        <div class="container">
+            <h3 class="monserrat-bold pt-2">Unverified seisms</h3>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+<div class="row">
+    <div class="col-md-2 my-3"></div>
+    <div class="col-sm-12 col-md-8 mt-3">
+        <div class="card border-dark">
+            <div class="card-header">
+                <a name="" id="" class="btn btn-light monserrat-bold rounded-pill" routerLink="/unverified-seisms"
+                    role="button">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" style="vertical-align: middle;"
+                        class="bi bi-arrow-left-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5.5a.5.5 0 0 0 0-1H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5z" />
+                    </svg>
+                    <span class="text-center" style="vertical-align: middle;">&nbsp;&nbsp;Go back </span>
+                </a>
+            </div>
+            <div class="card-body view-card">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-6 py-3">
+                        <h6 class="pb-2 monserrat-bold">Dataset</h6>
+                        <table class="table table-responsive-md table-dark table-hover table-sm" *ngIf="seism != null">
+
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Date and time</th>
+                                    <td class="text-center">{{ seism.datetime }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Depth</th>
+                                    <td class="text-center">{{ seism.depth }} Km</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Magnitude</th>
+                                    <td class="text-center">{{ seism.magnitude }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Associated sensor</th>
+                                    <td class="text-center">{{ seism.sensor.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Longitude</th>
+                                    <td class="text-center">{{ seism.longitude }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Latitude</th>
+                                    <td class="text-center">{{ seism.latitude }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-center">
+                            <div class="btn-toolbar py-2">
+                                <a name="" id="" class="btn btn-sm btn-secondary mx-2 monserrat-bold" href="#"
+                                    role="button">Mark as
+                                    verified</a>
+                                <a name="" id="" class="btn btn-sm btn-warning mx-2 monserrat-bold" href="#"
+                                    role="button">Edit</a>
+                                <a name="" id="" class="btn btn-sm btn-danger mx-2 monserrat-bold" href="#"
+                                    role="button">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-6 py-3" *ngIf="seism != null">
+                        <h6 class="pb-2 monserrat-bold">Map of reference</h6>
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe width="500" height="300" [src]="getMapURL()" frameborder="0" scrolling="no"
+                                marginheight="0" marginwidth="0">
+                            </iframe>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 my-3"></div>
+</div>

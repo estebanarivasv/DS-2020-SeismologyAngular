@@ -10,6 +10,7 @@ import { SensorsComponent } from './sensors/sensors.component';
 import { UsersComponent } from './users/users.component';
 import { VerifiedSeismsComponent } from './seisms/verified-seisms/verified-seisms.component';
 import { UnverifiedSeismsComponent } from './seisms/unverified-seisms/unverified-seisms.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { UnverifiedSeismsComponent } from './seisms/unverified-seisms/unverified
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

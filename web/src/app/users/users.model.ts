@@ -1,11 +1,11 @@
-export class UserInterface {
+export class UsersInterface {
     id_num?: number;
     email: string;
     password?: string;
     admin: boolean;
 }
 
-export class UserModel implements UserInterface {
+export class UsersModel implements UsersInterface {
     constructor(
         public email: string,
         public admin: boolean,

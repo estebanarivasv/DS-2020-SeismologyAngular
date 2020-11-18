@@ -1,4 +1,4 @@
-import { UserModel } from '../users/users.model';
+import { UsersModel } from '../users/users.model';
 
 export class SensorsInterface {
     id_num?: number;
@@ -8,7 +8,7 @@ export class SensorsInterface {
     status: boolean;
     active: boolean;
     user_id?: number;
-    user: UserModel;
+    user: UsersModel;
 }
 
 export class SensorsModel implements SensorsInterface {
@@ -18,7 +18,7 @@ export class SensorsModel implements SensorsInterface {
         public port: string,
         public status: boolean,
         public active: boolean,
-        public user: UserModel,
+        public user: UsersModel,
         public id_num?: number,
         public user_id?: number
     ) {

@@ -14,8 +14,8 @@ export class SensorsService {
 
   constructor(private http: HttpClient) { }
 
-  getOne(): Observable<SensorsModel> {
-    return this.http.get<SensorsModel>(this.url);
+  getOne(id: number): Observable<SensorsModel> {
+    return this.http.get<SensorsModel>(`${this.url}/${id}`);
   }
 
   getAll(): Observable<Array<SensorsModel>> {

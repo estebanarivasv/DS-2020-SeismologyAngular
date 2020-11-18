@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { SeismsModel } from '../seisms.model';
+import { SeismsService } from '../seisms.service';
 
 @Component({
   selector: 'app-verified-seisms',
@@ -7,9 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VerifiedSeismsComponent implements OnInit {
 
-  constructor() { }
+  seisms: Array<SeismsModel>;
+
+  constructor(private seismsService: SeismsService) { }
 
   ngOnInit(): void {
+    this.getAll()
   }
+
+  getAll(): void {
+    this.seismsService.getAllVerified().subscribe(data => this.seisms = data);
+  }
+
+  //TODO: Get nearest seism from coordinates
 
 }

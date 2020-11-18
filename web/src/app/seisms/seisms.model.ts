@@ -1,7 +1,7 @@
 import { Moment } from 'moment';
-import { SensorModel } from '../sensors/sensors.model';
+import { SensorsModel } from '../sensors/sensors.model';
 
-export interface SeismInterface {
+export interface SeismsInterface {
     id_num?: number;
     datetime: Moment;
     depth: number;
@@ -10,17 +10,17 @@ export interface SeismInterface {
     longitude: number;
     verified: boolean;
     sensor_id?: number;
-    sensor: SensorModel;
+    sensor: SensorsModel;
 }
 
-export class SeismModel implements SeismInterface {
+export class SeismsModel implements SeismsInterface {
     constructor(
         public depth: number,
         public magnitude: number,
         public latitude: number,
         public longitude: number,
         public verified: boolean,
-        public sensor: SensorModel,
+        public sensor: SensorsModel,
         public datetime: Moment,
         public sensor_id?: number,
         public id_num?: number

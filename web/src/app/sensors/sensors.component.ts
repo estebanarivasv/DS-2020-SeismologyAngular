@@ -17,7 +17,6 @@ import { SensorsService } from './sensors.service';
 })
 export class SensorsComponent implements OnInit {
 
-  sensor: SensorsModel;
   sensors: Array<SensorsModel>;
 
   constructor(private sensorService: SensorsService) { }
@@ -31,34 +30,17 @@ export class SensorsComponent implements OnInit {
   as well as for when it completes or errors. The value emited is stored in data.
   */
   
-  // Sensors Service interaction
-  checkStatus(): void {
-
-  }
+  // TODO: Sensors Service interaction
+  checkStatus(): void { }
 
   getAll(): void {
     /* The program recieves the output from the getAll() observable and stores it in this.sensors */
     this.sensorService.getAll().subscribe(data => this.sensors = data);
   }
 
-  getOne(): void {
-    /* The output from the getOne() observable is stored in this.sensors */
-    this.sensorService.getOne().subscribe(data => this.sensor = data);
-  }
-
-  add(): void {
-
-  }
-
-  edit(): void {
-
-  }
-
   delete(id: number): void {
     this.sensorService.delete(id).subscribe(data => {
-      /* The program recieves the output from the delete() observable and prints it in console.
-         Then, the table is reloaded. */
-      console.log(data)
+      /* The program recieves the output from the delete() observable. Then, the table is reloaded. */
       this.getAll();
     });
   }

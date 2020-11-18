@@ -1,6 +1,6 @@
 import { UserModel } from '../users/users.model';
 
-export class SensorInterface {
+export class SensorsInterface {
     id_num?: number;
     name: string;
     ip: string;
@@ -11,7 +11,7 @@ export class SensorInterface {
     user: UserModel;
 }
 
-export class SensorModel implements SensorInterface {
+export class SensorsModel implements SensorsInterface {
     constructor(
         public name: string,
         public ip: string,

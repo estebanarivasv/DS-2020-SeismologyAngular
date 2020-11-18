@@ -11,6 +11,11 @@ import { UsersComponent } from './users/users.component';
 import { VerifiedSeismsComponent } from './seisms/verified-seisms/verified-seisms.component';
 import { UnverifiedSeismsComponent } from './seisms/unverified-seisms/unverified-seisms.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ViewComponent } from './seisms/verified-seisms/view/view.component';
+import { EditComponent } from './seisms/verified-seisms/edit/edit.component';
+import { DeleteComponent } from './seisms/unverified-seisms/delete/delete.component';
+import { AddComponent } from './sensors/add/add.component';
+import { CheckComponent } from './sensors/check/check.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +25,12 @@ import { HttpClientModule } from '@angular/common/http';
     SensorsComponent,
     UsersComponent,
     VerifiedSeismsComponent,
-    UnverifiedSeismsComponent
+    UnverifiedSeismsComponent,
+    ViewComponent,
+    EditComponent,
+    DeleteComponent,
+    AddComponent,
+    CheckComponent
   ],
   imports: [
     BrowserModule,

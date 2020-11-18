@@ -3,7 +3,7 @@
 /* Importing Bootstrap SCSS file. */
 @import "~bootstrap/scss/bootstrap";
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap");
 
 body {
   background-color: rgba(0, 0, 0, 0.9);
@@ -11,17 +11,48 @@ body {
 }
 
 .monserrat-bold {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 700;
 }
 
 .table-dark {
   color: #fff;
-  background-color: #222222 !important;   
+  background-color: #222222 !important;
 }
 
 .card-body {
   color: #fff;
-  background-color: rgba(0, 0, 0, 0.9) !important;
+  background-color: #222222 !important;
   border: solid rgba(0, 0, 0, 0) !important;
+}
+
+.view-card {
+  height: 400px !important;
+}
+
+.card-header {
+  color: #fff;
+  background-color: rgb(55, 55, 55) !important;
+  border: solid rgba(0, 0, 0, 0) !important;
+}
+
+.my-custom-scrollbar {
+  position: relative;
+  height: 490px;
+  overflow: auto;
+}
+
+.table-wrapper-scroll-y {
+  display: block;
+}
+
+.page-link {
+  color: #fff;
+  background-color: #222222 !important;
+  border: solid rgba(255, 255, 255, 0.172) 1px !important;
+}
+
+.page-link:hover {
+  color: #ffe17d;
+  background-color: #462e14 !important;
 }

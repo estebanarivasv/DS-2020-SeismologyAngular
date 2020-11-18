@@ -11,11 +11,20 @@ import { UsersComponent } from './users/users.component';
 import { VerifiedSeismsComponent } from './seisms/verified-seisms/verified-seisms.component';
 import { UnverifiedSeismsComponent } from './seisms/unverified-seisms/unverified-seisms.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ViewComponent } from './seisms/verified-seisms/view/view.component';
-import { EditComponent } from './seisms/verified-seisms/edit/edit.component';
-import { DeleteComponent } from './seisms/unverified-seisms/delete/delete.component';
-import { AddComponent } from './sensors/add/add.component';
-import { CheckComponent } from './sensors/check/check.component';
+import { ViewVerifiedComponent } from './seisms/verified-seisms/view-verified/view-verified.component';
+import { EditVerifiedComponent } from './seisms/verified-seisms/edit-verified/edit-verified.component';
+import { EditUnverifiedComponent } from './seisms/unverified-seisms/edit-unverified/edit-unverified.component';
+import { ViewUnverifiedComponent } from './seisms/unverified-seisms/view-unverified/view-unverified.component';
+import { DeleteUnverifiedComponent } from './seisms/unverified-seisms/delete-unverified/delete-unverified.component';
+import { AddSensorComponent } from './sensors/add-sensor/add-sensor.component';
+import { ViewSensorComponent } from './sensors/view-sensor/view-sensor.component';
+import { DeleteSensorComponent } from './sensors/delete-sensor/delete-sensor.component';
+import { EditSensorComponent } from './sensors/edit-sensor/edit-sensor.component';
+import { CheckSensorComponent } from './sensors/check-sensor/check-sensor.component';
+import { AddUserComponent } from './users/add-user/add-user.component';
+import { DeleteUserComponent } from './users/delete-user/delete-user.component';
+import { EditUserComponent } from './users/edit-user/edit-user.component';
+import { ViewUserComponent } from './users/view-user/view-user.component';
 
 @NgModule({
   declarations: [
@@ -26,11 +35,20 @@ import { CheckComponent } from './sensors/check/check.component';
     UsersComponent,
     VerifiedSeismsComponent,
     UnverifiedSeismsComponent,
-    ViewComponent,
-    EditComponent,
-    DeleteComponent,
-    AddComponent,
-    CheckComponent
+    ViewVerifiedComponent,
+    EditVerifiedComponent,
+    EditUnverifiedComponent,
+    ViewUnverifiedComponent,
+    DeleteUnverifiedComponent,
+    AddSensorComponent,
+    ViewSensorComponent,
+    DeleteSensorComponent,
+    EditSensorComponent,
+    CheckSensorComponent,
+    AddUserComponent,
+    DeleteUserComponent,
+    EditUserComponent,
+    ViewUserComponent
   ],
   imports: [
     BrowserModule,

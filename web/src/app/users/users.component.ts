@@ -22,10 +22,4 @@ export class UsersComponent implements OnInit {
     this.usersService.getAll().subscribe(data => this.users = data);
   }
 
-  delete(id: number): void {
-    this.usersService.delete(id).subscribe(data => {
-      this.getAll();
-    })
-  }
-
 }

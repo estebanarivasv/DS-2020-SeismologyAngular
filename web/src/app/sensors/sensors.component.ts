@@ -37,12 +37,4 @@ export class SensorsComponent implements OnInit {
     /* The program recieves the output from the getAll() observable and stores it in this.sensors */
     this.sensorService.getAll().subscribe(data => this.sensors = data);
   }
-
-  delete(id: number): void {
-    this.sensorService.delete(id).subscribe(data => {
-      /* The program recieves the output from the delete() observable. Then, the table is reloaded. */
-      this.getAll();
-    });
-  }
-
 }

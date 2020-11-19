@@ -18,7 +18,6 @@ import { AddUserComponent } from './users/add-user/add-user.component';
 import { DeleteUserComponent } from './users/delete-user/delete-user.component';
 import { EditUserComponent } from './users/edit-user/edit-user.component';
 import { UsersComponent } from './users/users.component';
-import { ViewUserComponent } from './users/view-user/view-user.component';
 
 const routes: Routes = [
   // Routes
@@ -43,7 +42,7 @@ const routes: Routes = [
       { path: '', component: SensorsComponent },
       { path: 'view/:id', component: ViewSensorComponent },
       { path: 'edit/:id', component: EditSensorComponent },
-      { path: 'add/:id', component: AddSensorComponent },
+      { path: 'add', component: AddSensorComponent },
       { path: 'delete/:id', component: DeleteSensorComponent },
       { path: 'check/:id', component: CheckSensorComponent }
     ]
@@ -51,9 +50,8 @@ const routes: Routes = [
   {
     path: 'users', children: [
       { path: '', component: UsersComponent },
-      { path: 'view/:id', component: ViewUserComponent },
       { path: 'edit/:id', component: EditUserComponent },
-      { path: 'add/:id', component: AddUserComponent },
+      { path: 'add', component: AddUserComponent },
       { path: 'delete/:id', component: DeleteUserComponent }
   ] },
 

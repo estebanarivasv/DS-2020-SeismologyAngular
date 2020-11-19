@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { SensorsModel } from '../sensors.model';
 import { SensorsService } from '../sensors.service';
 
@@ -9,18 +10,22 @@ import { SensorsService } from '../sensors.service';
 })
 export class ViewSensorComponent implements OnInit {
 
-  sensor: SensorsModel;
-  id: number = null;
+  public sensor: SensorsModel;
 
-  constructor(private sensorsService: SensorsService) { }
+  constructor(
+    private sensorsService: SensorsService,
+    private activatedRoute: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
-    if (this.id != null) {
-      this.getOne(this.id)
-    }
+    // Get id number from url
+    this.activatedRoute.params.subscribe(parameters => {
+      let id: number = parameters['id'];
+      this.setSensor(id);
+    });
   }
 
-  getOne(id: number): void {
+  setSensor(id: number): void {
     this.sensorsService.getOne(id).subscribe(data => this.sensor = data)
   }
 

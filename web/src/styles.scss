@@ -32,7 +32,7 @@ body {
 }
 
 .view-card {
-  height: 400px !important;
+  height: 450px !important;
 }
 
 .card-header {
@@ -62,7 +62,24 @@ body {
   background-color: #462e14 !important;
 }
 
-.add-overflow{
-  overflow-y: auto;
-  height: 200px;
+.overflow-auto{
+  height: 350px !important;
+}
+
+form input {
+  background-color: rgba(0, 0, 0, 0.35) !important;
+  color: white !important;
+  border: solid rgba(255, 255, 255, 0.172) 1px !important;
+}
+
+form select {
+  background-color: rgba(0, 0, 0, 0.35) !important;
+  color: white !important;
+  border: solid rgba(255, 255, 255, 0.172) 1px !important;
+}
+
+form input:read-only {
+  background-color: rgba(73, 73, 73, 0.35) !important;
+  color: rgba(255, 255, 255, 0.774) !important;
+  border: solid rgba(255, 255, 255, 0.172) 1px !important;
 }

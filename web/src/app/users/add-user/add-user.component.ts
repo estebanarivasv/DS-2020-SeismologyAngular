@@ -19,7 +19,6 @@ export class AddUserComponent implements OnInit {
   /* 
     1. define directive [formGroup]="addSensorForm"
     2. define formControlName attribute to make reference to each field
-    
   */
 
   constructor(
@@ -97,7 +96,6 @@ export class AddUserComponent implements OnInit {
 
 
 export class PassValidation {
-
   static matchPasswords(AC: AbstractControl) {
     let password = AC.get('password').value;
     let re_password = AC.get('re_password').value;

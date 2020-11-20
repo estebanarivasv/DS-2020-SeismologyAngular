@@ -1,1 +1,141 @@
-<p>edit-sensor works!</p>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-sm-12 col-md-8">
+        <div class="container">
+            <h3 class="monserrat-bold p-2">Sensors</h3>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+<div class="row">
+    <div class="col-md-2 my-3"></div>
+    <div class="col-sm-12 col-md-8 mt-3">
+        <div class="card border-dark">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <a name="" id="" class="btn btn-light monserrat-bold rounded-pill" routerLink="/sensors"
+                            role="button">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" style="vertical-align: middle;"
+                                class="bi bi-arrow-left-circle-fill" fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5.5a.5.5 0 0 0 0-1H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5z" />
+                            </svg>
+                            <span class="text-center" style="vertical-align: middle;">&nbsp;&nbsp;Go back </span>
+                        </a>
+                    </div>
+                    <div class="col-sm-10 monserrat-bold" style="margin: auto; width: 50%;">
+                        Editing sensor
+                    </div>
+                </div>
+            </div>
+            <div class="card-body view-card">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-sm-12 col-md-8 overflow-auto" style="height: 350px;">
+                        <form [formGroup]="editSensorForm" (ngSubmit)="sendHttpPut()">
+
+                            <!-- ID -->
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="id_num">ID</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="id_num" formControlName="id_num"
+                                        required readonly />
+                                </div>
+                            </div>
+
+                            <!-- NAME -->
+                            <div class="form-group row">
+                                <label for="name" class="col-sm-3 col-form-label">Name </label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="name" formControlName="name"
+                                        [class.is-invalid]="sendRequiredName" [class.is-valid]="sendValidName">
+                                    <div class="invalid-feedback" *ngIf="sendRequiredName">The sensor name is
+                                        required
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- IP -->
+                            <div class="form-group row">
+                                <label for="ip" class="col-sm-3 col-form-label">IP </label>
+                                <div class="col-sm-9">
+                                    <input type="ip" class="form-control" id="name" formControlName="ip"
+                                        [class.is-invalid]="sendRequiredIp" [class.is-valid]="sendValidIp">
+                                    <div class="form-control-feedback invalid-feedback"
+                                        *ngIf="editSensorForm.get('ip').errors">
+                                        <div *ngIf="editSensorForm.get('ip').errors.required">The IP Address is
+                                            required</div>
+                                        <div *ngIf="editSensorForm.get('ip').errors.pattern">Wrong IP address format.
+                                            Example: 192.168.0.1</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PORT -->
+                            <div class="form-group row">
+                                <label for="port" class="col-sm-3 col-form-label">Port </label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" id="port" formControlName="port"
+                                        [class.is-invalid]="sendRequiredPort" [class.is-valid]="sendValidPort">
+                                    <div class="invalid-feedback" *ngIf="sendRequiredPort">The port is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ASSOCIATED USER -->
+                            <div class="form-group row">
+                                <label for="userId" class="col-sm-3 col-form-label">Associated user</label>
+                                <div class="col-sm-9">
+                                    <select class="custom-select" id="userId" formControlName="user_id"
+                                        [class.is-invalid]="sendRequiredUserId" [class.is-valid]="sendValidUserId">
+                                        <option [ngValue]='0'>Select user email</option>
+                                        <option *ngFor="let user of users; trackBy:getUserNumber"
+                                            [ngValue]="user.id_num">
+                                            {{ user.email }}
+                                        </option>
+                                    </select>
+                                    <span class="invalid-feedback" *ngIf="sendRequiredUserId">
+                                        The user email is required
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- ACTIVE & STATUS -->
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Other</label>
+                                <div class="col-sm-9">
+                                    <div class="d-flex justify-content-center pt-2">
+                                        <!-- ACTIVE -->
+                                        <div class="custom-control custom-switch mx-5">
+                                            <input type="checkbox" class="custom-control-input" id="active"
+                                                formControlName="active">
+                                            <label class="custom-control-label" for="active">Active</label>
+                                        </div>
+                                        <!-- STATUS -->
+                                        <div class="custom-control custom-switch mx-5">
+                                            <input type="checkbox" class="custom-control-input" id="status"
+                                                formControlName="status">
+                                            <label class="custom-control-label" for="status">Status</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" [disabled]="!editSensorForm.valid" class="btn btn-success px-n5">
+                                Save changes
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+                <!--
+                    {{ editSensorForm.value | json }}
+                    <br/>
+                    {{ editSensorForm.valid  }}
+                -->
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 my-3"></div>
+</div>

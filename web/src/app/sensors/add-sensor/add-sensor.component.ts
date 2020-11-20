@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AbstractControl } from '@angular/forms';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UsersModel } from 'src/app/users/users.model';
@@ -47,7 +48,7 @@ export class AddSensorComponent implements OnInit {
       port: new FormControl('', Validators.required),
       active: new FormControl(true, Validators.required),
       status: new FormControl(true, Validators.required),
-      user_id: new FormControl(0, Validators.required)
+      user_id: new FormControl(0, [Validators.required, ValidateEmailOption])
 
     });
   }
@@ -69,12 +70,13 @@ export class AddSensorComponent implements OnInit {
     }
   }
 
+
   getUserNumber(user: UsersModel) {
     return user.id_num
   }
 
   get sendRequiredName() {
-    return this.addSensorForm.get('name').invalid && this.addSensorForm.get('name').touched;
+    return this.addSensorForm.get('name').invalid && (this.addSensorForm.get('name').touched || this.addSensorForm.get('name').dirty);
   }
   get sendRequiredIp() {
     return this.addSensorForm.get('ip').invalid && (this.addSensorForm.get('ip').touched || this.addSensorForm.get('ip').dirty);
@@ -89,14 +91,14 @@ export class AddSensorComponent implements OnInit {
     return this.addSensorForm.get('status').invalid && (this.addSensorForm.get('status').touched || this.addSensorForm.get('status').dirty);
   }
   get sendRequiredUserId() {
-    return this.addSensorForm.get('user_id').invalid && (this.addSensorForm.get('user_id').touched || this.addSensorForm.get('user_id').dirty);
+    return this.addSensorForm.get('user_id').invalid && ( this.addSensorForm.get('user_id').touched || this.addSensorForm.get('user_id').dirty );
   }
 
   get sendValidName() {
-    return this.addSensorForm.get('name').valid && this.addSensorForm.get('name').touched;
+    return this.addSensorForm.get('name').valid && (this.addSensorForm.get('name').touched || this.addSensorForm.get('name').dirty);
   }
   get sendValidIp() {
-    return !this.addSensorForm.get('ip').valid && (this.addSensorForm.get('ip').touched || this.addSensorForm.get('ip').dirty);
+    return this.addSensorForm.get('ip').valid && (this.addSensorForm.get('ip').touched || this.addSensorForm.get('ip').dirty);
   }
   get sendValidPort() {
     return this.addSensorForm.get('port').valid && (this.addSensorForm.get('port').touched || this.addSensorForm.get('port').dirty);
@@ -112,4 +114,11 @@ export class AddSensorComponent implements OnInit {
   }
 
 
+}
+
+function ValidateEmailOption(control: AbstractControl): {[key: string]: any} | null  {
+  if ( control.value == 0 ) {
+    return { 'phoneNumberInvalid': true };
+  }
+  return null;
 }

@@ -33,16 +33,17 @@
             <div class="card-body view-card">
                 <div class="row">
                     <div class="col-md-2"></div>
-                    <div class="col-sm-12 col-md-8">
-                        <form [formGroup]="addSensorForm" (ngSubmit)="sendHttpPost()"
-                            [class.was-validated]="addSensorForm.valid">
+                    <div class="col-sm-12 col-md-8 overflow-auto" style="height: 350px;">
+                        <form [formGroup]="addSensorForm" (ngSubmit)="sendHttpPost()" [class.was-validated]="addSensorForm.valid">
+                            
                             <!-- NAME -->
                             <div class="form-group row">
                                 <label for="name" class="col-sm-3 col-form-label">Name </label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" id="name" formControlName="name"
                                         [class.is-invalid]="sendRequiredName" [class.is-valid]="sendValidName">
-                                    <div class="invalid-feedback" *ngIf="sendRequiredName">The sensor name is required
+                                    <div class="invalid-feedback" *ngIf="sendRequiredName">The sensor name is
+                                        required
                                     </div>
                                 </div>
 
@@ -55,10 +56,10 @@
                                         [class.is-invalid]="sendRequiredIp" [class.is-valid]="sendValidIp">
                                     <div class="form-control-feedback invalid-feedback"
                                         *ngIf="addSensorForm.get('ip').errors">
-                                        <p *ngIf="addSensorForm.get('ip').errors.required">The sensor's IP Address is
-                                            required</p>
-                                        <p *ngIf="addSensorForm.get('ip').errors.pattern">Wrong IP address format.
-                                            Example: 192.168.0.1</p>
+                                        <div *ngIf="addSensorForm.get('ip').errors.required">The IP Address is
+                                            required</div>
+                                        <div *ngIf="addSensorForm.get('ip').errors.pattern">Wrong IP address format.
+                                            Example: 192.168.0.1</div>
                                     </div>
                                 </div>
                             </div>
@@ -69,7 +70,7 @@
                                 <div class="col-sm-9">
                                     <input type="number" class="form-control" id="port" formControlName="port"
                                         [class.is-invalid]="sendRequiredPort" [class.is-valid]="sendValidPort">
-                                    <div class="invalid-feedback" *ngIf="sendRequiredPort">The sensor port is required
+                                    <div class="invalid-feedback" *ngIf="sendRequiredPort">The port is required
                                     </div>
                                 </div>
                             </div>
@@ -79,16 +80,16 @@
                                 <label for="userId" class="col-sm-3 col-form-label">Associated user</label>
                                 <div class="col-sm-9">
                                     <select class="custom-select" id="userId" formControlName="user_id"
-                                        [class.is-invalid]="sendRequiredUserId" [class.is-valid]="sendValidUserId"
-                                        [class.is-invalid]="addSensorForm.get('user_id').value == 0 && ( addSensorForm.get('user_id').touched || addSensorForm.get('user_id').dirty)">
-                                        <option [ngValue]='0'>Select one user email</option>
+                                        [class.is-invalid]="sendRequiredUserId" [class.is-valid]="sendValidUserId">
+                                        <option [ngValue]='0'>Select user email</option>
                                         <option *ngFor="let user of users; trackBy:getUserNumber"
                                             [ngValue]="user.id_num">
-                                            {{ user.email }}</option>
+                                            {{ user.email }}
+                                        </option>
                                     </select>
-                                    <div class="invalid-feedback" *ngIf="sendRequiredUserId">The user associated to the
-                                        sensor
-                                        is required</div>
+                                    <span class="invalid-feedback" *ngIf="sendRequiredUserId">
+                                        The user email is required
+                                    </span>
                                 </div>
                             </div>
 
@@ -107,24 +108,23 @@
                                         <div class="custom-control custom-switch mx-5">
                                             <input type="checkbox" class="custom-control-input" id="status"
                                                 formControlName="status">
-                                            <label class="custom-control-label" for="status">Working</label>
+                                            <label class="custom-control-label" for="status">Status</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="form-group row">
-                                <div class="col-sm-10">
-                                    <button type="submit" [disabled]="!addSensorForm.valid" class="btn btn-success">Save changes</button>
-                                </div>
-                            </div>
+                            <button type="submit" [disabled]="!addSensorForm.valid" class="btn btn-success px-n5">
+                                Save changes
+                            </button>
                         </form>
                     </div>
                     <div class="col-md-2"></div>
                 </div>
-
-
-                <!--{{ addSensorForm.value | json }}-->
+                <!--
+                    {{ addSensorForm.value | json }}
+                    <br/>
+                    {{ addSensorForm.valid  }}
+                -->
             </div>
         </div>
     </div>

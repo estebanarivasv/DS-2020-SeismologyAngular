@@ -35,26 +35,15 @@ export class AddUserComponent implements OnInit {
   }
 
   createAddForm(): void {
-
+    let emailRegEx: string = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,4}$"
     this.addUserForm = new FormGroup({
-      email: new FormControl('', Validators.required),
-      admin: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.pattern(emailRegEx)]),
+      admin: new FormControl(true, Validators.required),
       password: new FormControl('', Validators.required),
-      rePassword: new FormControl('', [Validators.required])
-    }, { validators: this.passwordMatch });
+      re_password: new FormControl('', Validators.required)
+    }, { validators: PassValidation.matchPasswords });
   }
 
-  passwordMatch(c: AbstractControl): { [key: string]: boolean } | null {
-    const passwordControl = c.get('password');
-    const confirmPasswordControl = c.get('re_password');
-    if (passwordControl.pristine || confirmPasswordControl.pristine) {
-      return null;
-    }
-    if (passwordControl.value === confirmPasswordControl.value) {
-      return null;
-    }
-    return { 'match': true };
-  }
 
   sendHttpPost() {
     if (this.addUserForm.valid) {
@@ -98,9 +87,25 @@ export class AddUserComponent implements OnInit {
   get sendRequiredRePassword() {
     return this.addUserForm.get('re_password').invalid && (this.addUserForm.get('re_password').touched || this.addUserForm.get('re_password').dirty);
   }
+  
 
   get sendValidRePassword() {
     return this.addUserForm.get('re_password').valid && (this.addUserForm.get('re_password').touched || this.addUserForm.get('re_password').dirty);
   }
+
 }
 
+
+export class PassValidation {
+
+  static matchPasswords(AC: AbstractControl) {
+    let password = AC.get('password').value;
+    let re_password = AC.get('re_password').value;
+    if ( password != re_password ) {
+      AC.get('re_password').setErrors({ matchPasswords: true })
+    }
+    else {
+      return null
+    }
+  }
+}

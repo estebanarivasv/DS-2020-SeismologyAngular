@@ -33,7 +33,7 @@
             <div class="card-body view-card">
                 <div class="row">
                     <div class="col-md-2"></div>
-                    <div class="col-sm-12 col-md-8">
+                    <div class="col-sm-12 col-md-8 overflow-auto" style="height: 350px;">
                         <form [formGroup]="addUserForm" (ngSubmit)="sendHttpPost()"
                             [class.was-validated]="addUserForm.valid">
                             <!-- EMAIL -->
@@ -42,18 +42,28 @@
                                 <div class="col-sm-9">
                                     <input type="email" class="form-control" id="name" formControlName="email"
                                         [class.is-invalid]="sendRequiredEmail" [class.is-valid]="sendValidEmail">
-                                    <div class="invalid-feedback" *ngIf="sendRequiredEmail">The user email is required</div>
+                                    <div class="form-control-feedback invalid-feedback" *ngIf="sendRequiredEmail">
+                                        <p *ngIf="addUserForm.get('email').errors.required">
+                                            The user email is required
+                                        </p>
+                                        <p *ngIf="addUserForm.get('email').errors.pattern">
+                                            Wrong email format. Example: example@seismologyinstitute.com
+                                        </p>
+                                    </div>
+                                    {{ addUserForm.get('email').errors }}
+                                    {{ addUserForm.get('email').valid }}
                                 </div>
                             </div>
 
                             <!-- ADMIN -->
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label" for="admin">Administrator</label>
+                                <label class="col-sm-3 col-form-label" for="admin">Privilege</label>
                                 <div class="col-sm-9">
                                     <div class="d-flex justify-content-center pt-2">
                                         <div class="custom-control custom-switch mx-5">
                                             <input type="checkbox" class="custom-control-input" id="admin"
                                                 formControlName="admin">
+                                            <label class="custom-control-label" for="admin">Admin</label>
                                         </div>
                                     </div>
                                 </div>
@@ -61,9 +71,9 @@
 
                             <!-- PASSWORD -->
                             <div class="form-group row">
-                                <label for="port" class="col-sm-3 col-form-label">Password</label>
+                                <label for="password" class="col-sm-3 col-form-label">Password</label>
                                 <div class="col-sm-9">
-                                    <input type="password" class="form-control" id="port" formControlName="password"
+                                    <input type="password" class="form-control" id="password" formControlName="password"
                                         [class.is-invalid]="sendRequiredPassword" [class.is-valid]="sendValidPassword">
                                     <div class="invalid-feedback" *ngIf="sendRequiredPassword">
                                         The user password is required
@@ -73,30 +83,36 @@
 
                             <!-- RE-PASSWORD -->
                             <div class="form-group row">
-                                <label for="port" class="col-sm-3 col-form-label">Confirm password</label>
+                                <label for="re_password" class="col-sm-3 col-form-label">Confirm password</label>
                                 <div class="col-sm-9">
-                                    <input type="password" class="form-control" id="port" formControlName="password"
-                                        [class.is-invalid]="sendRequiredRePassword"
+                                    <input type="password" class="form-control" id="re_password"
+                                        formControlName="re_password" [class.is-invalid]="sendRequiredRePassword"
                                         [class.is-valid]="sendValidRePassword">
-                                    <div class="invalid-feedback" *ngIf="sendRequiredRePassword">
-                                        The passwords must match
+                                    <div class="invalid-feedback" *ngIf="addUserForm.get('re_password').errors">
+                                        <div *ngIf="addUserForm.get('re_password').errors.required">
+                                            You need to confirm the password
+                                        </div>
+                                        <div *ngIf="addUserForm.get('re_password').errors.matchPasswords">
+                                            The passwords must match
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-sm-10">
-                                    <button type="submit" [disabled]="!addUserForm.valid" class="btn btn-success">Save
-                                        changes</button>
+                                    <button type="submit" [disabled]="!addUserForm.valid" class="btn btn-success">
+                                        Save changes
+                                    </button>
                                 </div>
                             </div>
                         </form>
+                        {{ addUserForm.value | json }}
+                        <br />
+                        {{ addUserForm.valid  }}
                     </div>
                     <div class="col-md-2"></div>
                 </div>
-
-
-                <!--{{ addSensorForm.value | json }}-->
             </div>
         </div>
     </div>

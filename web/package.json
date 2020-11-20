@@ -22,6 +22,7 @@
     "@angular/router": "~10.1.4",
     "@ng-bootstrap/ng-bootstrap": "^8.0.0",
     "@popperjs/core": "^2.5.4",
+    "@rxweb/reactive-form-validators": "^2.1.2",
     "bootstrap": "^4.5.3",
     "jquery": "^3.5.1",
     "moment": "^2.29.1",

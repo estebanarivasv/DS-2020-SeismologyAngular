@@ -1,1 +1,104 @@
-<p>add-user works!</p>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-sm-12 col-md-8">
+        <div class="container">
+            <h3 class="monserrat-bold p-2">Users</h3>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+<div class="row">
+    <div class="col-md-2 my-3"></div>
+    <div class="col-sm-12 col-md-8 mt-3">
+        <div class="card border-dark">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <a name="" id="" class="btn btn-light monserrat-bold rounded-pill" routerLink="/sensors"
+                            role="button">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" style="vertical-align: middle;"
+                                class="bi bi-arrow-left-circle-fill" fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5.5a.5.5 0 0 0 0-1H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5z" />
+                            </svg>
+                            <span class="text-center" style="vertical-align: middle;">&nbsp;&nbsp;Go back </span>
+                        </a>
+                    </div>
+                    <div class="col-sm-10 monserrat-bold" style="margin: auto; width: 50%;">
+                        Creating user
+                    </div>
+                </div>
+            </div>
+            <div class="card-body view-card">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-sm-12 col-md-8">
+                        <form [formGroup]="addUserForm" (ngSubmit)="sendHttpPost()"
+                            [class.was-validated]="addUserForm.valid">
+                            <!-- EMAIL -->
+                            <div class="form-group row">
+                                <label for="name" class="col-sm-3 col-form-label">Email</label>
+                                <div class="col-sm-9">
+                                    <input type="email" class="form-control" id="name" formControlName="email"
+                                        [class.is-invalid]="sendRequiredEmail" [class.is-valid]="sendValidEmail">
+                                    <div class="invalid-feedback" *ngIf="sendRequiredEmail">The user email is required</div>
+                                </div>
+                            </div>
+
+                            <!-- ADMIN -->
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="admin">Administrator</label>
+                                <div class="col-sm-9">
+                                    <div class="d-flex justify-content-center pt-2">
+                                        <div class="custom-control custom-switch mx-5">
+                                            <input type="checkbox" class="custom-control-input" id="admin"
+                                                formControlName="admin">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PASSWORD -->
+                            <div class="form-group row">
+                                <label for="port" class="col-sm-3 col-form-label">Password</label>
+                                <div class="col-sm-9">
+                                    <input type="password" class="form-control" id="port" formControlName="password"
+                                        [class.is-invalid]="sendRequiredPassword" [class.is-valid]="sendValidPassword">
+                                    <div class="invalid-feedback" *ngIf="sendRequiredPassword">
+                                        The user password is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- RE-PASSWORD -->
+                            <div class="form-group row">
+                                <label for="port" class="col-sm-3 col-form-label">Confirm password</label>
+                                <div class="col-sm-9">
+                                    <input type="password" class="form-control" id="port" formControlName="password"
+                                        [class.is-invalid]="sendRequiredRePassword"
+                                        [class.is-valid]="sendValidRePassword">
+                                    <div class="invalid-feedback" *ngIf="sendRequiredRePassword">
+                                        The passwords must match
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-10">
+                                    <button type="submit" [disabled]="!addUserForm.valid" class="btn btn-success">Save
+                                        changes</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+
+
+                <!--{{ addSensorForm.value | json }}-->
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 my-3"></div>
+</div>

@@ -21,6 +21,8 @@ import { EditSensorComponent } from './sensors/edit-sensor/edit-sensor.component
 import { CheckSensorComponent } from './sensors/check-sensor/check-sensor.component';
 import { AddUserComponent } from './users/add-user/add-user.component';
 import { EditUserComponent } from './users/edit-user/edit-user.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators/services/reactive-form.module';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { EditUserComponent } from './users/edit-user/edit-user.component';
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

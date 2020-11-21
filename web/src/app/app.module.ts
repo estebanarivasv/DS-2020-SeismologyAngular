@@ -21,6 +21,8 @@ import { CheckSensorComponent } from './sensors/check-sensor/check-sensor.compon
 import { AddUserComponent } from './users/add-user/add-user.component';
 import { EditUserComponent } from './users/edit-user/edit-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UpperBodyComponent } from './upper-body/upper-body.component';
+import { AlertsComponent } from './alerts/alerts.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     EditSensorComponent,
     CheckSensorComponent,
     AddUserComponent,
-    EditUserComponent
+    EditUserComponent,
+    UpperBodyComponent,
+    AlertsComponent
   ],
   imports: [
     BrowserModule,

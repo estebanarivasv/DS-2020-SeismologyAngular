@@ -1,0 +1,18 @@
+<div class="row mb-n2">
+    <div class="col-md-1"></div>
+    <div class="col-sm-12 col-md-10">
+        <div class="container">
+            <nav aria-label="breadcrumb" style="width: fit-content;">
+                <ol class="breadcrumb bg-dark">
+                    <li class="breadcrumb-item" *ngFor="let breadcrumb of breadcrumbs">
+                        <a [routerLink]="breadcrumb.url" routerLinkActive="active">
+                            {{ breadcrumb.label }}
+                        </a>
+                    </li>
+                </ol>
+            </nav>
+            <h3 class="monserrat-bold text-center mt-n3">{{ actualComponentName }}</h3>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>

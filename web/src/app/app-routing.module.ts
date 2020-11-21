@@ -21,35 +21,36 @@ const routes: Routes = [
   // Routes
   { path: 'home', component: HomeComponent },
   {
-    path: 'verified-seisms', children: [
-      { path: '', component: VerifiedSeismsComponent },
-      { path: 'view/:id', component: ViewVerifiedComponent },
+    path: 'verified-seisms', data: { breadcrumb: 'Verified seisms' }, children: [
+      { path: '', component: VerifiedSeismsComponent, data: { title: 'Verified seisms' } },
+      { path: 'view/:id', data: { breadcrumb: 'view - id:', title: 'Verified seisms' }, component: ViewVerifiedComponent },
     ]
   },
   {
-    path: 'unverified-seisms', children: [
-      { path: '', component: UnverifiedSeismsComponent },
-      { path: 'view/:id', component: ViewUnverifiedComponent },
-      { path: 'edit/:id', component: EditUnverifiedComponent },
+    path: 'unverified-seisms', data: { breadcrumb: 'Unverified seisms' }, children: [
+      { path: '', component: UnverifiedSeismsComponent, data: { title: 'Unverified seisms' } },
+      { path: 'view/:id', data: { breadcrumb: 'view - id:', title: 'Unverified seisms' }, component: ViewUnverifiedComponent },
+      { path: 'edit/:id', data: { breadcrumb: 'edit - id:', title: 'Unverified seisms' }, component: EditUnverifiedComponent },
     ]
   },
   {
-    path: 'sensors', children: [
-      { path: '', component: SensorsComponent },
-      { path: 'view/:id', component: ViewSensorComponent },
-      { path: 'edit/:id', component: EditSensorComponent },
-      { path: 'add', component: AddSensorComponent },
+    path: 'sensors', data: { breadcrumb: 'Sensors' }, children: [
+      { path: '', component: SensorsComponent, data: { title: 'Sensors' } },
+      { path: 'view/:id', data: { breadcrumb: 'view - id:', title: 'Sensors' }, component: ViewSensorComponent },
+      { path: 'edit/:id', data: { breadcrumb: 'edit - id:', title: 'Sensors' }, component: EditSensorComponent },
+      { path: 'add', data: { breadcrumb: 'add', title: 'Sensors' }, component: AddSensorComponent },
       { path: 'delete/:id', component: DeleteSensorComponent },
       { path: 'check/:id', component: CheckSensorComponent }
     ]
   },
   {
-    path: 'users', children: [
-      { path: '', component: UsersComponent },
-      { path: 'edit/:id', component: EditUserComponent },
-      { path: 'add', component: AddUserComponent },
+    path: 'users', data: { breadcrumb: 'Users' }, children: [
+      { path: '', component: UsersComponent, data: { title: 'Users' } },
+      { path: 'edit/:id', data: { breadcrumb: 'edit - id:', title: 'Users' }, component: EditUserComponent },
+      { path: 'add', data: { breadcrumb: 'add', title: 'Users' }, component: AddUserComponent },
       { path: 'delete/:id', component: DeleteUserComponent }
-  ] },
+    ]
+  },
 
   // Page not found redirect
   { path: '**', redirectTo: '/home' },

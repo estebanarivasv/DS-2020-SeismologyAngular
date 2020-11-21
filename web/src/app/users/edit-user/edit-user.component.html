@@ -40,7 +40,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label" for="id_num">ID</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="id_num" formControlName="id_num"
+                                    <input type="text" class="form-control form-control-sm" name="id_num" formControlName="id_num"
                                     required readonly />
                                 </div>
                             </div>
@@ -49,7 +49,7 @@
                             <div class="form-group row">
                                 <label for="email" class="col-sm-3 col-form-label">Email</label>
                                 <div class="col-sm-9">
-                                    <input type="email" class="form-control" id="email" formControlName="email"
+                                    <input type="email" class="form-control form-control-sm" id="email" formControlName="email"
                                         [class.is-invalid]="sendRequiredEmail" [class.is-valid]="sendValidEmail">
                                     <div class="form-control-feedback invalid-feedback" *ngIf="sendRequiredEmail">
                                         <p *ngIf="editUserForm.get('email').errors.required">

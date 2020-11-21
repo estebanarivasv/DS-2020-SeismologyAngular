@@ -1,1 +1,134 @@
-<p>edit-unverified works!</p>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-sm-12 col-md-8">
+        <div class="container">
+            <h3 class="monserrat-bold p-2">Unverified seisms</h3>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+<div class="row">
+    <div class="col-md-2 my-3"></div>
+    <div class="col-sm-12 col-md-8 mt-3">
+        <div class="card border-dark">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <a name="" id="" class="btn btn-light monserrat-bold rounded-pill" routerLink="/unverified-seisms"
+                            role="button">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" style="vertical-align: middle;"
+                                class="bi bi-arrow-left-circle-fill" fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5.5a.5.5 0 0 0 0-1H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5z" />
+                            </svg>
+                            <span class="text-center" style="vertical-align: middle;">&nbsp;&nbsp;Go back </span>
+                        </a>
+                    </div>
+                    <div class="col-sm-10 monserrat-bold" style="margin: auto; width: 50%;">
+                        Editing unverified-seism
+                    </div>
+                </div>
+            </div>
+            <div class="card-body view-card">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-sm-12 col-md-8 overflow-auto" style="height: 350px;">
+                        <form [formGroup]="editUSeismForm" (ngSubmit)="sendHttpPut()">
+
+                            <!-- ID -->
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="id_num">ID</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" name="id_num" value="{{ seism.id_num }}"
+                                        required readonly />
+                                </div>
+                            </div>
+                            <!-- DATETIME -->
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="datetime">Datetime</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" name="datetime" value="{{ seism.datetime }}"
+                                        required readonly />
+                                </div>
+                            </div>
+                            <!-- DEPTH -->
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="depth">Depth (Km)</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control form-control-sm" name="depth" formControlName="depth"
+                                    [class.is-invalid]="sendRequiredDepth" [class.is-valid]="sendValidDepth"/>
+
+                                    <div class="form-control-feedback invalid-feedback" *ngIf="sendRequiredDepth">
+                                        <p *ngIf="editUSeismForm.get('depth').errors.required">
+                                            The depth is required
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- MAGNITUDE -->
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="magnitude">Magnitude</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" name="magnitude" formControlName="magnitude"
+                                    [class.is-invalid]="sendRequiredMagnitude" [class.is-valid]="sendValidMagnitude"/>
+
+                                    <div class="form-control-feedback invalid-feedback" *ngIf="sendRequiredMagnitude">
+                                        <p *ngIf="editUSeismForm.get('magnitude').errors.required">
+                                            The magnitude is required
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- LATITUDE -->
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="latitude">Latitude</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" name="latitude" value="{{ seism.latitude }}"
+                                        required readonly />
+                                </div>
+                            </div>
+                            <!-- LONGITUDE -->
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="longitude">Longitude</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" name="longitude" value="{{ seism.longitude }}"
+                                        required readonly />
+                                </div>
+                            </div>
+                            <!-- VERIFIED -->
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="verified">Status</label>
+                                <div class="col-sm-9">
+                                    <div class="d-flex justify-content-center pt-2">
+                                        <div class="custom-control custom-switch mx-5">
+                                            <input type="checkbox" class="custom-control-input" id="verified" readonly
+                                                formControlName="verified">
+                                            <label class="custom-control-label" for="verified">Verified</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- SENSOR ASSOCIATED -->
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" for="sensor_id">Sensor associated</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" name="sensor_id" value="{{ seism.sensor.name }}"
+                                        required readonly />
+                                </div>
+                            </div>
+
+
+                            <button type="submit" [disabled]="!editUSeismForm.valid" class="btn btn-success px-n5">
+                                Save changes
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 my-3"></div>
+</div>

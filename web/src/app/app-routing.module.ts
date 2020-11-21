@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { DeleteUnverifiedComponent } from './seisms/unverified-seisms/delete-unverified/delete-unverified.component';
 import { EditUnverifiedComponent } from './seisms/unverified-seisms/edit-unverified/edit-unverified.component';
 import { UnverifiedSeismsComponent } from './seisms/unverified-seisms/unverified-seisms.component';
 import { ViewUnverifiedComponent } from './seisms/unverified-seisms/view-unverified/view-unverified.component';
-import { EditVerifiedComponent } from './seisms/verified-seisms/edit-verified/edit-verified.component';
 import { VerifiedSeismsComponent } from './seisms/verified-seisms/verified-seisms.component';
 import { ViewVerifiedComponent } from './seisms/verified-seisms/view-verified/view-verified.component';
 import { AddSensorComponent } from './sensors/add-sensor/add-sensor.component';
@@ -26,7 +24,6 @@ const routes: Routes = [
     path: 'verified-seisms', children: [
       { path: '', component: VerifiedSeismsComponent },
       { path: 'view/:id', component: ViewVerifiedComponent },
-      { path: 'edit/:id', component: EditVerifiedComponent }
     ]
   },
   {
@@ -34,7 +31,6 @@ const routes: Routes = [
       { path: '', component: UnverifiedSeismsComponent },
       { path: 'view/:id', component: ViewUnverifiedComponent },
       { path: 'edit/:id', component: EditUnverifiedComponent },
-      { path: 'delete/:id', component: DeleteUnverifiedComponent }
     ]
   },
   {

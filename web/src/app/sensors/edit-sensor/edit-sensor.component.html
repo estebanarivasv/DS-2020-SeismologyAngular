@@ -40,7 +40,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label" for="id_num">ID</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="id_num" formControlName="id_num"
+                                    <input type="text" class="form-control form-control-sm" name="id_num" formControlName="id_num"
                                         required readonly />
                                 </div>
                             </div>
@@ -49,7 +49,7 @@
                             <div class="form-group row">
                                 <label for="name" class="col-sm-3 col-form-label">Name </label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="name" formControlName="name"
+                                    <input type="text" class="form-control form-control-sm" id="name" formControlName="name"
                                         [class.is-invalid]="sendRequiredName" [class.is-valid]="sendValidName">
                                     <div class="invalid-feedback" *ngIf="sendRequiredName">The sensor name is
                                         required
@@ -61,7 +61,7 @@
                             <div class="form-group row">
                                 <label for="ip" class="col-sm-3 col-form-label">IP </label>
                                 <div class="col-sm-9">
-                                    <input type="ip" class="form-control" id="name" formControlName="ip"
+                                    <input type="ip" class="form-control form-control-sm" id="name" formControlName="ip"
                                         [class.is-invalid]="sendRequiredIp" [class.is-valid]="sendValidIp">
                                     <div class="form-control-feedback invalid-feedback"
                                         *ngIf="editSensorForm.get('ip').errors">
@@ -77,7 +77,7 @@
                             <div class="form-group row">
                                 <label for="port" class="col-sm-3 col-form-label">Port </label>
                                 <div class="col-sm-9">
-                                    <input type="number" class="form-control" id="port" formControlName="port"
+                                    <input type="number" class="form-control form-control-sm" id="port" formControlName="port"
                                         [class.is-invalid]="sendRequiredPort" [class.is-valid]="sendValidPort">
                                     <div class="invalid-feedback" *ngIf="sendRequiredPort">The port is required
                                     </div>
@@ -88,7 +88,7 @@
                             <div class="form-group row">
                                 <label for="userId" class="col-sm-3 col-form-label">Associated user</label>
                                 <div class="col-sm-9">
-                                    <select class="custom-select" id="userId" formControlName="user_id"
+                                    <select class="custom-select custom-select-sm" id="userId" formControlName="user_id"
                                         [class.is-invalid]="sendRequiredUserId" [class.is-valid]="sendValidUserId">
                                         <option [ngValue]='0'>Select user email</option>
                                         <option *ngFor="let user of users; trackBy:getUserNumber"

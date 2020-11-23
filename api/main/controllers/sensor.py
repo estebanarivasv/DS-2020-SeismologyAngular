@@ -24,6 +24,7 @@ class Sensor(Resource):
     # @admin_login_required
     def delete(self, id_num):
         sensor_repo = SensorRepository()
+        
         sensor_repo.set_id(id_num)
         sensor = sensor_repo.get_or_404()
 

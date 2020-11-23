@@ -17,7 +17,7 @@ seisms_schema = SeismSchema(many=True)
 
 
 class GeneralSeisms(Resource):
-    @admin_login_required
+    #@admin_login_required
     def get(self):
         seism_repo = SeismRepository()
         data = request.get_json()
@@ -39,7 +39,7 @@ class VerifiedSeism(Resource):
         seism_repo.set_id(id_num)
         return seism_schema.dump(seism_repo.get_or_404())
 
-    @admin_login_required
+    #@admin_login_required
     def put(self, id_num):
         seism_repo = SeismRepository(verified=True)
         seism_repo.set_id(id_num)
@@ -59,22 +59,25 @@ class VerifiedSeisms(Resource):
     def get(self):
         seism_repo = SeismRepository(verified=True)
 
-        json = request.get_json().items()
-        seism_repo.set_input_json(json=json)
+        # DEBEMOS OBTENER LOS PARAMETROS DE FILTRADO POR MEDIO DE LA URL
+
+        data = request.args
+        #json = request.get_json().items()
+        #seism_repo.set_input_json(json=json)
 
         return seism_repo.get_all()
 
 
 class UnverifiedSeism(Resource):
 
-    @jwt_required
+    #@jwt_required
     def get(self, id_num):
         seism_repo = SeismRepository(verified=False)
         seism_repo.set_id(id_num)
 
         return seism_schema.dump(seism_repo.get_or_404())
 
-    @jwt_required
+    #@jwt_required
     def delete(self, id_num):
         seism_repo = SeismRepository(verified=False)
         seism_repo.set_id(id_num)
@@ -85,7 +88,7 @@ class UnverifiedSeism(Resource):
 
         return seism_repo.delete()
 
-    @jwt_required
+    #@jwt_required
     def put(self, id_num):
         seism_repo = SeismRepository(verified=False)
         seism_repo.set_id(id_num)
@@ -101,14 +104,14 @@ class UnverifiedSeism(Resource):
 
 class UnverifiedSeisms(Resource):
 
-    @jwt_required
+    #@jwt_required
     def get(self):
         seism_repo = SeismRepository(verified=False)
 
         # We obtain the user's identity and the JWT claims. We filter the seisms for assigned for the logged user
 
-        seism_repo.set_user_id(user_id=int(get_jwt_identity()))
-        admin = get_admin_status(get_jwt_claims())
-        seism_repo.set_admin_value(value=admin)
+        #seism_repo.set_user_id(user_id=int(get_jwt_identity()))
+        #admin = get_admin_status(get_jwt_claims())
+        #seism_repo.set_admin_value(value=admin)
 
         return seism_repo.get_all()

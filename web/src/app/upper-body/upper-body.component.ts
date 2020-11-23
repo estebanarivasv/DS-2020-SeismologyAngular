@@ -16,9 +16,11 @@ export class UpperBodyComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private activatedRoute: ActivatedRoute,
+    private activatedRoute: ActivatedRoute
   ) {
+
     this.breadcrumbs = this.buildBreadCrumb(this.activatedRoute.root);
+
     this.activatedRoute.data.subscribe(data => {
       this.actualComponentName = data['title'];
     });

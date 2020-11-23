@@ -3,6 +3,8 @@ import random
 import string
 import json
 
+from flask.json import jsonify
+
 from main.extensions import db
 from main.models import SensorModel
 from main.repositories import DBRepository
@@ -122,4 +124,4 @@ class Sensor(DBRepository):
             except Exception as error:
                 db.session.rollback()
                 print("\nSensor deletion error: ", error)
-                return 'Error making the HTTP method', 409
+                return f'The sensor has seisms associated', 409

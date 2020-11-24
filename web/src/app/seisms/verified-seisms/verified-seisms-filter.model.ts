@@ -1,10 +1,10 @@
-import { Moment } from 'moment'
+import { Moment } from 'moment';
 
 export class VSeismsDynamicModel {
 
     // FILTERS
-    from_date?: Moment;
-    to_date?: Moment;
+    from_date?: string;
+    to_date?: string;
     mag_min?: number;
     mag_max?: number;
     depth_min?: number;

@@ -4,68 +4,136 @@
         <div class="card border-dark">
             <div class="card-body">
                 <h6 class="card-title monserrat-bold">Filters</h6>
-                <p class="card-text"></p>
-                <!--<a href="#" class="btn btn-primary"></a>-->
+                <form name="vSeismsFilterForm" role="form">
+                    <div class="form-row align-items-center">
+                        <div class="col">
+                            <label class="col-form-label-sm mb-n2" for="mag_min">Magnitude min</label>
+                            <input type="number" class="form-control form-control-sm" [(ngModel)]="mag_min"
+                                [ngModelOptions]="{standalone: true}" id="mag_min">
+                        </div>
+                        <div class="col">
+                            <label class="col-form-label-sm mb-n2" for="mag_max">Magnitude max</label>
+                            <input type="number" class="form-control form-control-sm" [(ngModel)]="mag_max"
+                                [ngModelOptions]="{standalone: true}" for="mag_max">
+                        </div>
+                    </div>
+                    <div class="form-row align-items-center">
+                        <div class="col">
+                            <label class="col-form-label-sm mb-n2" for="depth_min">Depth min</label>
+                            <input type="number" class="form-control form-control-sm" [(ngModel)]="depth_min"
+                                [ngModelOptions]="{standalone: true}" id="depth_min">
+                        </div>
+                        <div class="col">
+                            <label class="col-form-label-sm mb-n2" for="depth_max">Depth max</label>
+                            <input type="number" class="form-control form-control-sm" [(ngModel)]="depth_max"
+                                [ngModelOptions]="{standalone: true}" for="depth_max">
+                        </div>
+                    </div>
+                    <div class="form-row align-items-center">
+                        <div class="col-lg-12">
+                            <label class="col-form-label-sm mb-n2" for="from_date">From date</label>
+                            <div class="input-group date" data-target-input="nearest" NgTempusdominusBootstrap>
+                                <input class="form-control form-control-sm" [(ngModel)]="from_date"
+                                    [ngModelOptions]="{standalone: true}" id="from_date" NgTempusdominusBootstrapInput
+                                    type="text" />
+                                <div class="input-group-append" NgTempusdominusBootstrapToggle>
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <label class="col-form-label-sm mb-n2" for="to_date">To date</label>
+                            <div class="input-group date" data-target-input="nearest" NgTempusdominusBootstrap>
+                                <input class="form-control form-control-sm" [(ngModel)]="to_date"
+                                    [ngModelOptions]="{standalone: true}" id="to_date" NgTempusdominusBootstrapInput
+                                    type="text" />
+                                <div class="input-group-append" NgTempusdominusBootstrapToggle>
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row align-items-center mb-4 py-1 ">
+                        <label class="col-form-label-sm mb-n1" for="sensor_id">Associated sensor</label>
+                        <select class="custom-select custom-select-sm" id="sensor_id" [(ngModel)]="sensor_id"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="0" selected>Select sensor name</option>
+                            <option *ngFor="let sensor of sensors; trackBy:getSensorNumber" [value]="sensor.id_num">
+                                {{ sensor.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group container align-items-center mb-n2">
+                        <div class="row">
+                            <button class="btn btn-sm btn-primary mr-3" (click)="applyFilters()">Filter</button>
+                            <a class="btn btn-sm btn-secondary" (click)="clearFilters()">Clear filters</a>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
     <div class="col-sm-12 col-md-8">
         <div class="container">
             <div class="table-wrapper-scroll-y my-custom-scrollbar">
-            <table class="table table-responsive-md table-dark table-hover text-center my-3 table-sm ">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Datetime</th>
-                        <th scope="col">Depth</th>
-                        <th scope="col">Magnitude</th>
-                        <th scope="col">Sensor Associated</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let seism of seisms">
-                        <td>{{ seism.id_num }}</td>
-                        <td>{{ seism.datetime }}</td>
-                        <td>{{ seism.depth }} Km</td>
-                        <td>{{ seism.magnitude }}</td>
-                        <td>{{ seism.sensor.name }}</td>
-                        <td>
-                            <a class="btn btn-sm btn-outline-secondary mr-2"
-                                [routerLink]="['view', seism.id_num]">
-                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill"
-                                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                    <path fill-rule="evenodd"
-                                        d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                </svg>
+                <table class="table table-responsive-md table-dark table-hover text-center my-3 table-sm ">
+                    <thead>
+                        <tr>
+                            <th scope="col" sortable="id_num" (sort)="onSort($event)">ID</th>
+                            <th scope="col" sortable="datetime" (sort)="onSort($event)">Datetime</th>
+                            <th scope="col" sortable="depth" (sort)="onSort($event)">Depth</th>
+                            <th scope="col" sortable="magnitude" (sort)="onSort($event)">Magnitude</th>
+                            <th scope="col" sortable="sensor_id" (sort)="onSort($event)">Sensor Associated</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let seism of seisms | slice: (page - 1) * pageSize:page * pageSize">
+                            <td>{{ seism.id_num }}</td>
+                            <td>{{ seism.datetime }}</td>
+                            <td>{{ seism.depth }} Km</td>
+                            <td>{{ seism.magnitude }}</td>
+                            <td>{{ seism.sensor.name }}</td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-secondary mr-2" [routerLink]="['view', seism.id_num]">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill"
+                                        fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                        <path fill-rule="evenodd"
+                                            d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                                    </svg>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex align-items-center justify-content-center pt-4">
+                <!--<nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
                             </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>-->
+                <div class="col-12" *ngIf="seisms && totalItems > 0">
+                    <ngb-pagination [collectionSize]="totalItems" [pageSize]="pageSize" [(page)]="page" [boundaryLinks]="true"
+                      (pageChange)="loadPage(page)">
+                    </ngb-pagination>
+                  </div>
+            </div>
         </div>
-        <div class="d-flex align-items-center justify-content-center pt-4">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>  
-        </div>
+        <div class="col-md-2 my-3"></div>
     </div>
-    <div class="col-md-2 my-3"></div>
-</div>

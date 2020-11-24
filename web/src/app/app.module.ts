@@ -23,6 +23,8 @@ import { EditUserComponent } from './users/edit-user/edit-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UpperBodyComponent } from './upper-body/upper-body.component';
 import { AlertsComponent } from './alerts/alerts.component';
+import { NgTempusdominusBootstrapModule } from 'ngx-tempusdominus-bootstrap';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { AlertsComponent } from './alerts/alerts.component';
     NgbModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NgTempusdominusBootstrapModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -2,11 +2,17 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Moment } from 'moment';
 import { Observable } from 'rxjs';
 import { SensorsModel } from 'src/app/sensors/sensors.model';
 import { SeismsInterface, SeismsModel } from '../seisms.model';
 import { SeismsService } from '../seisms.service';
 import { VSeismsDynamicModel } from './verified-seisms-filter.model';
+import * as moment from 'moment';
+import { SensorsService } from 'src/app/sensors/sensors.service';
+import { NgbdSortableHeader, SortEvent } from './verified-seisms-sorting.directive';
+import { QueryList } from '@angular/core';
+import { ViewChildren } from '@angular/core';
 
 @Component({
   selector: 'app-verified-seisms',
@@ -26,11 +32,22 @@ export class VerifiedSeismsComponent implements OnInit {
 
   // FILTERING VARIABLES
   filters: VSeismsDynamicModel;  //   Dynamic data filters of table
-  vSeismsFilterForm: FormGroup;
+
+  // Template-driven forms variables (at the beginning, they are empty)
+  sensors: Array<SensorsModel>;
+  sensor: SensorsModel;
+  mag_min: number;
+  mag_max: number;
+  depth_min: number;
+  depth_max: number;
+  sensor_id: number;
+
+  from_date = moment('').utc();
+  to_date = moment('').utc();
 
   // DATA STORING VARIABLES
   seisms: Array<SeismsModel>;
-  sensor: SensorsModel;
+
 
   // PAGINATION VARIABLES
   totalItems = 0;
@@ -38,14 +55,21 @@ export class VerifiedSeismsComponent implements OnInit {
   pageSize = 10;
   previousPage = 0;
 
+  // SORTING VARIABLES
+  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
+
 
   constructor(
     private seismsService: SeismsService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router) { }
+    private sensorsService: SensorsService
+  ) { }
 
   ngOnInit(): void {
     // First, set the basic table layout; then, gets all Seisms
+    this.sensorsService.getAll().subscribe(data => {
+      this.sensors = data;
+    })
+    this.sensor_id = 0;
     this.filters = this.setInitialPageSettings();
     this.getAll();
   }
@@ -56,7 +80,7 @@ export class VerifiedSeismsComponent implements OnInit {
     filters.elem_per_page = 10;
     filters.page = 1;
     filters.sort_by = 'id_num';
-    filters.direction = 'desc';
+    filters.direction = 'asc';
     return filters;
   }
 
@@ -92,90 +116,51 @@ export class VerifiedSeismsComponent implements OnInit {
   }
 
   applyFilters() {
-    if (this.sensor) { this.filters.sensor_id = this.sensor.id_num; }
+    if (this.sensor_id) { this.filters.sensor_id = this.sensor_id; }
     else { delete this.filters.sensor_id; }
 
-    if (this.depthFrom) { this.filters.depth_min = this.depth_min;
-    } else {
-      delete this.filters.depth_from;
-    }
-    if (this.depthTo) {
-      this.filter.depth_to = this.depthTo;
-    } else {
-      delete this.filter.depth_to;
-    }
+    if (this.depth_min) { this.filters.depth_min = this.depth_min; }
+    else { delete this.filters.depth_min; }
 
-    if (this.magnitudeFrom) {
-      this.filter.magnitude_from = this.magnitudeFrom;
-    } else {
-      delete this.filter.magnitude_from;
-    }
+    if (this.depth_max) { this.filters.depth_max = this.depth_max; }
+    else { delete this.filters.depth_max; }
 
-    if (this.magnitudeTo) {
-      this.filter.magnitude_to = this.magnitudeTo;
-    } else {
-      delete this.filter.magnitude_to;
-    }
+    if (this.mag_min) { this.filters.mag_min = this.mag_min; }
+    else { delete this.filters.mag_min; }
 
-    this.findAll();
+    if (this.mag_max) { this.filters.mag_max = this.mag_max; }
+    else { delete this.filters.mag_max; }
+
+    if (this.from_date) { this.filters.from_date = this.from_date.toISOString(); }
+    else { delete this.filters.from_date; }
+
+    if (this.to_date) { this.filters.to_date = this.to_date.toISOString(); }
+    else { delete this.filters.to_date; }
+
+    this.getAll();
   }
 
-}
-
-
-
-@Component({
-  selector: 'app-vseism',
-  templateUrl: './vseism.component.html',
-  styleUrls: ['./vseism.component.css']
-})
-export class VseismComponent implements OnInit {
-
-  // Componente Search
-  sensorModel: SensorModel;
-
-  seisms: Array<SeismModel>;
-  isAdmin: boolean = false;
-  filter: SeismFilter;
-  totalItems = 0;
-  page: number = 1;
-  pageSize = 10;
-  previousPage = 0;
-
-  //Depth y Magnitude
-  depthFrom: number;
-  depthTo: number;
-  magnitudeFrom: number;
-  magnitudeTo: number;
-
-  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
-
-  constructor(
-    private seismService: SeismService,
-    private tokenService: TokenService,
-    private sensorService: SensorService,
-    private calendar: NgbCalendar,
-    public formatter: NgbDateParserFormatter) {
-    this.fromDate = calendar.getToday();
-    this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
-
+  clearFilters() {
+    if (this.filters) {
+      delete this.filters.sensor_id;
+      delete this.filters.depth_min;
+      delete this.filters.depth_max;
+      delete this.filters.mag_min;
+      delete this.filters.mag_max;
+      delete this.filters.from_date;
+      delete this.filters.to_date;
+      this.from_date = moment('').utc();;
+      this.to_date = moment('').utc();;
+    }
+    console.log(this.filters)
+    this.getAll();
   }
 
-
-
-
-  ngOnInit(): void {
-    if (this.tokenService.getToken() && this.tokenService.getAdmin()) {
-      this.isAdmin = true;
-    }
-    else {
-      this.isAdmin = false;
-    }
-    this.filter = this.settingPage();
-    this.findAll();
+  getSensorNumber(sensor: SensorsModel) {
+    return sensor.id_num
   }
 
-  onSort({ column, direction }: SortEvent) {
+  onSort({column, direction}: SortEvent) {
     // resetting other headers
     this.headers.forEach(header => {
       if (header.sortable !== column) {
@@ -183,51 +168,10 @@ export class VseismComponent implements OnInit {
       }
     });
 
-    this.filter.sort_by = column;
-    this.filter.direction = direction;
-    this.findAll();
+    this.filters.sort_by = column;
+    this.filters.direction = direction;
+    console.log(this.headers);
+    console.log(this.filters);
+    this.getAll();
   }
-
-  findAll(): void {
-    this.seismService.findAllVerified(this.filter).subscribe(
-      (res: HttpResponse<Iseism[]>) => {
-        this.paginate(res.body, res.headers);
-      }
-
-    );
-  }
-
-  protected paginate(data: Iseism[], headers: HttpHeaders) {
-    this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
-    this.seisms = data;
-  }
-
-  // Evento componente pagination
-  loadPage(page: number) {
-    if (page !== this.previousPage) {
-      this.previousPage = page;
-      this.transition();
-    }
-  }
-
-  transition() {
-    this.filter.page = this.page;
-    this.findAll();
-  }
-
-  onSelect(seism: SeismModel): void {
-    this.selectedSeism = seism;
-  }
-
-
-
-  settingPage(): SeismFilter {
-    let filter: SeismFilter = new SeismFilter();
-    filter.elem_per_page = 10;
-    filter.page = 1;
-    filter.sort_by = 'id';
-    filter.direction = 'desc';
-    return filter;
-  }
-
 }

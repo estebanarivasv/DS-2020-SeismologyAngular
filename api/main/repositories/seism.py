@@ -18,7 +18,8 @@ class Seism(DBRepository):
         self.__verified = verified
         self.__id_num = 0
         self.__model_instance = None
-        self.__input_json = ""
+        self.__input_json = {}
+        self.__url_args = {}
         self.__addition_json = ""
         self.__user_id = 0
         self.__admin = None
@@ -31,6 +32,57 @@ class Seism(DBRepository):
 
     def set_input_json(self, json):
         self.__input_json = json
+
+    def set_filters(self, data):
+        filter_data = {'filter': []}
+        try:
+            if data['sort_by'] and data['direction']:
+                filter_data['sort_by'] = [{
+                    "model": "Seism",
+                    "field": str(data['sort_by']),
+                    "direction": str(data['direction'])
+                }]
+        except KeyError:
+            if data['sort_by'] and data['direction']:
+                filter_data['sort_by'] = [{
+                    "model": "Seism",
+                    "field": "id_num",
+                    "direction": "asc"
+                }]
+            print(data['sort_by'])
+
+        for key, value in data.items():
+            try:
+                if key == 'page':
+                    filter_data['page'] = value
+
+                if key == 'elem_per_page':
+                    filter_data['elem_per_page'] = data['elem_per_page']
+
+                if key == "mag_min":
+                    filter_data['filter'].append({"field": "magnitude", "op": ">=", "value": float(data['mag_min'])})
+
+                if key == "mag_max":
+                    filter_data['filter'].append({"field": "magnitude", "op": "<=", "value": float(data['mag_max'])})
+
+                if key == "depth_min":
+                    filter_data['filter'].append({"field": "depth", "op": ">=", "value": int(data['depth_min'])})
+
+                if key == "depth_max":
+                    filter_data['filter'].append({"field": "depth", "op": "<=", "value": int(data['depth_max'])})
+
+                if key == "from_date":
+                    filter_data['filter'].append({"field": "datetime", "op": ">=", "value": data['from_date']})
+
+                if key == "to_date":
+                    filter_data['filter'].append({"field": "datetime", "op": "<=", "value": data['to_date']})
+
+                if key == "sensor_id":
+                    filter_data['filter'].append({"field": "sensor_id", "op": "==", "value": int(data['sensor_id'])})
+            except KeyError:
+                pass
+
+        self.set_input_json(json=filter_data)
 
     def set_addition_json(self, json):
         self.__addition_json = json
@@ -47,8 +99,9 @@ class Seism(DBRepository):
 
     def get_all_by_seismologist(self):
         seisms = self.get_query()
-        seism = seisms.filter(SensorModel.user_id == self.__user_id)
-        return seism
+        pagination = PagController(seisms, self.__input_json)
+        query, _pagination = pagination.get_filtered_query()
+        return query
 
     def get_or_404(self):
         seism = db.session.query(SeismModel).get_or_404(self.__id_num)
@@ -59,29 +112,15 @@ class Seism(DBRepository):
         return seism
 
     def get_all(self):
-        page_number = 1
-        if self.__verified is False:
-            elem_per_page = 10
-        else:
-            elem_per_page = 25
-
-        seisms = self.get_query()
-
-        pag = PagController(seisms, page_number, elem_per_page)
-
         if self.__user_id != 0 and self.__admin is not None:
             if not self.__admin:
                 seisms = self.get_all_by_seismologist()
         else:
             seisms = self.get_query()
+            pagination = PagController(seisms, self.__input_json)
+            query, _pagination = pagination.get_filtered_query()
 
-        # We get the json and apply filters and sorting
-        for key, value in self.__input_json:
-            seisms = pag.apply(key, value)
-
-        # We apply the pagination
-        seisms, _pagination = pag.pagination()
-        return seisms_schema.dump(seisms.all())
+        return seisms_schema.dump(query.all())
 
     def add(self):
         if self.__addition_json != "":

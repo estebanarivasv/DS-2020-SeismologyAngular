@@ -64,13 +64,13 @@ class Sensor(DBRepository):
 
         sensors = self.get_query()
 
-        pag = PagController(sensors, page_number, elem_per_page)
+        """pag = PagController(sensors, page_number, elem_per_page)
 
         for key, value in self.__input_json:
             sensors = pag.apply(key, value)
 
         sensors, _pagination = pag.pagination()
-
+"""
         return sensors_schema.dump(sensors.all())
 
     def add(self):

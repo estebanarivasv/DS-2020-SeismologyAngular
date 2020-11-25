@@ -10,10 +10,9 @@ export interface SeismsRequestInterface {
 }
 
 export class SeismsRequestModel implements SeismsRequestInterface {
-    constructor(
-        public seisms: Array<SeismsModel>,
-        public pagination: PaginationModel
-    ) { }
+
+    seisms: Array<SeismsModel>;
+    pagination: PaginationModel;
 }
 
 export interface SeismsInterface {

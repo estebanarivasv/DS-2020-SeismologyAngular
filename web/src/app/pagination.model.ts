@@ -6,12 +6,8 @@ export interface PaginationInterface {
 }
 
 export class PaginationModel implements PaginationInterface {
-    constructor(
-        public page_number: number,
-        public page_size: number,
-        public num_pages: number,
-        public total_results: number
-    ) {
-
-    }
+    page_number: number;
+    page_size: number;
+    num_pages: number;
+    total_results: number;
 }

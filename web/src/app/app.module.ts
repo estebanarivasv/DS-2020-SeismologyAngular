@@ -25,7 +25,7 @@ import { UpperBodyComponent } from './upper-body/upper-body.component';
 import { AlertsComponent } from './alerts/alerts.component';
 import { NgTempusdominusBootstrapModule } from 'ngx-tempusdominus-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbdSortableHeader } from './seisms/verified-seisms/verified-seisms-sorting.directive';
+import { NgbdSortableHeader } from './app-sorting.directive';
 
 @NgModule({
   declarations: [

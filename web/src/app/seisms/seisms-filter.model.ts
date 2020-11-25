@@ -1,6 +1,4 @@
-import { Moment } from 'moment';
-
-export class VSeismsDynamicModel {
+export class SeismsDynamicModel {
 
     // FILTERS
     from_date?: string;

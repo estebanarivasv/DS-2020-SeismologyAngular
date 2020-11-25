@@ -3,12 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SeismsModel, SeismsRequestModel } from './seisms.model';
 import { API_URL } from '../app.constants'
-import { VSeismsDynamicModel } from './verified-seisms/verified-seisms-filter.model';
-import { map } from 'rxjs/internal/operators/map';
-
-// Encapsulated Seisms Array -> type: HttpResponse
-// Observable<SeismsArrayResponse> == Observable<HttpResponse<Array<SeismsModel>>>
-type SeismsArrayResponse = HttpResponse<Array<SeismsModel>>;
+import { SeismsDynamicModel } from './seisms-filter.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,18 +18,13 @@ export class SeismsService {
     return this.http.get<SeismsModel>(`${this.url}/verified/${id}`);
   }
 
-  getAllVerified(dynamicParams: VSeismsDynamicModel): Observable<SeismsRequestModel> {
+  getAllVerified(dynamicParams: SeismsDynamicModel): Observable<SeismsRequestModel> {
     return this.http.get<SeismsRequestModel>(`${this.url}/verified/`, {
       params: this.createRequestArgs(dynamicParams)
-    });
-
-    
-    /*
-        We describe the filters as parameters in order to get the filtered table making
-        the HttpRequest. This library won't send jsons in a get request.abs
-
-        TODO: Modify api 
-    */
+    }
+      // We describe the filters as parameters in order to get the filtered table making
+      // the HttpRequest. This function will send param as url args
+    );
   }
 
   putVerified(id: number, seism: SeismsModel): Observable<SeismsModel> {
@@ -45,8 +35,13 @@ export class SeismsService {
     return this.http.get<SeismsModel>(`${this.url}/unverified/${id}`);
   }
 
-  getAllUnverified(): Observable<Array<SeismsModel>> {
-    return this.http.get<Array<SeismsModel>>(`${this.url}/unverified/`);
+  getAllUnverified(dynamicParams: SeismsDynamicModel): Observable<SeismsRequestModel> {
+    return this.http.get<SeismsRequestModel>(`${this.url}/unverified/`, {
+      params: this.createRequestArgs(dynamicParams)
+    }
+      // We describe the filters as parameters in order to get the filtered table making
+      // the HttpRequest. This function will send param as url args
+    );
   }
 
   putUnverified(id: number, seism: SeismsModel): Observable<SeismsModel> {

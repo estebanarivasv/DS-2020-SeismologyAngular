@@ -66,7 +66,6 @@ class VerifiedSeisms(Resource):
         data = request.args
         seism_repo.set_filters(data=data)
 
-        # print("\n\n", seism_repo.get_all())
         return seism_repo.get_all()
 
 
@@ -110,11 +109,13 @@ class UnverifiedSeisms(Resource):
     def get(self):
         seism_repo = SeismRepository(verified=False)
 
-        # We obtain the user's identity and the JWT claims. We filter the seisms for assigned for the logged user
+        if request.get_json():
+            return "This method does not accept json format", 403
 
-        seism_repo.set_user_id(user_id=int(get_jwt_identity()))
-        admin = get_admin_status(get_jwt_claims())
-        seism_repo.set_admin_value(value=admin)
+        # We obtain the user's identity and the JWT claims. We filter the seisms for assigned for the logged user
+        # seism_repo.set_user_id(user_id=int(get_jwt_identity()))
+        # admin = get_admin_status(get_jwt_claims())
+        # seism_repo.set_admin_value(value=admin)
 
         data = request.args
         seism_repo.set_filters(data=data)

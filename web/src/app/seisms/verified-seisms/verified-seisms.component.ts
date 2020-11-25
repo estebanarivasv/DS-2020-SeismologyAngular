@@ -1,16 +1,11 @@
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Moment } from 'moment';
-import { Observable } from 'rxjs';
 import { SensorsModel } from 'src/app/sensors/sensors.model';
-import { SeismsInterface, SeismsModel, SeismsRequestModel } from '../seisms.model';
+import { SeismsModel, SeismsRequestModel } from '../seisms.model';
 import { SeismsService } from '../seisms.service';
-import { VSeismsDynamicModel } from './verified-seisms-filter.model';
+import { SeismsDynamicModel } from '../seisms-filter.model';
 import * as moment from 'moment';
 import { SensorsService } from 'src/app/sensors/sensors.service';
-import { NgbdSortableHeader, SortEvent } from './verified-seisms-sorting.directive';
+import { NgbdSortableHeader, SortEvent } from '../../app-sorting.directive';
 import { QueryList } from '@angular/core';
 import { ViewChildren } from '@angular/core';
 import { PaginationModel } from 'src/app/pagination.model';
@@ -32,7 +27,7 @@ export class VerifiedSeismsComponent implements OnInit {
   */
 
   // FILTERING VARIABLES
-  filters: VSeismsDynamicModel;  //   Dynamic data filters of table
+  filters: SeismsDynamicModel;  //   Dynamic data filters of table
 
   // Template-driven forms variables (at the beginning, they are empty)
   sensors: Array<SensorsModel>;
@@ -79,8 +74,8 @@ export class VerifiedSeismsComponent implements OnInit {
   }
 
   // Function that sets the initial settings from tale pagination
-  setInitialPageSettings(): VSeismsDynamicModel {
-    let filters: VSeismsDynamicModel = new VSeismsDynamicModel();
+  setInitialPageSettings(): SeismsDynamicModel {
+    let filters: SeismsDynamicModel = new SeismsDynamicModel();
     filters.elem_per_page = 10;
     filters.page = 1;
     filters.sort_by = 'id_num';
@@ -152,7 +147,6 @@ export class VerifiedSeismsComponent implements OnInit {
       this.from_date = moment('').utc();;
       this.to_date = moment('').utc();;
     }
-    console.log(this.filters)
     this.getAll();
   }
 

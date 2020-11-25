@@ -35,7 +35,12 @@ class Seism(DBRepository):
 
     def set_filters(self, data):
         filter_data = {'filter': []}
+
         try:
+            if data['page']:
+                filter_data['page'] = data['page']
+            if data['elem_per_page']:
+                filter_data['elem_per_page'] = data['elem_per_page']
             if data['sort_by'] and data['direction']:
                 filter_data['sort_by'] = [{
                     "model": "Seism",
@@ -43,44 +48,48 @@ class Seism(DBRepository):
                     "direction": str(data['direction'])
                 }]
         except KeyError:
-            if data['sort_by'] and data['direction']:
-                filter_data['sort_by'] = [{
-                    "model": "Seism",
-                    "field": "id_num",
-                    "direction": "asc"
-                }]
+            # If values are not given, default values are defined
+            filter_data['sort_by'] = [{"model": "Seism", "field": "id_num", "direction": "asc"}]
+            filter_data['page'] = 1
+            filter_data['elem_per_page'] = 10
 
-        for key, value in data.items():
-            try:
-                if key == 'page':
-                    filter_data['page'] = value
+        if self.__verified is True:
+            for key, value in data.items():
+                try:
+                    if key == "mag_min":
+                        filter_data['filter'].append(
+                            {"field": "magnitude", "op": ">=", "value": float(data['mag_min'])})
+                    if key == "mag_max":
+                        filter_data['filter'].append(
+                            {"field": "magnitude", "op": "<=", "value": float(data['mag_max'])})
+                    if key == "depth_min":
+                        filter_data['filter'].append(
+                            {"field": "depth", "op": ">=", "value": int(data['depth_min'])})
+                    if key == "depth_max":
+                        filter_data['filter'].append(
+                            {"field": "depth", "op": "<=", "value": int(data['depth_max'])})
+                    if key == "from_date":
+                        filter_data['filter'].append({"field": "datetime", "op": ">=", "value": data['from_date']})
+                    if key == "to_date":
+                        filter_data['filter'].append({"field": "datetime", "op": "<=", "value": data['to_date']})
+                    if key == "sensor_id":
+                        filter_data['filter'].append(
+                            {"field": "sensor_id", "op": "==", "value": int(data['sensor_id'])})
+                except KeyError:
+                    pass
 
-                if key == 'elem_per_page':
-                    filter_data['elem_per_page'] = data['elem_per_page']
-
-                if key == "mag_min":
-                    filter_data['filter'].append({"field": "magnitude", "op": ">=", "value": float(data['mag_min'])})
-
-                if key == "mag_max":
-                    filter_data['filter'].append({"field": "magnitude", "op": "<=", "value": float(data['mag_max'])})
-
-                if key == "depth_min":
-                    filter_data['filter'].append({"field": "depth", "op": ">=", "value": int(data['depth_min'])})
-
-                if key == "depth_max":
-                    filter_data['filter'].append({"field": "depth", "op": "<=", "value": int(data['depth_max'])})
-
-                if key == "from_date":
-                    filter_data['filter'].append({"field": "datetime", "op": ">=", "value": data['from_date']})
-
-                if key == "to_date":
-                    filter_data['filter'].append({"field": "datetime", "op": "<=", "value": data['to_date']})
-
-                if key == "sensor_id":
-                    filter_data['filter'].append({"field": "sensor_id", "op": "==", "value": int(data['sensor_id'])})
-            except KeyError:
-                pass
-
+        elif self.__verified is False:
+            for key, value in data.items():
+                try:
+                    if key == "from_date":
+                        filter_data['filter'].append({"field": "datetime", "op": ">=", "value": data['from_date']})
+                    if key == "to_date":
+                        filter_data['filter'].append({"field": "datetime", "op": "<=", "value": data['to_date']})
+                    if key == "sensor_id":
+                        filter_data['filter'].append(
+                            {"field": "sensor_id", "op": "==", "value": int(data['sensor_id'])})
+                except KeyError:
+                    pass
         self.set_input_json(json=filter_data)
 
     def set_addition_json(self, json):

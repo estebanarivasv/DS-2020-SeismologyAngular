@@ -4,8 +4,48 @@
         <div class="card border-dark">
             <div class="card-body">
                 <h6 class="card-title monserrat-bold">Filters</h6>
-                <p class="card-text"></p>
-                <!--<a href="#" class="btn btn-primary"></a>-->
+                <form name="vSeismsFilterForm" role="form">
+                    <div class="form-row align-items-center">
+                        <div class="col-lg-12">
+                            <label class="col-form-label-sm mb-n2" for="from_date">From date</label>
+                            <div class="input-group date" data-target-input="nearest" NgTempusdominusBootstrap>
+                                <input class="form-control form-control-sm" [(ngModel)]="from_date"
+                                    [ngModelOptions]="{standalone: true}" id="from_date" NgTempusdominusBootstrapInput
+                                    type="text" />
+                                <div class="input-group-append" NgTempusdominusBootstrapToggle>
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <label class="col-form-label-sm mb-n2" for="to_date">To date</label>
+                            <div class="input-group date" data-target-input="nearest" NgTempusdominusBootstrap>
+                                <input class="form-control form-control-sm" [(ngModel)]="to_date"
+                                    [ngModelOptions]="{standalone: true}" id="to_date" NgTempusdominusBootstrapInput
+                                    type="text" />
+                                <div class="input-group-append" NgTempusdominusBootstrapToggle>
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row align-items-center mb-4 py-1 ">
+                        <label class="col-form-label-sm mb-n1" for="sensor_id">Associated sensor</label>
+                        <select class="custom-select custom-select-sm" id="sensor_id" [(ngModel)]="sensor_id"
+                            [ngModelOptions]="{standalone: true}">
+                            <option value="0" selected>Select sensor name</option>
+                            <option *ngFor="let sensor of sensors; trackBy:getSensorNumber" [value]="sensor.id_num">
+                                {{ sensor.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group container align-items-center mb-n2">
+                        <div class="row">
+                            <button class="btn btn-sm btn-primary mr-3" (click)="applyFilters()">Filter</button>
+                            <a class="btn btn-sm btn-secondary" (click)="clearFilters()">Clear filters</a>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -15,11 +55,11 @@
                 <table class="table table-responsive-md table-dark table-hover text-center my-3 table-sm ">
                     <thead>
                         <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Datetime</th>
-                            <th scope="col">Depth</th>
-                            <th scope="col">Magnitude</th>
-                            <th scope="col">Sensor Associated</th>
+                            <th scope="col" sortable="id_num" (sort)="onSort($event)">ID</th>
+                            <th scope="col" sortable="datetime" (sort)="onSort($event)">Datetime</th>
+                            <th scope="col" sortable="depth" (sort)="onSort($event)">Depth</th>
+                            <th scope="col" sortable="magnitude" (sort)="onSort($event)">Magnitude</th>
+                            <th scope="col" sortable="sensor_id" (sort)="onSort($event)">Sensor Associated</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
@@ -71,26 +111,17 @@
                     </tbody>
                 </table>
             </div>
-            <div class="d-flex align-items-center justify-content-center pt-4">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+            <div class="d-flex justify-content-center pt-4">
+                <div class="mr-5" *ngIf="seisms && totalItems > 0">
+                    <ngb-pagination [collectionSize]="totalItems" [pageSize]="pageSize" [(page)]="page" [maxSize]="4"
+                        [boundaryLinks]="true" (pageChange)="loadNextPage($event)">
+                    </ngb-pagination>
+                </div>
+                <select class="custom-select custom-select-sm ml-5" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="loadNextPage($event)">
+                    <option [ngValue]="5" [selected]="pageSize == 5">5 items per page</option>
+                    <option [ngValue]="10" [selected]="pageSize == 10">10 items per page</option>
+                    <option [ngValue]="20" [selected]="pageSize == 20">20 items per page</option>
+                  </select>
             </div>
         </div>
     </div>

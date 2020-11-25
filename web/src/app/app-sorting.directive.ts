@@ -1,5 +1,5 @@
 import { Directive, EventEmitter, Input, Output } from '@angular/core';
-import { SeismsModel } from '../seisms.model';
+import { SeismsModel } from './seisms/seisms.model';
 
 export type SortColumn = keyof SeismsModel | '';
 export type SortDirection = 'asc' | 'desc' | '';

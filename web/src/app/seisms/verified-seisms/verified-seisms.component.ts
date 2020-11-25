@@ -91,7 +91,14 @@ export class VerifiedSeismsComponent implements OnInit {
   // Store the data and make pagination
   getAll(): void {
     this.seismsService.getAllVerified(this.filters).subscribe(
-      (response: HttpResponse<SeismsRequestModel>) => this.request = response.body
+      response => {
+        let data: SeismsRequestModel = response;
+        this.pagination = data.pagination;
+        this.seisms = data.seisms;
+        console.log(data)
+        console.log(data.pagination)
+        console.log(this.seisms)
+      }
     );
   }
 

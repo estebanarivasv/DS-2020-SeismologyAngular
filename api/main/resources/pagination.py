@@ -8,13 +8,11 @@ class Pagination:
         self.__data = pagination_data
 
     def filter_query(self):
-        print(self.__data)
+        print("\n\nFILTROS EN PAGINACION: \n", self.__data)
         if len(self.__data['filter']) != 0:
             self.__query = apply_filters(self.__query, self.__data['filter'])
-            print('entra')
             return self.__query
         else:
-            print('no entra')
             return self.__query
 
     def sort_query(self):

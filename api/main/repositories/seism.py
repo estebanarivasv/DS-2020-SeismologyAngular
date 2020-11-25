@@ -132,7 +132,7 @@ class Seism(DBRepository):
             }
         }
 
-        return json.dumps(seisms_dict)
+        return seisms_dict
 
     def add(self):
         if self.__addition_json != "":

@@ -47,14 +47,14 @@ export class VerifiedSeismsComponent implements OnInit {
   to_date = moment('').utc();
 
   // DATA STORING VARIABLES
-  request: SeismsRequestModel
+  seismsRequest: SeismsRequestModel
   seisms: Array<SeismsModel>;
   pagination: PaginationModel;
 
 
   // PAGINATION VARIABLES
   totalItems = 0;
-  page: number = 1;
+  page = 1;
   pageSize = 10;
   previousPage = this.page - 1;
   numPages = 0;
@@ -92,33 +92,26 @@ export class VerifiedSeismsComponent implements OnInit {
   getAll(): void {
     this.seismsService.getAllVerified(this.filters).subscribe(
       response => {
-        this.pagination = Object.assign(new PaginationModel(), response.pagination);
-        console.log(data)
-        console.log(this.pagination)
-        this.setData(response)
+        console.log(response.seisms);
+        this.seisms = response.seisms;
+        this.pagination = response.pagination;
+
+        this.totalItems = this.pagination.total_results;
+        this.page = this.pagination.page_number;
+        this.pageSize = this.pagination.page_size;
+        this.previousPage = this.page - 1;
+        this.numPages = this.pagination.num_pages;
       }
     );
-  }
-
-  setData(data: SeismsRequestModel) {
-    this.pagination = data.pagination;
-    this.seisms = data.seisms;
-
   }
 
   /* 
     If the actual page is different than the previous one, the previousPage is updated and 
     pagesTransition() is called
   */
-  loadPage(page: number) {
-    if (page !== this.previousPage) {
-      this.previousPage = page;
-      this.pagesTransition();
-    }
-  }
-
-  pagesTransition() {
-    this.filters.page = this.page;
+  loadNextPage(page: number) {
+    this.filters.elem_per_page = this.pageSize;
+    this.filters.page = page;
     this.getAll();
   }
 
@@ -177,8 +170,6 @@ export class VerifiedSeismsComponent implements OnInit {
 
     this.filters.sort_by = column;
     this.filters.direction = direction;
-    console.log(this.headers);
-    console.log(this.filters);
     this.getAll();
   }
 }

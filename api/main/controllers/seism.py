@@ -66,7 +66,7 @@ class VerifiedSeisms(Resource):
         data = request.args
         seism_repo.set_filters(data=data)
 
-        print(seism_repo.get_all())
+        # print("\n\n", seism_repo.get_all())
         return seism_repo.get_all()
 
 

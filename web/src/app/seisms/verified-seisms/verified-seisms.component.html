@@ -88,7 +88,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let seism of seisms | slice: (page - 1) * pageSize:page * pageSize">
+                        <tr *ngFor="let seism of seisms">
                             <td>{{ seism.id_num }}</td>
                             <td>{{ seism.datetime }}</td>
                             <td>{{ seism.depth }} Km</td>
@@ -108,31 +108,17 @@
                     </tbody>
                 </table>
             </div>
-            <div class="d-flex align-items-center justify-content-center pt-4">
-                <!--<nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>-->
-                <div class="col-12" *ngIf="seisms && totalItems > 0">
+            <div class="d-flex justify-content-center pt-4">
+                <div class="mr-5" *ngIf="seisms && totalItems > 0">
                     <ngb-pagination [collectionSize]="totalItems" [pageSize]="pageSize" [(page)]="page"
-                        [boundaryLinks]="true" (pageChange)="loadPage(page)">
+                        [boundaryLinks]="true" (pageChange)="loadNextPage($event)">
                     </ngb-pagination>
                 </div>
+                <select class="custom-select custom-select-sm ml-5" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="loadNextPage($event)">
+                    <option [ngValue]="5" [selected]="pageSize == 5">5 items per page</option>
+                    <option [ngValue]="10" [selected]="pageSize == 10">10 items per page</option>
+                    <option [ngValue]="20" [selected]="pageSize == 20">20 items per page</option>
+                  </select>
             </div>
         </div>
         <div class="col-md-2 my-3"></div>

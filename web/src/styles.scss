@@ -44,22 +44,20 @@ body {
 .my-custom-scrollbar {
   position: relative;
   height: 475px;
-  overflow: auto;
+  overflow: auto;.page-link {
+    color: #fff;
+    background-color: #222222 !important;
+    border: solid rgba(255, 255, 255, 0.172) 1px !important;
+  }
+  
+  .page-link:hover {
+    color: #ffe17d;
+    background-color: #462e14 !important;
+  }
 }
 
 .table-wrapper-scroll-y {
   display: block;
-}
-
-.page-link {
-  color: #fff;
-  background-color: #222222 !important;
-  border: solid rgba(255, 255, 255, 0.172) 1px !important;
-}
-
-.page-link:hover {
-  color: #ffe17d;
-  background-color: #462e14 !important;
 }
 
 .overflow-auto{
@@ -72,14 +70,14 @@ form input {
   border: solid rgba(255, 255, 255, 0.172) 1px !important;
 }
 
-form select {
+select {
   background-color: rgba(0, 0, 0, 0.35) !important;
   color: white !important;
   border: solid rgba(255, 255, 255, 0.172) 1px !important;
 }
 
 form input:read-only {
-  background-color: rgba(73, 73, 73, 0.35) !important;
+  background-color: rgba(46, 42, 42, 0.35) !important;
   color: rgba(255, 255, 255, 0.774) !important;
   border: solid rgba(255, 255, 255, 0.172) 1px !important;
 }
@@ -100,3 +98,20 @@ form input:read-only {
 }
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+
+.page-item.active .page-link {
+  background-color: #fff !important;
+  color: black !important;
+}
+
+.page-link {
+  color: #fff;
+  background-color: #222222 !important;
+  border: solid rgba(255, 255, 255, 0.172) 1px !important;
+}
+
+.page-link:hover {
+  color: #ffe17d;
+  background-color: #462e14 !important;
+}
+

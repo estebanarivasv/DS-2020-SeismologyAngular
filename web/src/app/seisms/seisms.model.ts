@@ -1,5 +1,20 @@
 import { Moment } from 'moment';
+import { PaginationModel } from '../pagination.model';
 import { SensorsModel } from '../sensors/sensors.model';
+
+// SEISMS REQUEST INTERFACE AND MODEL
+
+export interface SeismsRequestInterface {
+    seisms: Array<SeismsModel>;
+    pagination: PaginationModel;
+}
+
+export class SeismsRequestModel implements SeismsRequestInterface {
+    constructor(
+        public seisms: Array<SeismsModel>,
+        public pagination: PaginationModel
+    ) { }
+}
 
 export interface SeismsInterface {
     id_num?: number;
@@ -24,7 +39,5 @@ export class SeismsModel implements SeismsInterface {
         public datetime: Moment,
         public sensor_id?: number,
         public id_num?: number
-    ) {
-
-    }
+    ) { }
 }

@@ -1,10 +1,10 @@
 from datetime import datetime
+from flask import jsonify
+from flask import json
 
 from main.extensions import db
-
 from main.models import SeismModel, SensorModel
 from main.repositories import DBRepository
-
 from main.resources import PagController, get_seism_existance
 from main.mapping import SeismSchema
 
@@ -49,7 +49,6 @@ class Seism(DBRepository):
                     "field": "id_num",
                     "direction": "asc"
                 }]
-            print(data['sort_by'])
 
         for key, value in data.items():
             try:
@@ -100,8 +99,8 @@ class Seism(DBRepository):
     def get_all_by_seismologist(self):
         seisms = self.get_query()
         pagination = PagController(seisms, self.__input_json)
-        query, _pagination = pagination.get_filtered_query()
-        return query
+        query, pagination = pagination.get_filtered_query()
+        return query, pagination
 
     def get_or_404(self):
         seism = db.session.query(SeismModel).get_or_404(self.__id_num)
@@ -112,15 +111,28 @@ class Seism(DBRepository):
         return seism
 
     def get_all(self):
+        pag_data = None
+        query = None
+
         if self.__user_id != 0 and self.__admin is not None:
             if not self.__admin:
-                seisms = self.get_all_by_seismologist()
+                query, pag_data = self.get_all_by_seismologist()
         else:
             seisms = self.get_query()
             pagination = PagController(seisms, self.__input_json)
-            query, _pagination = pagination.get_filtered_query()
+            query, pag_data = pagination.get_filtered_query()
 
-        return seisms_schema.dump(query.all())
+        seisms_dict = {
+            'seisms': json.loads(seisms_schema.dumps(query)),
+            'pagination': {
+                'page_number': pag_data[0],
+                'page_size': pag_data[1],
+                'num_pages': pag_data[2],
+                'total_results': pag_data[3]
+            }
+        }
+
+        return json.dumps(seisms_dict)
 
     def add(self):
         if self.__addition_json != "":

@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SeismsModel } from './seisms.model';
+import { SeismsModel, SeismsRequestModel } from './seisms.model';
 import { API_URL } from '../app.constants'
 import { VSeismsDynamicModel } from './verified-seisms/verified-seisms-filter.model';
 
@@ -22,18 +22,17 @@ export class SeismsService {
     return this.http.get<SeismsModel>(`${this.url}/verified/${id}`);
   }
 
-  getAllVerified(dynamicParams: VSeismsDynamicModel): Observable<SeismsArrayResponse> {
-    return this.http.get<Array<SeismsModel>>(`${this.url}/verified/`, {
-
-      /*
+  getAllVerified(dynamicParams: VSeismsDynamicModel): Observable<HttpResponse<SeismsRequestModel>> {
+    return this.http.get<SeismsRequestModel>(`${this.url}/verified/`, {
+      params: this.createRequestArgs(dynamicParams),
+      observe: 'response'
+    });
+    /*
         We describe the filters as parameters in order to get the filtered table making
         the HttpRequest. This library won't send jsons in a get request.abs
 
         TODO: Modify api 
-      */
-      params: this.createRequestArgs(dynamicParams),
-      observe: 'response'
-    });
+    */
   }
 
   putVerified(id: number, seism: SeismsModel): Observable<SeismsModel> {

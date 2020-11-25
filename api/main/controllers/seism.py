@@ -60,9 +60,13 @@ class VerifiedSeisms(Resource):
     def get(self):
         seism_repo = SeismRepository(verified=True)
 
+        if request.get_json():
+            return "This method does not accept json format", 403
+
         data = request.args
         seism_repo.set_filters(data=data)
 
+        print(seism_repo.get_all())
         return seism_repo.get_all()
 
 

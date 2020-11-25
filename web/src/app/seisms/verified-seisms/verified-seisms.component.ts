@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Moment } from 'moment';
 import { Observable } from 'rxjs';
 import { SensorsModel } from 'src/app/sensors/sensors.model';
-import { SeismsInterface, SeismsModel } from '../seisms.model';
+import { SeismsInterface, SeismsModel, SeismsRequestModel } from '../seisms.model';
 import { SeismsService } from '../seisms.service';
 import { VSeismsDynamicModel } from './verified-seisms-filter.model';
 import * as moment from 'moment';
@@ -13,6 +13,7 @@ import { SensorsService } from 'src/app/sensors/sensors.service';
 import { NgbdSortableHeader, SortEvent } from './verified-seisms-sorting.directive';
 import { QueryList } from '@angular/core';
 import { ViewChildren } from '@angular/core';
+import { PaginationModel } from 'src/app/pagination.model';
 
 @Component({
   selector: 'app-verified-seisms',
@@ -46,14 +47,17 @@ export class VerifiedSeismsComponent implements OnInit {
   to_date = moment('').utc();
 
   // DATA STORING VARIABLES
+  request: SeismsRequestModel
   seisms: Array<SeismsModel>;
+  pagination: PaginationModel;
 
 
   // PAGINATION VARIABLES
   totalItems = 0;
   page: number = 1;
   pageSize = 10;
-  previousPage = 0;
+  previousPage = this.page - 1;
+  numPages = 0;
 
   // SORTING VARIABLES
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
@@ -87,16 +91,8 @@ export class VerifiedSeismsComponent implements OnInit {
   // Store the data and make pagination
   getAll(): void {
     this.seismsService.getAllVerified(this.filters).subscribe(
-      (res: HttpResponse<Array<SeismsInterface>>) => {
-        this.paginateTable(res.body, res.headers)
-      });
-  }
-
-  protected paginateTable(data: Array<SeismsInterface>, headers: HttpHeaders) {
-    // Total items get the total count of seisms from the request
-    this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
-    // Store the data
-    this.seisms = data;
+      (response: HttpResponse<SeismsRequestModel>) => this.request = response.body
+    );
   }
 
   /* 
@@ -160,7 +156,7 @@ export class VerifiedSeismsComponent implements OnInit {
     return sensor.id_num
   }
 
-  onSort({column, direction}: SortEvent) {
+  onSort({ column, direction }: SortEvent) {
     // resetting other headers
     this.headers.forEach(header => {
       if (header.sortable !== column) {

@@ -129,10 +129,10 @@
                     </ul>
                 </nav>-->
                 <div class="col-12" *ngIf="seisms && totalItems > 0">
-                    <ngb-pagination [collectionSize]="totalItems" [pageSize]="pageSize" [(page)]="page" [boundaryLinks]="true"
-                      (pageChange)="loadPage(page)">
+                    <ngb-pagination [collectionSize]="totalItems" [pageSize]="pageSize" [(page)]="page"
+                        [boundaryLinks]="true" (pageChange)="loadPage(page)">
                     </ngb-pagination>
-                  </div>
+                </div>
             </div>
         </div>
         <div class="col-md-2 my-3"></div>

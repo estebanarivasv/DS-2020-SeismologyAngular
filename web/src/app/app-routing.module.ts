@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AdminAuthGuard } from './authentication/guards/admin-auth.guard';
+import { SeismologistAuthGuard } from './authentication/guards/seismologist-auth.guard';
 import { HomeComponent } from './home/home.component';
 import { EditUnverifiedComponent } from './seisms/unverified-seisms/edit-unverified/edit-unverified.component';
 import { UnverifiedSeismsComponent } from './seisms/unverified-seisms/unverified-seisms.component';
@@ -28,26 +30,26 @@ const routes: Routes = [
   },
   {
     path: 'unverified-seisms', data: { breadcrumb: 'Unverified seisms' }, children: [
-      { path: '', component: UnverifiedSeismsComponent, data: { title: 'Unverified seisms' } },
-      { path: 'view/:id', data: { breadcrumb: 'view - id:', title: 'Unverified seisms' }, component: ViewUnverifiedComponent },
-      { path: 'edit/:id', data: { breadcrumb: 'edit - id:', title: 'Unverified seisms' }, component: EditUnverifiedComponent },
+      { path: '', component: UnverifiedSeismsComponent, data: { title: 'Unverified seisms' }, canActivate: [SeismologistAuthGuard] },
+      { path: 'view/:id', data: { breadcrumb: 'view - id:', title: 'Unverified seisms' }, component: ViewUnverifiedComponent, canActivate: [SeismologistAuthGuard] },
+      { path: 'edit/:id', data: { breadcrumb: 'edit - id:', title: 'Unverified seisms' }, component: EditUnverifiedComponent, canActivate: [SeismologistAuthGuard] },
     ]
   },
   {
     path: 'sensors', data: { breadcrumb: 'Sensors' }, children: [
-      { path: '', component: SensorsComponent, data: { title: 'Sensors' } },
-      { path: 'view/:id', data: { breadcrumb: 'view - id:', title: 'Sensors' }, component: ViewSensorComponent },
-      { path: 'edit/:id', data: { breadcrumb: 'edit - id:', title: 'Sensors' }, component: EditSensorComponent },
-      { path: 'add', data: { breadcrumb: 'add', title: 'Sensors' }, component: AddSensorComponent },
-      { path: 'delete/:id', component: DeleteSensorComponent },
-      { path: 'check/:id', component: CheckSensorComponent }
+      { path: '', component: SensorsComponent, data: { title: 'Sensors' }, canActivate: [AdminAuthGuard] },
+      { path: 'view/:id', data: { breadcrumb: 'view - id:', title: 'Sensors' }, component: ViewSensorComponent, canActivate: [AdminAuthGuard] },
+      { path: 'edit/:id', data: { breadcrumb: 'edit - id:', title: 'Sensors' }, component: EditSensorComponent, canActivate: [AdminAuthGuard] },
+      { path: 'add', data: { breadcrumb: 'add', title: 'Sensors' }, component: AddSensorComponent, canActivate: [AdminAuthGuard] },
+      { path: 'delete/:id', component: DeleteSensorComponent, canActivate: [AdminAuthGuard] },
+      { path: 'check/:id', component: CheckSensorComponent, canActivate: [AdminAuthGuard] }
     ]
   },
   {
     path: 'users', data: { breadcrumb: 'Users' }, children: [
-      { path: '', component: UsersComponent, data: { title: 'Users' } },
-      { path: 'edit/:id', data: { breadcrumb: 'edit - id:', title: 'Users' }, component: EditUserComponent },
-      { path: 'add', data: { breadcrumb: 'add', title: 'Users' }, component: AddUserComponent },
+      { path: '', component: UsersComponent, data: { title: 'Users' }, canActivate: [AdminAuthGuard] },
+      { path: 'edit/:id', data: { breadcrumb: 'edit - id:', title: 'Users' }, component: EditUserComponent, canActivate: [AdminAuthGuard] },
+      { path: 'add', data: { breadcrumb: 'add', title: 'Users' }, component: AddUserComponent, canActivate: [AdminAuthGuard] },
       { path: 'delete/:id', component: DeleteUserComponent }
     ]
   },

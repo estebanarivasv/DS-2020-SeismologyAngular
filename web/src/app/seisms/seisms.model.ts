@@ -15,6 +15,8 @@ export class SeismsRequestModel implements SeismsRequestInterface {
     pagination: PaginationModel;
 }
 
+// SEISMS MODEL
+
 export interface SeismsInterface {
     id_num?: number;
     datetime: Moment;

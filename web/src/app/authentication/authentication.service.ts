@@ -55,7 +55,6 @@ export class AuthenticationService {
   }
   getAdmin(): boolean {
     let admin = window.sessionStorage.getItem(ADMIN);
-    console.log("ADMINISTRADOR ANTES", admin)
     if (Boolean(admin) == true) { return true; }
     else { return false; }
   }
@@ -72,7 +71,7 @@ export class AuthenticationService {
 
   // 
   public get isAuthenticated(): boolean {
-    return (localStorage.getItem('token') !== null);
+    return (sessionStorage.getItem('token') !== null);
   }
 
 }

@@ -9,7 +9,7 @@
                 <form class="px-1 py-3" (ngSubmit)="signIn()" #loginForm="ngForm">
                     <div class="form-group">
                         <label for="exampleDropdownFormEmail1">Email address</label>
-                        <input type="email" class="form-control " id="exampleDropdownFormEmail1" 
+                        <input type="email" class="form-control " id="exampleDropdownFormEmail1"
                             placeholder="email@example.com" [(ngModel)]="email" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="form-group">
@@ -24,8 +24,8 @@
     </li>
 
 
-    <li class="nav-item" *ngIf="authService.isAuthenticated">
-        <a class="nav-link" href="#"><i>{{ email }}</i></a>
-        <a name="" id="" class="btn btn-secondary" (click)="signOut()" role="button"></a>
+    <li class="nav-item form-row align-items-center" *ngIf="authService.isAuthenticated">
+        <div class="col monserrat-bold mr-2" style="font-size: small;">{{ authService.getEmail() }}</div>
+        <a name="" id="" class="col btn btn-dark px-2/*canActivate: [SeismologistAuthGuar" (click)="signOut()" role="button">Sign Out</a>
     </li>
 </ul>

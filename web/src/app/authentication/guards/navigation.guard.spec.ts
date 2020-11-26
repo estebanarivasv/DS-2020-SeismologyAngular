@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SeismologistAuthGuard } from './seismologist-auth.guard';
+import { NavigationGuard } from './navigation.guard';
 
-describe('SeismologistAuthGuard', () => {
-  let guard: SeismologistAuthGuard;
+describe('NavigationGuard', () => {
+  let guard: NavigationGuard;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    guard = TestBed.inject(SeismologistAuthGuard);
+    guard = TestBed.inject(NavigationGuard);
   });
 
   it('should be created', () => {

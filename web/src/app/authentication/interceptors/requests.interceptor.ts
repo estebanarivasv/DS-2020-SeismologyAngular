@@ -9,20 +9,25 @@ import { Observable } from 'rxjs';
 import { AuthenticationService } from '../authentication.service';
 
 @Injectable()
-export class RequestsInterceptor implements HttpInterceptor {
+export class TokenRequestsInterceptor implements HttpInterceptor {
 
   constructor(private authSerivice: AuthenticationService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
+    const TOKEN = sessionStorage.getItem('token');
     
-    if (this.authSerivice.getToken() != null) {
-
-      const TOKEN = this.authSerivice.getToken();
-
-      // Add auth header
-      request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + TOKEN) });
+    if (TOKEN != null) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${this.authSerivice.getToken()}`
+        }
+      });
+  
+      return next.handle(request);
     }
-
-    return next.handle(request);    // Dispatch request
+    else {
+      return next.handle(request);    // Send normal request  
+    }
   }
 }

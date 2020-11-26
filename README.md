@@ -152,7 +152,7 @@ Given the task, I've designed my project structure with the Model–view–contr
 
 - DRY, KISS, SOLID
 - Command -> Repositories
-- Observer -> .suscribe() en los servicios de angular -> asincronismo 
+- Observer -> .suscribe() Angular services (async)
 
 # :computer: Developing stages
 

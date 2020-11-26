@@ -16,14 +16,14 @@ user_schema = UserSchema()
 
 class User(Resource):
 
-    #@admin_login_required
+    @admin_login_required
     def get(self, id_num):
         user_repo = UserRepository()
         user_repo.set_id(id_num)
 
         return user_schema.dump(user_repo.get_or_404())
 
-    #@admin_login_required
+    @admin_login_required
     def delete(self, id_num):
         user_repo = UserRepository()
 
@@ -33,7 +33,7 @@ class User(Resource):
         user_repo.set_instance(instance=user)
         return user_repo.delete()
 
-    #@admin_login_required
+    @admin_login_required
     def put(self, id_num):
         user_repo = UserRepository()
 
@@ -49,13 +49,13 @@ class User(Resource):
 
 class Users(Resource):
 
-    #@admin_login_required
+    @admin_login_required
     def get(self):
         user_repo = UserRepository()
 
         return user_repo.get_all()
 
-    #@admin_login_required
+    @admin_login_required
     def post(self):
         user_repo = UserRepository()
 
@@ -64,3 +64,10 @@ class Users(Resource):
 
         user_repo.set_addition_json(json=json)
         return user_repo.add()
+
+
+class UsersFilter(Resource):
+
+    def get(self):
+        user_repo = UserRepository()
+        return user_repo.get_all()

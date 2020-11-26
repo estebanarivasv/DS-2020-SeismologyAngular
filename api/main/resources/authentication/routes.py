@@ -25,6 +25,7 @@ def login():
                 "admin": user.admin,
                 "token": access_token
                 }
+
         return data, 200
     else:
         return 'You have entered wrong credentials.', 401

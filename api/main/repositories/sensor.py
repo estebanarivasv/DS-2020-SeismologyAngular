@@ -38,6 +38,45 @@ class Sensor(DBRepository):
     def set_db_session(self, session):
         self.__db_session = session
 
+    def set_filters(self, data):
+        filter_data = {'filter': []}
+
+        try:
+            if data['page']:
+                filter_data['page'] = data['page']
+            if data['elem_per_page']:
+                filter_data['elem_per_page'] = data['elem_per_page']
+            if data['sort_by'] and data['direction']:
+                filter_data['sort_by'] = [{
+                    "model": "Sensor",
+                    "field": str(data['sort_by']),
+                    "direction": str(data['direction'])
+                }]
+        except KeyError:
+            # If values are not given, default values are defined
+            filter_data['sort_by'] = [{"model": "Sensor", "field": "id_num", "direction": "asc"}]
+            filter_data['page'] = 1
+            filter_data['elem_per_page'] = 10
+
+        for key, value in data.items():
+            try:
+                if key == "name":
+                    filter_data['filter'].append(
+                        {"field": "name", "op": "like", "value": "%"+data['name']+"%"})
+                if key == "status":
+                    filter_data['filter'].append(
+                        {"field": "status", "op": "==", "value": bool(data['status'])})
+                if key == "active":
+                    filter_data['filter'].append(
+                        {"field": "active", "op": "==", "value": bool(data['active'])})
+                if key == "user_id":
+                    filter_data['filter'].append(
+                        {"field": "user_id", "op": "==", "value": int(data['user_id'])})
+            except KeyError:
+                pass
+
+        self.set_input_json(json=filter_data)
+
     def get_query(self):
         sensor = db.session.query(SensorModel)
         return sensor
@@ -59,19 +98,29 @@ class Sensor(DBRepository):
         return sensor
 
     def get_all(self):
-        page_number = 1
-        elem_per_page = 25
+        pag_data = None
+        query = None
 
         sensors = self.get_query()
 
-        """pag = PagController(sensors, page_number, elem_per_page)
+        # If filter values were given
+        if self.__input_json != "":
+            pagination = PagController(sensors, self.__input_json)
+            query, pag_data = pagination.get_filtered_query()
 
-        for key, value in self.__input_json:
-            sensors = pag.apply(key, value)
+            sensors_dict = {
+                'sensors': sensors_schema.dump(query),
+                'pagination': {
+                    'page_number': pag_data[0],
+                    'page_size': pag_data[1],
+                    'num_pages': pag_data[2],
+                    'total_results': pag_data[3]
+                }
+            }
+        else:
+            sensors_dict = sensors_schema.dump(self.get_query().all())
 
-        sensors, _pagination = pag.pagination()
-"""
-        return sensors_schema.dump(sensors.all())
+        return sensors_dict
 
     def add(self):
 

@@ -53,9 +53,6 @@ class Users(Resource):
     def get(self):
         user_repo = UserRepository()
 
-        #json = request.get_json().items()
-        #user_repo.set_input_json(json=json)
-
         return user_repo.get_all()
 
     #@admin_login_required

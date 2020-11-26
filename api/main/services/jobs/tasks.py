@@ -15,7 +15,9 @@ def load_seisms_task():
     # We work with pandas library. First, we obtain the data, erase the unnecessary cols and then, we call the function
     # to load it in the database
     with scheduler.app.app_context():
-        print("\n\nTASK: Achieving seisms")
+        print("\n\n-------------------------------------------\n"
+              "           TASK: Achieving seisms"
+              "\n-------------------------------------------\n\n")
         seisms_data = get_seisms_from_api()
 
         # We get the available sensor ids list
@@ -32,11 +34,14 @@ def load_seisms_task():
             seism_repo.set_addition_json(json.dumps(seisms_data[seism]))
             seism_repo.add()
 
-        print("\n\nSeisms addition done.")
 
 @scheduler.task("interval", id="data_persistance", seconds=3600)
 def keep_specific_data():
     with scheduler.app.app_context():
+        print("\n\n-------------------------------------------\n"
+              "           TASK: Data persistance"
+              "\n-------------------------------------------\n\n")
+
         ids_list = get_ids_to_delete()
         for seism_id in ids_list:
             seism_repo.set_id(seism_id)

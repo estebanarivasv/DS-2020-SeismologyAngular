@@ -1,71 +1,197 @@
-# Systems Design - Diseño de Sistemas (2020 - 2nd Semester)
+# :earth_americas: Seismology Proyect
 
-## Index
+Subject: "Diseño de sistemas"
+<br><br>
+This is a mirrored repository of the project I did for "Programación I" (Programming) at Universidad de Mendoza. For more information, go to https://github.com/estebanarivasv/Seismology-Flask
 
-1. [Requirements](#requirements)
-2. [Summary](#summary)
-3. [Libraries](#libraries)
-4. [Project scope](#project-scope)
+The aim of this repository is emphasize software design patterns and best software practices.
+<br><br>
 
-## ***[Requirements](#requirements)***
-- Run /api/install.sh
-- Define env variables
-- Run /api/boot.sh
-- To make the requests, I used Insomnia. There is a file attached called "insomnia_requests.json" ready to import.
+# :clipboard: Table of Contents
+- [Use](#use)
+    - [Create](#create)
+    - [Update](#update)
+    - [Create elsewhere](#create-elsewhere)
+- [Install](#install)
+    - [emacs package repository](#emacs-package-repository)
+        - [Setup](#setup)
+            - [melpa stable](#melpa-stable)
+            - [melpa](#melpa)
+            - [marmalade](#marmalade)
+        - [Install](#install)
+    - [emacs-lisp file](#emacs-lisp-file)
+- [Inspiration](#inspiration)
 
-## ***[Summary](#summary)***
+# :pencil: Description
+The aim of this project is simulating a Seismology Institute center where the main actors of the system are seisms, seismologists and the sensors.
+<br><br>
+@andrea.navarro, my teacher, came up with this idea. She learnt us how do the main system structure works and our job was adapt the project to the requirements.
+<br><br>
+The project incluides the following items:
+- Make requests to sensos.
+- Save/modify seisms data (basic CRUD methods) with HTTP requests
+- Send emails to administrators of sensors that are not working
+- Web and api integration
 
-In this repository I have located a copy of the work I've done in Programming this year.
-We've only made changes to the api. As the semester goes by, we will be making some code 
-optimizations to the current repository.
+# :deciduous_tree: Project's tree structure diagram
 
-The main goal of this subject is to learn how to develop any system with good practices.
+Given the task, I've designed my project structure with the Model–view–controller (MVC) software design pattern.
 
-We will be learning how to learn typescript in order to work with Angular.
+### REST Api on Flask
+```
+.
+├── app.py                                                  -- App instance
+├── database                                                -- SQLite db 
+│   └── data.db
+├── insomnia_requests.json
+├── main
+│   ├── __init__.py
+│   ├── controllers                                         -- HTTP Requests jsons handling
+│   │   ├── __init__.py
+│   │   ├── seism.py
+│   │   ├── sensor.py
+│   │   └── user.py
+│   ├── extensions                                          -- Main components initialization
+│   │   ├── __init__.py
+│   ├── mapping                                             -- JSON dictionaries mapping for db
+│   │   ├── __init__.py
+│   │   ├── seism.py
+│   │   ├── sensor.py
+│   │   └── user.py
+│   ├── models                                              -- Database models
+│   │   ├── __init__.py
+│   │   ├── seism.py
+│   │   ├── sensor.py
+│   │   └── user.py
+│   ├── repositories                                        -- CRUD Methods for the controllers interacting with the db
+│   │   ├── __init__.py
+│   │   ├── main.py
+│   │   ├── seism.py
+│   │   ├── sensor.py
+│   │   └── user.py
+│   ├── resources
+│   │   ├── authentication
+│   │   │   ├── decorators.py                               -- Controllers restriction
+│   │   │   └── routes.py                                   -- Auth routes
+│   │   ├── functions.py                                    -- get_near_seisms() - Pandas
+│   │   ├── __init__.py
+│   │   ├── pagination.py                                   -- Model used in repositories
+│   │   └── validators.py                                   -- Objects validation used in repositories
+│   ├── services
+│   │   ├── __init__.py
+│   │   ├── jobs
+│   │   │   ├── functions.py                                -- get_seisms_from_api(), get_ids_to_delete()
+│   │   │   ├── __init__.py
+│   │   │   └── tasks.py                                    -- seisms_achiever, data_persistance
+│   │   └── mail_sending                                    -- Email admins of not working sensors
+│   │       ├── controller.py
+│   │       └── resources.py
+│   └── templates                                           -- Email templates
+│       └── mail
+│           ├── sensors_status.html
+│           └── sensors_status.txt
+└── requirements.txt
+```
 
-## ***[Libraries](#libraries)***
+### Web client on Angular
+```
+.
+├── app
+│   ├── app.component.html                                  -- ROUTER IMPLEMENTATION, Bootstrap CDN
+│   ├── app.constants.ts                                    -- API URL
+│   ├── app.module.ts                                       -- Dependencies, Bootstrap CDN
+│   ├── app-routing.module.ts                               -- ROUTING, Bootstrap CDN
+│   ├── app-sorting.directive.ts
+│   ├── alerts                                              
+│   │   ├── alerts.service.ts
+│   ├── authentication                                      
+│   │   ├── authentication.component.html                   -- Login template
+│   │   ├── authentication.component.ts
+│   │   ├── authentication.service.ts                       -- Api authentication interaction
+│   │   ├── guards                                          -- Limit routing
+│   │   └── interceptors
+│   ├── guards
+│   ├── header
+│   │   └── header.component.html
+│   ├── home
+│   │   └── home.component.html
+│   ├── pagination.model.ts
+│   ├── seisms
+│   │   ├── seisms-filter.model.ts                          -- Seisms pagination, sorting and filter model
+│   │   ├── seisms.model.ts                                 -- Seisms model for requests mapping
+│   │   ├── seisms.service.ts                               -- Seisms components interaction with HTTP requests
+│   │   ├── unverified-seisms
+│   │   │   ├── edit-unverified
+│   │   │   ├── unverified-seisms.component.html
+│   │   │   ├── unverified-seisms.component.ts
+│   │   │   └── view-unverified
+│   │   └── verified-seisms
+│   │       ├── verified-seisms.component.html
+│   │       ├── verified-seisms.component.ts
+│   │       └── view-verified
+│   ├── sensors
+│   │   ├── add-sensor
+│   │   ├── check-sensor
+│   │   ├── delete-sensor
+│   │   ├── edit-sensor
+│   │   ├── sensors.component.html
+│   │   ├── sensors.component.ts
+│   │   ├── sensors-filter.model.ts                         -- Sensors pagination, sorting and filter model
+│   │   ├── sensors.model.ts                                -- Sensors model for requests mapping
+│   │   ├── sensors.service.ts                              -- Sensors component interaction with HTTP requests
+│   │   └── view-sensor
+│   ├── upper-body                                          -- BREADCRUMBS, TITLE
+│   │   ├── upper-body.component.html
+│   │   ├── upper-body.component.ts
+│   │   └── upper-body.interfaces.ts
+│   └── users
+│       ├── add-user
+│       ├── delete-user
+│       ├── edit-user
+│       ├── users.component.html
+│       ├── users.component.ts
+│       ├── users.model.ts                                  -- Users model for requests mapping
+│       └── users.service.ts                                -- Users component interaction with HTTP requests
+├── assets
+│   ├── img
+│   └── videos
+├── environments
+├── favicon.ico
+├── index.html
+├── main.ts
+├── polyfills.ts
+├── styles.scss
+└── test.ts
+```
+# :computer: Developing stages
 
-Here there is the main libraries that I've used in my project:
+At the beginning, I had the REST Api from the base repository from where I started. Here it is the full description of what I did:
 
-- [flask](https://flask.palletsprojects.com/en/1.1.x/) (Framework web)
-- [flask_restful](https://flask-restful.readthedocs.io/en/latest/) (REST Api)
-- [flask_sqlalchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/) (Integration with SQLAlchemy)
-- [flask_jwt_extended](https://flask-jwt-extended.readthedocs.io/en/stable/) (Users authentication)
-- [flask_mail](https://pythonhosted.org/Flask-Mail/) (Email delivery of sensors status)
-- [marshmallow-sqlalchemy](https://marshmallow-sqlalchemy.readthedocs.io/en/latest/) (Serialization and deserialization of SQLAlchemy db.Models)
-- [pandas](https://pandas.pydata.org/) (Seisms API and db workarounds)
-- [Flask-APScheduler](https://github.com/viniciuschiele/flask-apscheduler) (Jobs for the flask api)
+#### (API) Phase 1: Mapping
+DB Models Schemas creation (flask-marshmallow). to_json(), from_json() deletion.
+#### (API) Phase 2: Controllers and repositories
+Modularity.   Controllers -> HTTP Requests
+#### (API) Phase 3: Filtering, sorting and pagination
+General Pagination class
+#### (API) Phase 4: Repositories
+Modularity.   Repositories -> DB interaction
+#### (WEB) Phase 5: Forms
+Flask-WTF, form models
+#### (WEB) Phase 6: Sessions and routes permissions
+Flask-Login
 
-## ***[Project scope](#project-scope)***
+# :information_source: Installation and usage for both API and Web client
+Steps to follow in order to get the Flask app up and running
 
-#### *User-case diagram*
-Here in this scheme, I described the general behaviour of the system. 
-Basically we've desplayed the system and three different user types: the administrators, the seismologists and the analists or all the rest of the organization.
+#### 1 - Define the environment variables in the .env file
+You can rename the .env-example file to .env
 
-Every one of them has specific tasks:
-The administrators is able to:
-- Assign sensors to seismologists.
-- Have access to existent sensors: modify, activate or deactivate.
-- Register new users.
+:exclamation: Remember you need to declare all the variables including the database path. You can know where you are standing and declare them as the database path with these sentences:
 
-The seismologists can:
-- List left seisms to validate.
-- List assigned sensors.
-- Modify unverified seisms data. 
-  - If it is an excessive amount of data to verify, they can download it. 
-  - If there are not mistakes left, the users can validate the seism.
+#### 2 - Install dependencies
+To begin the instalation of libraries and the frameworks needed: `./install.sh`
 
-The analists (or any other institute member) is be able to:
-- Access verified seisms.
-- Filter and download the sensors data in a CSV or ZIP file.
-  
-The system must:
-- Send notifications to administrators whenever any active sensor stops working.
+#### 3 - Launch Flask application
+To get the app running: `./boot.sh`
 
-![User-case diagram](https://i.ibb.co/VLqc45n/usecase-diag.png)
-
-#### *UML Classes diagram*
-Here there are the system classes depicted.
-
-![UML Classes diagram](https://i.ibb.co/PrvMvqY/uml.png)
-
+#### 4 - Import requests file for the api in Insomnia or simply launch the web client

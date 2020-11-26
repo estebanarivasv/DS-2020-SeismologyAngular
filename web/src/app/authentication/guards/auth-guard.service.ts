@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
+import { AlertsService } from 'src/app/alerts';
 import { AuthenticationService } from '../authentication.service';
 
 @Injectable({
@@ -8,19 +9,16 @@ import { AuthenticationService } from '../authentication.service';
 })
 export class AuthGuardService implements CanActivate  {
 
-  constructor(public authService: AuthenticationService, public router: Router) {}
+  constructor(public authService: AuthenticationService, public router: Router, public alertService: AlertsService) {}
 
-  //Función que determina si una ruta puede o no navegarse
+  // Lets or not get the route
   canActivate(): boolean {
-  //Verificar si el usuario está atuenticado
-   if (!this.authService.isAuthenticated && this.authService.getAdmin()) {
-     //Si no redireccionar a login
-     this.router.navigate(['login']);
-     
-     //No se puede navegar
+
+   if (!this.authService.isAuthenticated) {
+     this.router.navigate(['home']);
+     this.alertService.error('Please log in to access this route')
      return false;
    }
-   //Se puede navegar
    return true;
  }
 }

@@ -16,10 +16,10 @@
               class="sr-only">(current)</span></a></li>
         <li class="nav-item" routerLinkActive="active"><a class="nav-link" routerLink="verified-seisms">Verified
             seisms</a></li>
-        <li class="nav-item" routerLinkActive="active"><a class="nav-link" routerLink="unverified-seisms">Unverified
+        <li class="nav-item" routerLinkActive="active"><a class="nav-link" routerLink="unverified-seisms" *ngIf="auth.isAuthenticated && !isAdmin">Unverified
             seisms</a></li>
-        <li class="nav-item" routerLinkActive="active"><a class="nav-link" routerLink="sensors">Sensors</a></li>
-        <li class="nav-item" routerLinkActive="active"><a class="nav-link" routerLink="users">Users</a></li>
+        <li class="nav-item" routerLinkActive="active"><a class="nav-link" routerLink="sensors" *ngIf="auth.isAuthenticated && isAdmin">Sensors</a></li>
+        <li class="nav-item" routerLinkActive="active"><a class="nav-link" routerLink="users" *ngIf="auth.isAuthenticated && isAdmin">Users</a></li>
       </ul>
       <app-authentication></app-authentication>
     </div>

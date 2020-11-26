@@ -36,8 +36,6 @@ export class AuthenticationComponent implements OnInit {
       this.authService.setAdmin(data.admin);
       
       this.admin = this.authService.getAdmin();
-      if (this.admin) { this.router.navigate(['/users']); }
-      else { this.router.navigate(['/unverified-seisms']); }
 
       this.userAuthenticated = true;
       this.ngOnInit();

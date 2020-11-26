@@ -7,17 +7,6 @@ This is a mirrored repository of the project I did for "Programación I" (Progra
 The aim of this repository is emphasize software design patterns and best software practices.
 <br><br>
 
-# :pencil: Description
-The aim of this project is simulating a Seismology Institute center where the main actors of the system are seisms, seismologists and the sensors.
-<br><br>
-@andrea.navarro, my teacher, came up with this idea. She learnt us how do the main system structure works and our job was adapt the project to the requirements.
-<br><br>
-The project incluides the following items:
-- Make requests to sensos.
-- Save/modify seisms data (basic CRUD methods) with HTTP requests
-- Send emails to administrators of sensors that are not working
-- Web and api integration
-
 # :deciduous_tree: Project's tree structure diagram
 
 Given the task, I've designed my project structure with the Model–view–controller (MVC) software design pattern.

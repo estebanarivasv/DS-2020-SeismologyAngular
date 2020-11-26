@@ -26,6 +26,7 @@ import { AlertsComponent } from './alerts/alerts.component';
 import { NgTempusdominusBootstrapModule } from 'ngx-tempusdominus-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbdSortableHeader } from './app-sorting.directive';
+import { AuthenticationComponent } from './authentication/authentication.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { NgbdSortableHeader } from './app-sorting.directive';
     EditUserComponent,
     UpperBodyComponent,
     AlertsComponent,
-    NgbdSortableHeader
+    NgbdSortableHeader,
+    AuthenticationComponent
   ],
   imports: [
     BrowserModule,

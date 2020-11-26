@@ -148,8 +148,11 @@ Given the task, I've designed my project structure with the Model–view–contr
 ├── styles.scss
 └── test.ts
 ```
-# Software design patterns applied in the project 
+# Software design patterns and principles applied in the project 
 
+- DRY, KISS, SOLID
+- Command -> Repositories
+- Observer -> .suscribe() en los servicios de angular -> asincronismo 
 
 # :computer: Developing stages
 

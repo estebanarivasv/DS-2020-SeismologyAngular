@@ -7,21 +7,6 @@ This is a mirrored repository of the project I did for "Programación I" (Progra
 The aim of this repository is emphasize software design patterns and best software practices.
 <br><br>
 
-# :clipboard: Table of Contents
-- [Use](#use)
-    - [Create](#create)
-    - [Update](#update)
-    - [Create elsewhere](#create-elsewhere)
-- [Install](#install)
-    - [emacs package repository](#emacs-package-repository)
-        - [Setup](#setup)
-            - [melpa stable](#melpa-stable)
-            - [melpa](#melpa)
-            - [marmalade](#marmalade)
-        - [Install](#install)
-    - [emacs-lisp file](#emacs-lisp-file)
-- [Inspiration](#inspiration)
-
 # :pencil: Description
 The aim of this project is simulating a Seismology Institute center where the main actors of the system are seisms, seismologists and the sensors.
 <br><br>
@@ -163,35 +148,64 @@ Given the task, I've designed my project structure with the Model–view–contr
 ├── styles.scss
 └── test.ts
 ```
+# Software design patterns applied in the project 
+
+
 # :computer: Developing stages
 
 At the beginning, I had the REST Api from the base repository from where I started. Here it is the full description of what I did:
 
-#### (API) Phase 1: Mapping
+### Backend
+#### 1 - Mapping 
 DB Models Schemas creation (flask-marshmallow). to_json(), from_json() deletion.
-#### (API) Phase 2: Controllers and repositories
+#### 2 - Controllers and repositories 
 Modularity.   Controllers -> HTTP Requests
-#### (API) Phase 3: Filtering, sorting and pagination
+#### 3 - Filtering, sorting and pagination 
 General Pagination class
-#### (API) Phase 4: Repositories
+#### 4 - Repositories
 Modularity.   Repositories -> DB interaction
-#### (WEB) Phase 5: Forms
-Flask-WTF, form models
-#### (WEB) Phase 6: Sessions and routes permissions
-Flask-Login
+#### 5 - Resources
+Modularity.   Reorganizing: auth, various functions for services, validators, pagination
+#### 6 - Services
+Jobs: data persistance, data obtention
+
+### Frontend
+#### 1 - Components 
+Views design: home, seisms, sensors, users
+#### 2 - Services 
+HTTP Requests
+#### 3 - Forms and validations 
+Reactive forms on add and edit views
+#### 4 - Alerts
+Service that displays alerts
+#### 5 - Filtering, sorting, pagination
+Template-driven forms. Filter models, NgbdSortableHeader, ngb-pagination
+#### 6 - Auth
+Auth service, HttpRequestsInterceptor, Guard
+
+#### What's left to do?
+- CSV download
+- Email sending integration
+- Near seisms from input location
+- Api validation
+- Guards
+
+# Problems
+- New framework, new languaje
+- Time
 
 # :information_source: Installation and usage for both API and Web client
-Steps to follow in order to get the Flask app up and running
+Steps to follow in order to get the Flask app and Angular client up and running
 
-#### 1 - Define the environment variables in the .env file
+#### 1 - Define the environment variables in .env and app.constants.ts files
 You can rename the .env-example file to .env
 
-:exclamation: Remember you need to declare all the variables including the database path. You can know where you are standing and declare them as the database path with these sentences:
+:exclamation: Remember you need to declare all the variables including the database path. 
 
 #### 2 - Install dependencies
-To begin the instalation of libraries and the frameworks needed: `./install.sh`
+To begin the instalation of libraries and the frameworks needed: `./install.sh` and `npm install`
 
 #### 3 - Launch Flask application
-To get the app running: `./boot.sh`
+To get the app running: `./boot.sh` and `ng serve`
 
-#### 4 - Import requests file for the api in Insomnia or simply launch the web client
+##### 3.1 - Import requests file for the api in Insomnia

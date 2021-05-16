@@ -1,7 +1,6 @@
 from datetime import datetime
 from flask import jsonify
 from flask import json
-import sqlalchemy
 
 from main.extensions import db
 from main.models import SeismModel, SensorModel
@@ -145,14 +144,10 @@ class Seism(DBRepository):
         return seisms_dict
 
     def add(self):
-        global seism_exists
         if self.__addition_json != "":
             instance = seism_schema.loads(self.__addition_json)
             seism_schema.verified = self.__verified
-            try:
-                seism_exists = get_seism_existance(datetime=instance.datetime)
-            except Exception:
-                pass
+            seism_exists = get_seism_existance(datetime=instance.datetime)
             if seism_exists:
                 return 'Seism already exists', 409
             else:

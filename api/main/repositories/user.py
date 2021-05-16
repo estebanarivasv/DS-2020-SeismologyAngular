@@ -1,7 +1,5 @@
 import json
 
-from flask import jsonify
-
 from main.extensions import db
 
 from main.models import UserModel
@@ -48,8 +46,18 @@ class User(DBRepository):
         return user
 
     def get_all(self):
+        page_number = 1
+        elem_per_page = 10
+        users = self.get_query()
 
-        return users_schema.dump(self.get_query().all())
+        pag = PagController(users, page_number, elem_per_page)
+
+        for key, value in self.__input_json:
+            users = pag.apply(key, value)
+
+        users, _pagination = pag.pagination()
+
+        return users_schema.dump(users.all())
 
     def get_users_id_list(self):
         if self.__db_session is not None:

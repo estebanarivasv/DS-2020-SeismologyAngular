@@ -24,12 +24,11 @@ def get_seisms_from_api():
 
     raw_data.rename(columns={"time": "datetime", "mag": "magnitude"}, inplace=True)
 
-    raw_data = raw_data[raw_data.magnitude > 0]     # Delete negative magnitude
-    raw_data = raw_data[raw_data.depth > 0]     # Delete negative depth
-
     raw_data['datetime'] = pd.to_datetime(raw_data['datetime'])
     raw_data['datetime'] = raw_data['datetime'].dt.strftime('%Y-%m-%d %H:%M:%S')
     raw_data['depth'] = raw_data['depth'].astype('int32')
+
+    print("\n\nSeisms data obtained.")
 
     return raw_data.to_dict(orient="index")
 

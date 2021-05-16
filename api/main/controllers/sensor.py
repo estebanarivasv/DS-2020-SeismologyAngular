@@ -51,9 +51,8 @@ class Sensors(Resource):
     def get(self):
         sensor_repo = SensorRepository()
 
-        if request.args:
-            data = request.args
-            sensor_repo.set_filters(data=data)
+        #json = request.get_json().items()
+        #sensor_repo.set_input_json(json=json)
 
         return sensor_repo.get_all()
 

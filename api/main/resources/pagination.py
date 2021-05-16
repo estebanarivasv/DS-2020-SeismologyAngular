@@ -8,7 +8,7 @@ class Pagination:
         self.__data = pagination_data
 
     def filter_query(self):
-        print("\n\nFILTROS EN CLASE PAGINACION: \n", self.__data)
+        print("\n\nFILTROS EN PAGINACION: \n", self.__data)
         if len(self.__data['filter']) != 0:
             self.__query = apply_filters(self.__query, self.__data['filter'])
             return self.__query

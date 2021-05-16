@@ -22,8 +22,10 @@ def login():
         access_token = create_access_token(identity=user)
         data = {"id": user.id_num,
                 "email": user.email,
+                "admin": user.admin,
                 "token": access_token
                 }
+
         return data, 200
     else:
         return 'You have entered wrong credentials.', 401

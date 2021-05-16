@@ -19,7 +19,7 @@ export class UsersComponent implements OnInit {
 
   getAll(): void {
     /* The program recieves the output from the getAll() observable and stores it in this.users */
-    this.usersService.getAll().subscribe(data => this.users = data);
+    this.usersService.getAllUsers().subscribe(data => this.users = data);
   }
 
 }

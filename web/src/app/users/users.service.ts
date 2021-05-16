@@ -13,8 +13,12 @@ export class UsersService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(): Observable<Array<UsersModel>> {
+  getAllUsers(): Observable<Array<UsersModel>> {
     return this.http.get<Array<UsersModel>>(this.url);
+  }
+
+  getAll(): Observable<Array<UsersModel>> {
+    return this.http.get<Array<UsersModel>>(`${this.url}/filter`);
   }
 
   getOne(id: number): Observable<UsersModel> {

@@ -1,0 +1,31 @@
+<ul class="navbar-nav ml-auto">
+    <li class="nav-item" *ngIf="!authService.isAuthenticated">
+        <div class="btn-group">
+            <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" data-display="static"
+                aria-haspopup="true" aria-expanded="false">
+                Sign in
+            </button>
+            <div class="dropdown-menu dropdown-menu-center dropdown-menu-lg-right px-4 card-body" style="width: 300px;">
+                <form class="px-1 py-3" (ngSubmit)="signIn()" #loginForm="ngForm">
+                    <div class="form-group">
+                        <label for="exampleDropdownFormEmail1">Email address</label>
+                        <input type="email" class="form-control " id="exampleDropdownFormEmail1"
+                            placeholder="email@example.com" [(ngModel)]="email" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleDropdownFormPassword1">Password</label>
+                        <input type="password" class="form-control" id="exampleDropdownFormPassword1"
+                            placeholder="Password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign in</button>
+                </form>
+            </div>
+        </div>
+    </li>
+
+
+    <li class="nav-item form-row align-items-center" *ngIf="authService.isAuthenticated">
+        <div class="col monserrat-bold mr-2" style="font-size: small;">{{ authService.getEmail() }}</div>
+        <a name="" id="" class="col btn btn-dark px-2/*canActivate: [SeismologistAuthGuar" (click)="signOut()" role="button">Sign Out</a>
+    </li>
+</ul>

@@ -14,24 +14,24 @@ sensor_schema = SensorSchema()
 
 class Sensor(Resource):
 
-    # @admin_login_required
+    @admin_login_required
     def get(self, id_num):
         sensor_repo = SensorRepository()
         sensor_repo.set_id(id_num)
 
         return sensor_schema.dump(sensor_repo.get_or_404())
 
-    # @admin_login_required
+    @admin_login_required
     def delete(self, id_num):
         sensor_repo = SensorRepository()
-        
+
         sensor_repo.set_id(id_num)
         sensor = sensor_repo.get_or_404()
 
         sensor_repo.set_instance(sensor)
         return sensor_repo.delete()
 
-    # @admin_login_required
+    @admin_login_required
     def put(self, id_num):
         sensor_repo = SensorRepository()
 
@@ -47,7 +47,7 @@ class Sensor(Resource):
 
 class Sensors(Resource):
 
-    # @admin_login_required
+    @admin_login_required
     def get(self):
         sensor_repo = SensorRepository()
 
@@ -56,8 +56,7 @@ class Sensors(Resource):
 
         return sensor_repo.get_all()
 
-
-    # @admin_login_required
+    @admin_login_required
     def post(self):
         sensor_repo = SensorRepository()
 
@@ -72,3 +71,10 @@ class Sensors(Resource):
                 return "User not found", 404
 
         return sensor_repo.add()
+
+
+class SensorsFilter(Resource):
+
+    def get(self):
+        sensor_repo = SensorRepository()
+        return sensor_repo.get_all()

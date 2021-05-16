@@ -21,7 +21,7 @@ export class SensorsService {
 
   // Returns all sensors without pagination
   getAll(): Observable<Array<SensorsModel>> {
-    return this.http.get<Array<SensorsModel>>(this.url);
+    return this.http.get<Array<SensorsModel>>(`${this.url}/filter`);
   }
 
   // Returns sensors for the dynamic table

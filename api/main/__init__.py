@@ -6,10 +6,7 @@ from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from flask_cors import CORS
 
 # Importing blueprints
-from main.controllers import UserController, UsersController
-from main.controllers import USeismController, USeismsController
-from main.controllers import VSeismController, VSeismsController, GSeismsController
-from main.controllers import SensorController, SensorsController
+import main.controllers as controller
 from main.resources import auth_controller
 from main.services import mail_controller
 from main.services.jobs import tasks
@@ -91,15 +88,17 @@ def create_app():
         event.listen(db.engine, 'connect', activate_primary_keys)
 
     # Defining urls for each resource
-    api.add_resource(SensorController, '/sensors/<id_num>')
-    api.add_resource(SensorsController, '/sensors')
-    api.add_resource(USeismController, '/seisms/unverified/<id_num>')
-    api.add_resource(USeismsController, '/seisms/unverified/')
-    api.add_resource(VSeismController, '/seisms/verified/<id_num>')
-    api.add_resource(GSeismsController, '/seisms/coordinates')
-    api.add_resource(VSeismsController, '/seisms/verified/')
-    api.add_resource(UserController, '/users/<id_num>')
-    api.add_resource(UsersController, '/users')
+    api.add_resource(controller.SensorController, '/sensors/<id_num>')
+    api.add_resource(controller.SensorsController, '/sensors')
+    api.add_resource(controller.USeismController, '/seisms/unverified/<id_num>')
+    api.add_resource(controller.USeismsController, '/seisms/unverified/')
+    api.add_resource(controller.VSeismController, '/seisms/verified/<id_num>')
+    api.add_resource(controller.GSeismsController, '/seisms/coordinates')
+    api.add_resource(controller.VSeismsController, '/seisms/verified/')
+    api.add_resource(controller.UserController, '/users/<id_num>')
+    api.add_resource(controller.UsersController, '/users')
+    api.add_resource(controller.UsersFilter, '/users/filter')
+    api.add_resource(controller.SensorsFilter, '/sensors/filter')
 
     # Defining blueprints for each blueprint
     app.register_blueprint(auth_controller)

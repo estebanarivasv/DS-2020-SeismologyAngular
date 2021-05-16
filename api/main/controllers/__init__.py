@@ -15,3 +15,6 @@ from .sensor import Sensors as SensorsController
 
 from .user import User as UserController
 from .user import Users as UsersController
+
+from .sensor import SensorsFilter
+from .user import UsersFilter

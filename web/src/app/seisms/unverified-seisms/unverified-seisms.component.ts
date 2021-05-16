@@ -79,6 +79,7 @@ export class UnverifiedSeismsComponent implements OnInit {
   getAll(): void {
     this.seismsService.getAllUnverified(this.filters).subscribe(
       response => {
+        console.log(response.seisms);
         this.seisms = response.seisms;
         this.pagination = response.pagination;
 
@@ -119,9 +120,8 @@ export class UnverifiedSeismsComponent implements OnInit {
       delete this.filters.sensor_id;
       delete this.filters.from_date;
       delete this.filters.to_date;
-      this.sensor_id = 0;
-      this.from_date = moment('').utc();
-      this.to_date = moment('').utc();
+      this.from_date = moment('').utc();;
+      this.to_date = moment('').utc();;
     }
     this.getAll();
   }

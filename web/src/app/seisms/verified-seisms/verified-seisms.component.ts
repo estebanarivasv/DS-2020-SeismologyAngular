@@ -87,7 +87,7 @@ export class VerifiedSeismsComponent implements OnInit {
   getAll(): void {
     this.seismsService.getAllVerified(this.filters).subscribe(
       response => {
-        
+        console.log(response.seisms);
         this.seisms = response.seisms;
         this.pagination = response.pagination;
 
@@ -144,13 +144,8 @@ export class VerifiedSeismsComponent implements OnInit {
       delete this.filters.mag_max;
       delete this.filters.from_date;
       delete this.filters.to_date;
-      this.sensor_id = 0;
-      this.depth_max = null;
-      this.depth_min = null;
-      this.mag_max = null;
-      this.mag_min = null;
-      this.from_date = moment('').utc();
-      this.to_date = moment('').utc();
+      this.from_date = moment('').utc();;
+      this.to_date = moment('').utc();;
     }
     this.getAll();
   }

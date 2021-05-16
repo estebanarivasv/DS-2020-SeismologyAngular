@@ -1,20 +1,4 @@
-import { PaginationModel } from '../pagination.model';
 import { UsersModel } from '../users/users.model';
-
-
-// SENSORS REQUEST INTERFACE AND MODEL
-
-export interface SensorsRequestInterface {
-    sensors: Array<SensorsModel>;
-    pagination: PaginationModel;
-}
-
-export class SensorsRequestModel implements SensorsRequestInterface {
-    sensors: Array<SensorsModel>;
-    pagination: PaginationModel;
-}
-
-// SENSORS MODEL
 
 export class SensorsInterface {
     id_num?: number;

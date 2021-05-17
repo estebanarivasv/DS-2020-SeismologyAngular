@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuardService } from './authentication/guards/auth-guard.service';
-import { NavigationGuard } from './authentication/guards/navigation.guard';
 import { HomeComponent } from './home/home.component';
 import { EditUnverifiedComponent } from './seisms/unverified-seisms/edit-unverified/edit-unverified.component';
 import { UnverifiedSeismsComponent } from './seisms/unverified-seisms/unverified-seisms.component';
@@ -19,8 +17,6 @@ import { DeleteUserComponent } from './users/delete-user/delete-user.component';
 import { EditUserComponent } from './users/edit-user/edit-user.component';
 import { UsersComponent } from './users/users.component';
 
-
-// canActivate:[NavigationGuard]
 const routes: Routes = [
   // Routes
   { path: 'home', component: HomeComponent },
@@ -31,7 +27,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'unverified-seisms', data: { breadcrumb: 'Unverified seisms' }, canActivate: [AuthGuardService], children: [
+    path: 'unverified-seisms', data: { breadcrumb: 'Unverified seisms' }, children: [
       { path: '', component: UnverifiedSeismsComponent, data: { title: 'Unverified seisms' } },
       { path: 'view/:id', data: { breadcrumb: 'view - id:', title: 'Unverified seisms' }, component: ViewUnverifiedComponent },
       { path: 'edit/:id', data: { breadcrumb: 'edit - id:', title: 'Unverified seisms' }, component: EditUnverifiedComponent },
@@ -51,7 +47,7 @@ const routes: Routes = [
     path: 'users', data: { breadcrumb: 'Users' }, children: [
       { path: '', component: UsersComponent, data: { title: 'Users' } },
       { path: 'edit/:id', data: { breadcrumb: 'edit - id:', title: 'Users' }, component: EditUserComponent },
-      { path: 'add', data: { breadcrumb: 'add', title: 'Users', admin: true }, component: AddUserComponent },
+      { path: 'add', data: { breadcrumb: 'add', title: 'Users' }, component: AddUserComponent },
       { path: 'delete/:id', component: DeleteUserComponent }
     ]
   },

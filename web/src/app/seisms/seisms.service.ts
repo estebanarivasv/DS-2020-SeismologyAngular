@@ -42,6 +42,7 @@ export class SeismsService {
       // We describe the filters as parameters in order to get the filtered table making
       // the HttpRequest. This function will send param as url args
     );
+    
   }
 
   putUnverified(id: number, seism: SeismsModel): Observable<SeismsModel> {

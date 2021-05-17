@@ -3,7 +3,7 @@
 /* Importing Bootstrap SCSS file. */
 @import "~bootstrap/scss/bootstrap";
 
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
 
 body {
   background-color: rgba(0, 0, 0, 0.9) !important;
@@ -26,7 +26,7 @@ body {
 }
 
 .card-body {
-  color: #fff !important;
+  color: #fff;
   background-color: #222222 !important;
   border: solid rgba(0, 0, 0, 0) !important;
 }
@@ -44,25 +44,23 @@ body {
 .my-custom-scrollbar {
   position: relative;
   height: 475px;
-  overflow: auto;
-}
-
-.page-link {
-  color: #fff;
-  background-color: #222222 !important;
-  border: solid rgba(255, 255, 255, 0.172) 1px !important;
-}
-
-.page-link:hover {
-  color: #ffe17d;
-  background-color: #462e14 !important;
+  overflow: auto;.page-link {
+    color: #fff;
+    background-color: #222222 !important;
+    border: solid rgba(255, 255, 255, 0.172) 1px !important;
+  }
+  
+  .page-link:hover {
+    color: #ffe17d;
+    background-color: #462e14 !important;
+  }
 }
 
 .table-wrapper-scroll-y {
   display: block;
 }
 
-.overflow-auto {
+.overflow-auto{
   height: 350px !important;
 }
 
@@ -99,7 +97,7 @@ form input:read-only {
   font-size: smaller;
 }
 /* Importing Bootstrap SCSS file. */
-@import "~bootstrap/scss/bootstrap";
+@import '~bootstrap/scss/bootstrap';
 
 .page-item.active .page-link {
   background-color: #fff !important;

@@ -10,7 +10,7 @@ import { SensorsComponent } from './sensors/sensors.component';
 import { UsersComponent } from './users/users.component';
 import { VerifiedSeismsComponent } from './seisms/verified-seisms/verified-seisms.component';
 import { UnverifiedSeismsComponent } from './seisms/unverified-seisms/unverified-seisms.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ViewVerifiedComponent } from './seisms/verified-seisms/view-verified/view-verified.component';
 import { EditUnverifiedComponent } from './seisms/unverified-seisms/edit-unverified/edit-unverified.component';
 import { ViewUnverifiedComponent } from './seisms/unverified-seisms/view-unverified/view-unverified.component';
@@ -26,8 +26,6 @@ import { AlertsComponent } from './alerts/alerts.component';
 import { NgTempusdominusBootstrapModule } from 'ngx-tempusdominus-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbdSortableHeader } from './app-sorting.directive';
-import { AuthenticationComponent } from './authentication/authentication.component';
-import { TokenRequestsInterceptor } from './authentication/interceptors/requests.interceptor';
 
 @NgModule({
   declarations: [
@@ -49,8 +47,7 @@ import { TokenRequestsInterceptor } from './authentication/interceptors/requests
     EditUserComponent,
     UpperBodyComponent,
     AlertsComponent,
-    NgbdSortableHeader,
-    AuthenticationComponent
+    NgbdSortableHeader
   ],
   imports: [
     BrowserModule,
@@ -62,13 +59,7 @@ import { TokenRequestsInterceptor } from './authentication/interceptors/requests
     NgTempusdominusBootstrapModule,
     FontAwesomeModule
   ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenRequestsInterceptor,
-      multi: true
-    }
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

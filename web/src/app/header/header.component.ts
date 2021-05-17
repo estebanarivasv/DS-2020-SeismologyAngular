@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../authentication/authentication.service';
 
 @Component({
   selector: 'app-header',
@@ -8,12 +7,9 @@ import { AuthenticationService } from '../authentication/authentication.service'
 })
 export class HeaderComponent implements OnInit {
   
-  isAdmin: boolean;
-
-  constructor(public auth: AuthenticationService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.isAdmin = this.auth.getAdmin();
   }
 
 }

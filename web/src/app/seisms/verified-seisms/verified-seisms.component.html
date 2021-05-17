@@ -79,7 +79,7 @@
                 <table class="table table-responsive-md table-dark table-hover text-center my-3 table-sm ">
                     <thead>
                         <tr>
-                            <th scope="col" sortable="id_num" (sort)="onSort($event)">ID</th>
+                            <th scope="col">ID</th>
                             <th scope="col" sortable="datetime" (sort)="onSort($event)">Datetime</th>
                             <th scope="col" sortable="depth" (sort)="onSort($event)">Depth</th>
                             <th scope="col" sortable="magnitude" (sort)="onSort($event)">Magnitude</th>
@@ -114,11 +114,12 @@
                         [boundaryLinks]="true" (pageChange)="loadNextPage($event)">
                     </ngb-pagination>
                 </div>
-                <select class="custom-select custom-select-sm ml-5" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="loadNextPage($event)">
+                <select class="custom-select custom-select-sm ml-5" style="width: auto" [(ngModel)]="pageSize"
+                    (ngModelChange)="loadNextPage($event)">
                     <option [ngValue]="5" [selected]="pageSize == 5">5 items per page</option>
                     <option [ngValue]="10" [selected]="pageSize == 10">10 items per page</option>
                     <option [ngValue]="20" [selected]="pageSize == 20">20 items per page</option>
-                  </select>
+                </select>
             </div>
         </div>
         <div class="col-md-2 my-3"></div>
